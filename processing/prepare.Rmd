@@ -1,0 +1,204 @@
+---
+title: "prepare"
+author: "Anais Herrera Leighton"
+date: "23-11-2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+pacman::p_load(haven,dplyr)
+```
+
+# Datos 2009
+## Tratamiento de datos Chile
+```{r}
+data2009_chl <- read_sav("../input/data/original/2009/ISGCHLC2.sav")
+
+# Educación
+data2009_chl$HISCED2 <- ifelse((data2009_chl$HISCED==0), 0, # did not complete <ISCED level 2>
+                   ifelse((data2009_chl$HISCED==1), 0,  # did not complete <ISCED level 2>              
+                          ifelse((data2009_chl$HISCED==2), 1,  # <ISCED level 2>                        
+                                 ifelse((data2009_chl$HISCED==3), 2, # <ISCED level 3>
+                                        ifelse((data2009_chl$HISCED==4), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+                                               ifelse((data2009_chl$HISCED==5), 3, NA)))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+
+# según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 (que corresponde a isced 4 (o CINE)) corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
+
+# Cantidad de libros en el hogar
+data2009_chl$HOMELIT2 <- ifelse((data2009_chl$HOMELIT==0), 0,
+                   ifelse((data2009_chl$HOMELIT==1), 1,                                 
+                          ifelse((data2009_chl$HOMELIT==2), 2,                           
+                                 ifelse((data2009_chl$HOMELIT==3), 3,
+                                        ifelse((data2009_chl$HOMELIT==4), 4,
+                                               ifelse((data2009_chl$HOMELIT==5), 4, NA)))))) #más de 200 libros (así queda igual que en iccs 2016)
+```
+
+### Guardar base
+```{r}
+save(data2009_chl, file= "../input/data/proc/2009/data_chl.Rdata")
+```
+
+## Tratamiento de datos Colombia
+```{r}
+data2009_col <- read_sav("../input/data/original/2009/ISGCOLC2.sav")
+
+# Educación
+data2009_col$HISCED2 <- ifelse((data2009_col$HISCED==0), 0, # did not complete <ISCED level 2>
+                   ifelse((data2009_col$HISCED==1), 0,  # did not complete <ISCED level 2>              
+                          ifelse((data2009_col$HISCED==2), 1,  # <ISCED level 2>                        
+                                 ifelse((data2009_col$HISCED==3), 2, # <ISCED level 3>
+                                        ifelse((data2009_col$HISCED==4), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+                                               ifelse((data2009_col$HISCED==5), 3, NA)))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+
+# según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 (que corresponde a isced 4 (o CINE)) corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
+
+# Cantidad de libros en el hogar
+data2009_col$HOMELIT2 <- ifelse((data2009_col$HOMELIT==0), 0,
+                   ifelse((data2009_col$HOMELIT==1), 1,                                 
+                          ifelse((data2009_col$HOMELIT==2), 2,                           
+                                 ifelse((data2009_col$HOMELIT==3), 3,
+                                        ifelse((data2009_col$HOMELIT==4), 4,
+                                               ifelse((data2009_col$HOMELIT==5), 4, NA)))))) #más de 200 libros (así queda igual que en iccs 2016)
+```
+
+### Guardar base
+```{r}
+save(data2009_col, file= "../input/data/proc/2009/data_col.Rdata")
+```
+
+## Tratamiento de datos República Dominicana
+```{r}
+data2009_dom <- read_sav("../input/data/original/2009/ISGDOMC2.sav")
+
+# Educación
+data2009_dom$HISCED2 <- ifelse((data2009_dom$HISCED==0), 0, # did not complete <ISCED level 2>
+                   ifelse((data2009_dom$HISCED==1), 0,  # did not complete <ISCED level 2>              
+                          ifelse((data2009_dom$HISCED==2), 1,  # <ISCED level 2>                        
+                                 ifelse((data2009_dom$HISCED==3), 2, # <ISCED level 3>
+                                        ifelse((data2009_dom$HISCED==4), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+                                               ifelse((data2009_dom$HISCED==5), 3, NA)))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+
+# según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 (que corresponde a isced 4 (o CINE)) corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
+
+# Cantidad de libros en el hogar
+data2009_dom$HOMELIT2 <- ifelse((data2009_dom$HOMELIT==0), 0,
+                   ifelse((data2009_dom$HOMELIT==1), 1,                                 
+                          ifelse((data2009_dom$HOMELIT==2), 2,                           
+                                 ifelse((data2009_dom$HOMELIT==3), 3,
+                                        ifelse((data2009_dom$HOMELIT==4), 4,
+                                               ifelse((data2009_dom$HOMELIT==5), 4, NA)))))) #más de 200 libros (así queda igual que en iccs 2016)
+```
+
+### Guardar base
+```{r}
+save(data2009_dom, file= "../input/data/proc/2009/data_dom.Rdata")
+```
+
+## Tratamiento de datos México
+```{r}
+data2009_mex <- read_sav("../input/data/original/2009/ISGMEXC2.sav")
+
+# Educación
+data2009_mex$HISCED2 <- ifelse((data2009_mex$HISCED==0), 0, # did not complete <ISCED level 2>
+                   ifelse((data2009_mex$HISCED==1), 0,  # did not complete <ISCED level 2>              
+                          ifelse((data2009_mex$HISCED==2), 1,  # <ISCED level 2>                        
+                                 ifelse((data2009_mex$HISCED==3), 2, # <ISCED level 3>
+                                        ifelse((data2009_mex$HISCED==4), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+                                               ifelse((data2009_mex$HISCED==5), 3, NA)))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+
+# según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 (que corresponde a isced 4 (o CINE)) corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
+
+# Cantidad de libros en el hogar
+data2009_mex$HOMELIT2 <- ifelse((data2009_mex$HOMELIT==0), 0,
+                   ifelse((data2009_mex$HOMELIT==1), 1,                                 
+                          ifelse((data2009_mex$HOMELIT==2), 2,                           
+                                 ifelse((data2009_mex$HOMELIT==3), 3,
+                                        ifelse((data2009_mex$HOMELIT==4), 4,
+                                               ifelse((data2009_mex$HOMELIT==5), 4, NA)))))) #más de 200 libros (así queda igual que en iccs 2016)
+```
+
+### Guardar base
+```{r}
+save(data2009_mex, file= "../input/data/proc/2009/data_mex.Rdata")
+```
+
+# Datos 2016
+## Tratamiento de datos
+```{r}
+data2016 <- read_dta("../input/data/original/2016/ICCS2016.dta")
+
+# Educación
+data2016$S_HISCED2 <- ifelse((data2016$S_HISCED==0), 0, # did not complete <ISCED level 2>
+                   ifelse((data2016$S_HISCED==1), 1, # <ISCED level 2>                               
+                          ifelse((data2016$S_HISCED==2), 2, # <ISCED level 3> 
+                                 ifelse((data2016$S_HISCED==3), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+                                        ifelse((data2016$S_HISCED==4), 3, NA))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+# según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
+
+data2016$IS3G31A <-sjmisc::rec(data2016$IS3G31A,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016$IS3G31B <-sjmisc::rec(data2016$IS3G31B,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016$IS3G31B <-sjmisc::rec(data2016$IS3G31B,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016$IS3G16A <-sjmisc::rec(data2016$IS3G16A,rec="1=3;3=1;else=copy")
+data2016$IS3G16B <-sjmisc::rec(data2016$IS3G16B,rec="1=3;3=1;else=copy")
+data2016$IS3G16C <-sjmisc::rec(data2016$IS3G16C,rec="1=3;3=1;else=copy")
+data2016$IS3G16D <-sjmisc::rec(data2016$IS3G16D,rec="1=3;3=1;else=copy")
+data2016$IS3G16E <-sjmisc::rec(data2016$IS3G16E,rec="1=3;3=1;else=copy")
+data2016$IS3G30A <-sjmisc::rec(data2016$IS3G30A,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016$IS3G30E <-sjmisc::rec(data2016$IS3G30E,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016$IS3G31H <-sjmisc::rec(data2016$IS3G31H,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016$IS3G31F <-sjmisc::rec(data2016$IS3G31F,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016$IS3G15A <-sjmisc::rec(data2016$IS3G15A,rec="1=3;3=1;else=copy")
+data2016$IS3G15B <-sjmisc::rec(data2016$IS3G15B,rec="1=3;3=1;else=copy")
+data2016$IS3G15C <-sjmisc::rec(data2016$IS3G15C,rec="1=3;3=1;else=copy")
+data2016$IS3G15D <-sjmisc::rec(data2016$IS3G15D,rec="1=3;3=1;else=copy")
+data2016$IS3G15E <-sjmisc::rec(data2016$IS3G15E,rec="1=3;3=1;else=copy")
+data2016$IS3G15F <-sjmisc::rec(data2016$IS3G15F,rec="1=3;3=1;else=copy")
+
+datalat1 = data2016 %>%  filter(idcntry == 152 | idcntry == 170 | idcntry == 214 | idcntry == 484) %>% as.data.frame()
+#table(datalat$idcntry)
+datalat1$idschool2<- as.numeric(datalat1$idcntry*100000 + datalat1$idschool) # se genera ID único por colegio (se repetían los mismos códigos entre países)
+
+datachl <- read_spss("../input/data/original/2016/ICGCHLC3.sav")
+datachl=datachl %>% select(IC3G20,"idschool"=IDSCHOOL,"idcntry"=IDCNTRY) %>% as.data.frame()
+datachl$idschool2<- as.numeric(datachl$idcntry*100000 + datachl$idschool)
+datachl=datachl %>% select(-idschool) %>% as.data.frame()
+datacol <- read_spss("../input/data/original/2016/ICGCOLC3.sav")
+datacol=datacol %>% select(IC3G20,"idschool"=IDSCHOOL,"idcntry"=IDCNTRY) %>% as.data.frame()
+datacol$idschool2<- as.numeric(datacol$idcntry*100000 + datacol$idschool)
+datacol=datacol %>% select(-idschool) %>% as.data.frame()
+datadom <- read_spss("../input/data/original/2016/ICGDOMC3.sav")
+datadom=datadom %>% select(IC3G20,"idschool"=IDSCHOOL,"idcntry"=IDCNTRY) %>% as.data.frame()
+datadom$idschool2<- as.numeric(datadom$idcntry*100000 + datadom$idschool)
+datadom=datadom %>% select(-idschool) %>% as.data.frame()
+datamex <- read_spss("../input/data/original/2016/ICGMEXC3.sav")
+datamex=datamex %>% select(IC3G20,"idschool"=IDSCHOOL,"idcntry"=IDCNTRY) %>% as.data.frame()
+datamex$idschool2<- as.numeric(datamex$idcntry*100000 + datamex$idschool)
+datamex=datamex %>% select(-idschool) %>% as.data.frame()
+datalat2 <- bind_rows(datachl,datacol,datadom,datamex)
+datalat2=datalat2 %>% select(-idcntry) %>% as.data.frame()
+datalat0 <- merge(datalat1,datalat2,by="idschool2")
+
+datalat = datalat0 %>%  filter(idschool2!=17001083 & idschool2!= 48401001 & idschool2!= 48401009 & idschool2!= 48401108 & idschool2!= 48401182 & idschool2!= 48401201) %>% as.data.frame() #se excluyen escuelas con un caso
+
+#se genera dummy por país
+datalat$chl <- ifelse(datalat$idcntry==152,1,0)
+datalat$col <- ifelse(datalat$idcntry==170,1,0)
+datalat$dom <- ifelse(datalat$idcntry==214,1,0)
+datalat$mex <- ifelse(datalat$idcntry==484,1,0)
+```
+## Guardar base
+```{r}
+datalat=datalat %>% select(-IC3G20, -idcntry) %>% as.data.frame()
+remove(data2016,datalat0,datalat1,datalat2)
+
+save(datalat, file= "../input/data/proc/2016/datalat.Rdata")
+save(datachl, file= "../input/data/proc/2016/datachl.Rdata")
+save(datacol, file= "../input/data/proc/2016/datacol.Rdata")
+save(datadom, file= "../input/data/proc/2016/datadom.Rdata")
+save(datamex, file= "../input/data/proc/2016/datamex.Rdata")
+```
+
