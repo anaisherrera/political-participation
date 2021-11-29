@@ -35,6 +35,17 @@ data2009_chl$HOMELIT2 <- ifelse((data2009_chl$HOMELIT==0), 0,
                                  ifelse((data2009_chl$HOMELIT==3), 3,
                                         ifelse((data2009_chl$HOMELIT==4), 4,
                                                ifelse((data2009_chl$HOMELIT==5), 4, NA)))))) #más de 200 libros (así queda igual que en iccs 2016)
+
+
+# Las que usaremos son: participacion electoral, demostraciones, bloquear una calle, pintar muros y ocupar edificios
+data2009_chl$IS2P32A <-sjmisc::rec(data2009_chl$IS2P32A,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones locales
+data2009_chl$IS2P32B <-sjmisc::rec(data2009_chl$IS2P32B,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones nacionales
+# Falta demostraciones?
+data2009_chl$IS2P31D <-sjmisc::rec(data2009_chl$IS2P31D,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, marcha pacifica
+data2009_chl$IS2P31H <-sjmisc::rec(data2009_chl$IS2P31H,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, bloquear trafico
+data2009_chl$IS2P31G <-sjmisc::rec(data2009_chl$IS2P31G,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, pintar muros
+data2009_chl$IS2P31I <-sjmisc::rec(data2009_chl$IS2P31I,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, ocupar edificios
+
 ```
 
 ### Guardar base
@@ -139,24 +150,40 @@ data2016$S_HISCED2 <- ifelse((data2016$S_HISCED==0), 0, # did not complete <ISCE
                                         ifelse((data2016$S_HISCED==4), 3, NA))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
 # según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
 
-data2016$IS3G31A <-sjmisc::rec(data2016$IS3G31A,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016$IS3G31B <-sjmisc::rec(data2016$IS3G31B,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016$IS3G31B <-sjmisc::rec(data2016$IS3G31B,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016$IS3G16A <-sjmisc::rec(data2016$IS3G16A,rec="1=3;3=1;else=copy")
-data2016$IS3G16B <-sjmisc::rec(data2016$IS3G16B,rec="1=3;3=1;else=copy")
-data2016$IS3G16C <-sjmisc::rec(data2016$IS3G16C,rec="1=3;3=1;else=copy")
-data2016$IS3G16D <-sjmisc::rec(data2016$IS3G16D,rec="1=3;3=1;else=copy")
-data2016$IS3G16E <-sjmisc::rec(data2016$IS3G16E,rec="1=3;3=1;else=copy")
-data2016$IS3G30A <-sjmisc::rec(data2016$IS3G30A,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016$IS3G30E <-sjmisc::rec(data2016$IS3G30E,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016$IS3G31H <-sjmisc::rec(data2016$IS3G31H,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016$IS3G31F <-sjmisc::rec(data2016$IS3G31F,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016$IS3G15A <-sjmisc::rec(data2016$IS3G15A,rec="1=3;3=1;else=copy")
-data2016$IS3G15B <-sjmisc::rec(data2016$IS3G15B,rec="1=3;3=1;else=copy")
-data2016$IS3G15C <-sjmisc::rec(data2016$IS3G15C,rec="1=3;3=1;else=copy")
-data2016$IS3G15D <-sjmisc::rec(data2016$IS3G15D,rec="1=3;3=1;else=copy")
-data2016$IS3G15E <-sjmisc::rec(data2016$IS3G15E,rec="1=3;3=1;else=copy")
-data2016$IS3G15F <-sjmisc::rec(data2016$IS3G15F,rec="1=3;3=1;else=copy")
+# Cuando adulto
+data2016$IS3G31C <-sjmisc::rec(data2016$IS3G31C,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Obtener informacion sobre candidatos
+data2016$IS3G31H <-sjmisc::rec(data2016$IS3G31H,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, unirse a una organizacion
+data2016$IS3G31F <-sjmisc::rec(data2016$IS3G31F,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Unirse a un sindicato
+
+# En el futuro
+data2016$IS3G30A <-sjmisc::rec(data2016$IS3G30A,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, hablar con otros sobre politica
+data2016$IS3G30E <-sjmisc::rec(data2016$IS3G30E,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, contribuir en un foro de discusion online
+
+# Actualmente
+data2016$IS3G15A <-sjmisc::rec(data2016$IS3G15A,rec="1=3;3=1;else=copy") # Actualmente, particiar en una organizacion de jovenes afiliada a algun partido o union politica
+data2016$IS3G15B <-sjmisc::rec(data2016$IS3G15B,rec="1=3;3=1;else=copy") # Actualmente, en un grupo u organizacion medioambiental
+data2016$IS3G15C <-sjmisc::rec(data2016$IS3G15C,rec="1=3;3=1;else=copy") # Actualmente, en una organizacion de DDHH
+data2016$IS3G15D <-sjmisc::rec(data2016$IS3G15D,rec="1=3;3=1;else=copy") # Actualmente, en un grupo de voluntariado
+data2016$IS3G15E <-sjmisc::rec(data2016$IS3G15E,rec="1=3;3=1;else=copy") # Actualmente, una organizacion que recolecta dinero para una causa social
+data2016$IS3G15F <-sjmisc::rec(data2016$IS3G15F,rec="1=3;3=1;else=copy") # Actualmente, un grupo de jovenes haciendo campaña por un tema
+
+# En la escuela
+data2016$IS3G16A <-sjmisc::rec(data2016$IS3G16A,rec="1=3;3=1;else=copy") # En la escuela, participación activa en un debate organizado
+data2016$IS3G16B <-sjmisc::rec(data2016$IS3G16B,rec="1=3;3=1;else=copy") # En la escuela, votar por representante de clase o ccee
+data2016$IS3G16C <-sjmisc::rec(data2016$IS3G16C,rec="1=3;3=1;else=copy") # En la escuela, tomar parte en las decisiones sobre la escuela
+data2016$IS3G16D <-sjmisc::rec(data2016$IS3G16D,rec="1=3;3=1;else=copy") # En la escuela, tomar parte en las discusiones de asambleas
+data2016$IS3G16E <-sjmisc::rec(data2016$IS3G16E,rec="1=3;3=1;else=copy") # En la escuela, ser candidato para representante o ccee
+
+
+# Las que usaremos son: participacion electoral, demostraciones, bloquear una calle, pintar muros y ocupar edificios
+data2016$IS3G31A <-sjmisc::rec(data2016$IS3G31A,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones locales
+data2016$IS3G31B <-sjmisc::rec(data2016$IS3G31B,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones nacionales
+# Falta demostraciones?
+data2016$IS3G30C <-sjmisc::rec(data2016$IS3G30C,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, marcha pacifica
+data2016$IS3G30J <-sjmisc::rec(data2016$IS3G30J,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, bloquear trafico
+data2016$IS3G30I <-sjmisc::rec(data2016$IS3G30I,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, pintar muros
+data2016$IS3G30K <-sjmisc::rec(data2016$IS3G30K,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, ocupar edificios
+
 
 datalat1 = data2016 %>%  filter(idcntry == 152 | idcntry == 170 | idcntry == 214 | idcntry == 484) %>% as.data.frame()
 #table(datalat$idcntry)

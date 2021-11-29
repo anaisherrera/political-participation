@@ -1,0 +1,141 @@
+---
+title: "descriptivos"
+author: "Kevin Carrasco"
+date: "26-11-2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+pacman::p_load(dplyr, ggplot2)
+```
+
+```{r}
+load("../input/data/proc/2009/data_chl.Rdata")
+load("../input/data/proc/2016/datalat.Rdata")
+```
+
+# Recodificar en dos categorías. La idea es que "sure and probabily i do it" estén en una sola categoría. Ese porcentaje (por ejemplo, el 40% participaria) es lo que hay que representar. Este porcentaje en eje x y los dos años (2009 y 2016) van en eje y
+
+```{r}
+part_2009 <- data2009_chl %>% select(IS2P32A, IS2P32B, IS2P31D, IS2P31H, IS2P31G, IS2P31I)
+
+part_2009$municipales <- ifelse(part_2009$IS2P32A<=2, 1,
+                                   ifelse(part_2009$IS2P32A>=3,2, NA))
+part_2009$presidenciales <- ifelse(part_2009$IS2P32B<=2, 1,
+                                   ifelse(part_2009$IS2P32B>=3,2, NA))
+part_2009$marchar <- ifelse(part_2009$IS2P31D<=2, 1,
+                                   ifelse(part_2009$IS2P31D>=3,2, NA))
+part_2009$bloquear <- ifelse(part_2009$IS2P31H<=2, 1,
+                                   ifelse(part_2009$IS2P31H>=3,2, NA))
+part_2009$pintar <- ifelse(part_2009$IS2P31G<=2, 1,
+                                   ifelse(part_2009$IS2P31G>=3,2, NA))
+part_2009$edificios <- ifelse(part_2009$IS2P31I<=2, 1,
+                                   ifelse(part_2009$IS2P31I>=3,2, NA))
+```
+
+```{r}
+datalat <- filter(datalat, country=="CHL")
+
+part_2016 <- datalat %>% select(IS3G31A, IS3G31B, IS3G30C, IS3G30J, IS3G30I, IS3G30K)
+
+part_2016$municipales <- ifelse(part_2016$IS3G31A<=2, 1,
+                                   ifelse(part_2016$IS3G31A>=3,2, NA))
+part_2016$presidenciales <- ifelse(part_2016$IS3G31B<=2, 1,
+                                   ifelse(part_2016$IS3G31B>=3,2, NA))
+part_2016$marchar <- ifelse(part_2016$IS3G30C<=2, 1,
+                                   ifelse(part_2016$IS3G30C>=3,2, NA))
+part_2016$bloquear <- ifelse(part_2016$IS3G30J<=2, 1,
+                                   ifelse(part_2016$IS3G30J>=3,2, NA))
+part_2016$pintar <- ifelse(part_2016$IS3G30I<=2, 1,
+                                   ifelse(part_2016$IS3G30J>=3,2, NA))
+part_2016$edificios <- ifelse(part_2016$IS3G30K<=2, 1,
+                                   ifelse(part_2016$IS3G30K>=3,2, NA))
+```
+
+```{r}
+muni2009 = round(prop.table(table(muni2009=part_2009$municipales)),2)
+muni2009 = as.data.frame(muni2009)
+muni2009 <- muni2009 %>% filter(muni2009==2) %>% select(Freq)
+
+presiden2009 = round(prop.table(table(presiden2009=part_2009$presidenciales)),2)
+presiden2009 = as.data.frame(presiden2009)
+presiden2009 <- presiden2009 %>% filter(presiden2009==2) %>% select(Freq)
+
+marchar2009 = round(prop.table(table(marchar2009=part_2009$marchar)),2)
+marchar2009 = as.data.frame(marchar2009)
+marchar2009 <- marchar2009 %>% filter(marchar2009==2) %>% select(Freq)
+
+bloquear2009 = round(prop.table(table(bloquear2009=part_2009$bloquear)),2)
+bloquear2009 = as.data.frame(bloquear2009)
+bloquear2009 <- bloquear2009 %>% filter(bloquear2009==2) %>% select(Freq)
+
+pintar2009 = round(prop.table(table(pintar2009=part_2009$pintar)),2)
+pintar2009 = as.data.frame(pintar2009)
+pintar2009 <- pintar2009 %>% filter(pintar2009==2) %>% select(Freq)
+
+edificios2009 = round(prop.table(table(edificios2009=part_2009$edificios)),2)
+edificios2009 = as.data.frame(edificios2009)
+edificios2009 <- edificios2009 %>% filter(edificios2009==2) %>% select(Freq)
+```
+
+```{r}
+muni2016 = round(prop.table(table(muni2016=part_2016$municipales)),2)
+muni2016 = as.data.frame(muni2016)
+muni2016 <- muni2016 %>% filter(muni2016==2) %>% select(Freq)
+
+presiden2016 = round(prop.table(table(presiden2016=part_2016$presidenciales)),2)
+presiden2016 = as.data.frame(presiden2016)
+presiden2016 <- presiden2016 %>% filter(presiden2016==2) %>% select(Freq)
+
+marchar2016 = round(prop.table(table(marchar2016=part_2016$marchar)),2)
+marchar2016 = as.data.frame(marchar2016)
+marchar2016 <- marchar2016 %>% filter(marchar2016==2) %>% select(Freq)
+
+bloquear2016 = round(prop.table(table(bloquear2016=part_2016$bloquear)),2)
+bloquear2016 = as.data.frame(bloquear2016)
+bloquear2016 <- bloquear2016 %>% filter(bloquear2016==2) %>% select(Freq)
+
+pintar2016 = round(prop.table(table(pintar2016=part_2016$pintar)),2)
+pintar2016 = as.data.frame(pintar2016)
+pintar2016 <- pintar2016 %>% filter(pintar2016==2) %>% select(Freq)
+
+edificios2016 = round(prop.table(table(edificios2016=part_2016$edificios)),2)
+edificios2016 = as.data.frame(edificios2016)
+edificios2016 <- edificios2016 %>% filter(edificios2016==2) %>% select(Freq)
+```
+
+```{r}
+porcentaje <- rbind(muni2009, presiden2009, marchar2009, bloquear2009, pintar2009, edificios2009, muni2016, presiden2016, marchar2016, bloquear2016, pintar2016, edificios2016)
+year <- c(rep("2009", 6), rep("2016",6))
+year <- as.data.frame(year)
+collapse_rows <-
+    data.frame(vars = c("Local vote",
+                        "National vote",
+                        "March",
+                        "Block",
+                        "Paint",
+                        "Occupy"),
+               porcentaje,
+               year)
+
+colnames(collapse_rows) <- c("Participation",
+                            "Percent",
+                            "year")
+
+```
+
+```{r}
+participacion <- ggplot() +
+  geom_point(collapse_rows, size=8, mapping=aes(x=year, y=Percent, shape=Participation, color=Participation)) +
+  coord_flip() +
+  theme_bw() +
+  xlab(label = "Year") +
+  ylab(label = "% I'll sure/probably do")
+participacion
+ggsave(participacion, file="../output/graphs/participacion.png")
+```
+

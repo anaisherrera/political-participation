@@ -1,0 +1,30 @@
+---
+title: "The political participation of Latin American school-age students. resources, political attitudes and civic learning opportunities"
+author: ""
+date: ""
+output: html_document
+---
+
+# Introduction
+
+# Theoretical background
+
+# Data, variables, and methods
+
+## Data
+
+The data analysed in this chapter corresponds to nationally representative samples of eighth-grade students that participate in the International Civic and Citizenship Education Study (ICCS) applied in 2009 and 2016 from four Latin American countries (Chile, Colombia, Mexico, and Dominican Republic), offering a unique opportunity to address young people at school age in the region. ICCS investigates the ways in which young people are prepared to undertake their roles as citizens in a world where contexts of democracy and civic participation continue to change. The questionnaire allows using comparable measures of student’s disposition to participate in different repertoires (electoral, demonstrations, blocking the traffic, painting walls, and occupying buildings), socioeconomic background, political attitudes, and civic learning opportunities at school. Specifically, the data used correspond to … Chilean students from … schools, … Mexican students from … schools, … Dominican students from … schools, and … Colombian students from … schools.
+
+## Variables
+
+The focus of the study is on describing the levels of youth involvement types of participation, and to evaluate to what extent resources, political attitudes, and school opportunities to learn civic skills are linked to different types of participation. The dependent variables on political participation were measured using a scale that was subsequently subdivided into three dimensions. More precisely, the surveyed students were asked six questions about their intention to participate in politics in the future. Confirmatory Factor Analysis (CFA) were estimated ... The three dimensions used correspond to: ... 
+
+In relation with the independent variables, it should be noted that the study has two types of variables: individual-level variables and school-level variables (in which all students from the same school have the same value). On the one hand, at the individual level variables of socioeconomic resources of the student’s family are included, such as the educational level and the number of books in the home. On the other hand, at the school level variables on civic learning opportunities are included…
+
+## Methods
+
+Because the sample has a hierarchical structure (students nested in schools), the main data analyses were performed by estimating multilevel regressions, evaluating the random slopes, interactions between variables and mediation effects.
+
+# Results
+
+# Conclusions
