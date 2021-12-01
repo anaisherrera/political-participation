@@ -52,21 +52,21 @@ pacman::p_load(haven,dplyr)
 # Datos 2009
 ```{r, include=FALSE}
 load(file= "../input/data/proc/2009/data_chl.Rdata")
-data2009_chl=data2009_chl0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, CITEFF, SCSTUDOP, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
+data2009_chl=data2009_chl0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, CITEFF, SCSTUDOP, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY=IDCNTRY.x) %>% as.data.frame() %>%  na.omit()
 #data2009_chl=data2009_chl0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, CITEFF, SCSTUDOP, mean_op_esc, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
 
 # data2009_chl2=data2009_chl0 %>% dplyr::select(HISCED2, HOMELIT2, HISEI, LEGPROT, ILLPROT, ELECPART, HISCED2, HOMELIT2, DISLAW, ATTVIOL, SCSTUDOP, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit() # bbdd con variable de estatus ocupacional,, disminuye el n y no se mide de la misma manera en las dos olas (en un caso solo se pregunta por la ocupación y en iccs 2016 se pregunta además por las actividades que hace). Esta es la variable: HISEI
 
 load(file= "../input/data/proc/2009/data_col.Rdata")
-data2009_col=data2009_col0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, CITEFF, SCSTUDOP, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
+data2009_col=data2009_col0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, CITEFF, SCSTUDOP, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY=IDCNTRY.x) %>% as.data.frame() %>%  na.omit()
 #data2009_col=data2009_col0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, CITEFF, SCSTUDOP, mean_op_esc, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
 
 load(file= "../input/data/proc/2009/data_dom.Rdata")
-data2009_dom=data2009_dom0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, CITEFF, SCSTUDOP, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
+data2009_dom=data2009_dom0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, CITEFF, SCSTUDOP, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY=IDCNTRY.x) %>% as.data.frame() %>%  na.omit()
 #data2009_dom=data2009_dom0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, CITEFF, SCSTUDOP, mean_op_esc, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
 
 load(file= "../input/data/proc/2009/data_mex.Rdata")
-data2009_mex=data2009_mex0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, CITEFF, SCSTUDOP, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
+data2009_mex=data2009_mex0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, CITEFF, SCSTUDOP, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY=IDCNTRY.x) %>% as.data.frame() %>%  na.omit()
 #data2009_mex=data2009_mex0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, CITEFF, SCSTUDOP, mean_op_esc, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
 ```
 
@@ -314,6 +314,47 @@ knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
 ```
 \newpage
 
+### Todos los países
+```{r, echo=FALSE, results='asis'}
+data2009 <- rbind(data2009_chl,data2009_col,data2009_dom,data2009_mex)
+data2009$IDSCHOOL2<- as.numeric(data2009$IDCNTRY*100000 + data2009$IDSCHOOL) # se genera ID único por colegio (se repetían los mismos códigos entre países)
+
+data2009$IDCNTRY2 <- ifelse((data2009$IDCNTRY==152), 1, # Chile
+                   ifelse((data2009$IDCNTRY==170), 2, # Colombia                               
+                          ifelse((data2009$IDCNTRY==214), 3, # Republica Dominicana
+                                 ifelse((data2009$IDCNTRY==484), 4, NA)))) # Mexico
+
+reg1 <- lmer(LEGPROT ~ 1 + factor(HISCED2) + (1 | IDSCHOOL2), data=data2009)
+reg2 <- lmer(LEGPROT ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL2), data=data2009)
+reg3 <- lmer(LEGPROT ~ 1 + DISLAW + (1 | IDSCHOOL2), data=data2009)
+reg4 <- lmer(LEGPROT ~ 1 + ATTVIOL + (1 | IDSCHOOL2), data=data2009)
+reg5 <- lmer(LEGPROT ~ 1 + CITEFF + (1 | IDSCHOOL2), data=data2009)
+reg6 <- lmer(LEGPROT ~ 1 + SCSTUDOP + (1 | IDSCHOOL2), data=data2009)
+#reg6 <- lmer(LEGPROT ~ 1 + SCSTUDOP + mean_op_esc + (1 | IDSCHOOL2), data=data2009)
+reg7 <- lmer(LEGPROT ~ 1 + PV1CIV + (1 | IDSCHOOL2), data=data2009)
+reg8 <- lmer(LEGPROT ~ 1 + factor(IDCNTRY2) + (1 | IDSCHOOL2), data=data2009)
+reg9 <- lmer(LEGPROT ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + CITEFF + SCSTUDOP + PV1CIV + factor(IDCNTRY2) + (1 | IDSCHOOL2), data=data2009)
+#reg9 <- lmer(LEGPROT ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + CITEFF + SCSTUDOP + mean_op_esc + PV1CIV + (1 | IDSCHOOL2), data=data2009)
+
+caption <- "Students' expected participation in future legal protest (2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8,reg9),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = c(coef_names, 
+                              "Colombia (Ref. Chile)",
+                              "Dominican Republic",
+                              "Mexico"),
+       scalebox = 0.75,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
 ## Participación política en actividades ilegales
 
 ### Chile
@@ -425,6 +466,47 @@ knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
         #omit.coef = omit_coef, 
         custom.coef.names = coef_names,
        scalebox = scale_box,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
+### Todos los países
+```{r, echo=FALSE, results='asis'}
+data2009 <- rbind(data2009_chl,data2009_col,data2009_dom,data2009_mex)
+data2009$IDSCHOOL2<- as.numeric(data2009$IDCNTRY*100000 + data2009$IDSCHOOL) # se genera ID único por colegio (se repetían los mismos códigos entre países)
+
+data2009$IDCNTRY2 <- ifelse((data2009$IDCNTRY==152), 1, # Chile
+                   ifelse((data2009$IDCNTRY==170), 2, # Colombia                               
+                          ifelse((data2009$IDCNTRY==214), 3, # Republica Dominicana
+                                 ifelse((data2009$IDCNTRY==484), 4, NA)))) # Mexico
+
+reg1 <- lmer(ILLPROT ~ 1 + factor(HISCED2) + (1 | IDSCHOOL2), data=data2009)
+reg2 <- lmer(ILLPROT ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL2), data=data2009)
+reg3 <- lmer(ILLPROT ~ 1 + DISLAW + (1 | IDSCHOOL2), data=data2009)
+reg4 <- lmer(ILLPROT ~ 1 + ATTVIOL + (1 | IDSCHOOL2), data=data2009)
+reg5 <- lmer(ILLPROT ~ 1 + CITEFF + (1 | IDSCHOOL2), data=data2009)
+reg6 <- lmer(ILLPROT ~ 1 + SCSTUDOP + (1 | IDSCHOOL2), data=data2009)
+#reg6 <- lmer(ILLPROT ~ 1 + SCSTUDOP + mean_op_esc + (1 | IDSCHOOL2), data=data2009)
+reg7 <- lmer(ILLPROT ~ 1 + PV1CIV + (1 | IDSCHOOL2), data=data2009)
+reg8 <- lmer(ILLPROT ~ 1 + factor(IDCNTRY2) + (1 | IDSCHOOL2), data=data2009)
+reg9 <- lmer(ILLPROT ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + CITEFF + SCSTUDOP + PV1CIV + factor(IDCNTRY2) + (1 | IDSCHOOL2), data=data2009)
+#reg9 <- lmer(ILLPROT ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + CITEFF + SCSTUDOP + mean_op_esc + PV1CIV + (1 | IDSCHOOL2), data=data2009)
+
+caption <- "Students' expected participation in future illegal protest (2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8,reg9),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = c(coef_names, 
+                              "Colombia (Ref. Chile)",
+                              "Dominican Republic",
+                              "Mexico"),
+       scalebox = 0.75,
        caption.above = T,
        caption=caption,
        float.pos="h!"
@@ -550,19 +632,60 @@ knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
 ```
 \newpage
 
+### Todos los países
+```{r, echo=FALSE, results='asis'}
+data2009 <- rbind(data2009_chl,data2009_col,data2009_dom,data2009_mex)
+data2009$IDSCHOOL2<- as.numeric(data2009$IDCNTRY*100000 + data2009$IDSCHOOL) # se genera ID único por colegio (se repetían los mismos códigos entre países)
+
+data2009$IDCNTRY2 <- ifelse((data2009$IDCNTRY==152), 1, # Chile
+                   ifelse((data2009$IDCNTRY==170), 2, # Colombia                               
+                          ifelse((data2009$IDCNTRY==214), 3, # Republica Dominicana
+                                 ifelse((data2009$IDCNTRY==484), 4, NA)))) # Mexico
+
+reg1 <- lmer(ELECPART ~ 1 + factor(HISCED2) + (1 | IDSCHOOL2), data=data2009)
+reg2 <- lmer(ELECPART ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL2), data=data2009)
+reg3 <- lmer(ELECPART ~ 1 + DISLAW + (1 | IDSCHOOL2), data=data2009)
+reg4 <- lmer(ELECPART ~ 1 + ATTVIOL + (1 | IDSCHOOL2), data=data2009)
+reg5 <- lmer(ELECPART ~ 1 + CITEFF + (1 | IDSCHOOL2), data=data2009)
+reg6 <- lmer(ELECPART ~ 1 + SCSTUDOP + (1 | IDSCHOOL2), data=data2009)
+#reg6 <- lmer(ELECPART ~ 1 + SCSTUDOP + mean_op_esc + (1 | IDSCHOOL2), data=data2009)
+reg7 <- lmer(ELECPART ~ 1 + PV1CIV + (1 | IDSCHOOL2), data=data2009)
+reg8 <- lmer(ELECPART ~ 1 + factor(IDCNTRY2) + (1 | IDSCHOOL2), data=data2009)
+reg9 <- lmer(ELECPART ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + CITEFF + SCSTUDOP + PV1CIV + factor(IDCNTRY2) + (1 | IDSCHOOL2), data=data2009)
+#reg9 <- lmer(ELECPART ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + CITEFF + SCSTUDOP + mean_op_esc + PV1CIV + (1 | IDSCHOOL2), data=data2009)
+
+caption <- "Students' expected adult electoral participation (2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8,reg9),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = c(coef_names, 
+                              "Colombia (Ref. Chile)",
+                              "Dominican Republic",
+                              "Mexico"),
+       scalebox = 0.75,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
 # Datos 2016
 ```{r, include=FALSE}
 load(file= "../input/data/proc/2016/data_chl.Rdata")
-data2016_chl=data2016_chl0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_ILLACT, S_ELECPART, L_DISLAW, L_ATTVIOL, C_STDCOM, S_CITEFF, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
+data2016_chl=data2016_chl0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_ILLACT, S_ELECPART, L_DISLAW, L_ATTVIOL, C_STDCOM, S_CITEFF, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY=IDCNTRY.x) %>% as.data.frame() %>%  na.omit()
 
 load(file= "../input/data/proc/2016/data_col.Rdata")
-data2016_col=data2016_col0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_ILLACT, S_ELECPART, L_DISLAW, L_ATTVIOL, C_STDCOM, S_CITEFF, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
+data2016_col=data2016_col0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_ILLACT, S_ELECPART, L_DISLAW, L_ATTVIOL, C_STDCOM, S_CITEFF, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY=IDCNTRY.x) %>% as.data.frame() %>%  na.omit()
 
 load(file= "../input/data/proc/2016/data_dom.Rdata")
-data2016_dom=data2016_dom0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_ILLACT, S_ELECPART, L_DISLAW, L_ATTVIOL, C_STDCOM, S_CITEFF, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
+data2016_dom=data2016_dom0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_ILLACT, S_ELECPART, L_DISLAW, L_ATTVIOL, C_STDCOM, S_CITEFF, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY=IDCNTRY.x) %>% as.data.frame() %>%  na.omit()
 
 load(file= "../input/data/proc/2016/data_mex.Rdata")
-data2016_mex=data2016_mex0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_ILLACT, S_ELECPART, L_DISLAW, L_ATTVIOL, C_STDCOM, S_CITEFF, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
+data2016_mex=data2016_mex0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_ILLACT, S_ELECPART, L_DISLAW, L_ATTVIOL, C_STDCOM, S_CITEFF, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY=IDCNTRY.x) %>% as.data.frame() %>%  na.omit()
 ```
 
 ```{r, include=FALSE}
@@ -661,7 +784,7 @@ data2016_mex=data2016_mex0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_IL
 #IS3G29G Speak in front of your class about a social or political issue
 ```
 
-# Modelos de regresión multinivel: 2009
+# Modelos de regresión multinivel: 2016
 ```{r, include=FALSE}
 pacman::p_load(summarytools,haven,sjPlot,dplyr,lme4,haven,texreg,knitr,kableExtra,bda,lmerTest)
 
@@ -804,6 +927,47 @@ knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
 ```
 \newpage
 
+### Todos los países
+```{r, echo=FALSE, results='asis'}
+data2016 <- rbind(data2016_chl,data2016_col,data2016_dom,data2016_mex)
+data2016$IDSCHOOL2<- as.numeric(data2016$IDCNTRY*100000 + data2016$IDSCHOOL) # se genera ID único por colegio (se repetían los mismos códigos entre países)
+
+data2016$IDCNTRY2 <- ifelse((data2016$IDCNTRY==152), 1, # Chile
+                   ifelse((data2016$IDCNTRY==170), 2, # Colombia                               
+                          ifelse((data2016$IDCNTRY==214), 3, # Republica Dominicana
+                                 ifelse((data2016$IDCNTRY==484), 4, NA)))) # Mexico
+
+reg1 <- lmer(S_LEGACT ~ 1 + factor(S_HISCED2) + (1 | IDSCHOOL2), data=data2016)
+reg2 <- lmer(S_LEGACT ~ 1 + factor(S_HOMLIT) + (1 | IDSCHOOL2), data=data2016)
+reg3 <- lmer(S_LEGACT ~ 1 + L_DISLAW + (1 | IDSCHOOL2), data=data2016)
+reg4 <- lmer(S_LEGACT ~ 1 + L_ATTVIOL + (1 | IDSCHOOL2), data=data2016)
+reg5 <- lmer(S_LEGACT ~ 1 + S_CITEFF + (1 | IDSCHOOL2), data=data2016)
+reg6 <- lmer(S_LEGACT ~ 1 + C_STDCOM + (1 | IDSCHOOL2), data=data2016)
+#reg6 <- lmer(S_LEGACT ~ 1 + C_STDCOM + mean_op_esc + (1 | IDSCHOOL2), data=data2016)
+reg7 <- lmer(S_LEGACT ~ 1 + PV1CIV + (1 | IDSCHOOL2), data=data2016)
+reg8 <- lmer(S_LEGACT ~ 1 + factor(IDCNTRY2) + (1 | IDSCHOOL2), data=data2016)
+reg9 <- lmer(S_LEGACT ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + PV1CIV + factor(IDCNTRY2) + (1 | IDSCHOOL2), data=data2016)
+#reg9 <- lmer(S_LEGACT ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + mean_op_esc + PV1CIV + (1 | IDSCHOOL2), data=data2016)
+
+caption <- "Students' expected participation in future legal protest (2016)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8,reg9),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = c(coef_names, 
+                              "Colombia (Ref. Chile)",
+                              "Dominican Republic",
+                              "Mexico"),
+       scalebox = 0.75,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
 ## Participación política en actividades ilegales
 
 ### Chile
@@ -922,6 +1086,47 @@ knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
 ```
 \newpage
 
+### Todos los países
+```{r, echo=FALSE, results='asis'}
+data2016 <- rbind(data2016_chl,data2016_col,data2016_dom,data2016_mex)
+data2016$IDSCHOOL2<- as.numeric(data2016$IDCNTRY*100000 + data2016$IDSCHOOL) # se genera ID único por colegio (se repetían los mismos códigos entre países)
+
+data2016$IDCNTRY2 <- ifelse((data2016$IDCNTRY==152), 1, # Chile
+                   ifelse((data2016$IDCNTRY==170), 2, # Colombia                               
+                          ifelse((data2016$IDCNTRY==214), 3, # Republica Dominicana
+                                 ifelse((data2016$IDCNTRY==484), 4, NA)))) # Mexico
+
+reg1 <- lmer(S_ILLACT ~ 1 + factor(S_HISCED2) + (1 | IDSCHOOL2), data=data2016)
+reg2 <- lmer(S_ILLACT ~ 1 + factor(S_HOMLIT) + (1 | IDSCHOOL2), data=data2016)
+reg3 <- lmer(S_ILLACT ~ 1 + L_DISLAW + (1 | IDSCHOOL2), data=data2016)
+reg4 <- lmer(S_ILLACT ~ 1 + L_ATTVIOL + (1 | IDSCHOOL2), data=data2016)
+reg5 <- lmer(S_ILLACT ~ 1 + S_CITEFF + (1 | IDSCHOOL2), data=data2016)
+reg6 <- lmer(S_ILLACT ~ 1 + C_STDCOM + (1 | IDSCHOOL2), data=data2016)
+#reg6 <- lmer(S_ILLACT ~ 1 + C_STDCOM + mean_op_esc + (1 | IDSCHOOL2), data=data2016)
+reg7 <- lmer(S_ILLACT ~ 1 + PV1CIV + (1 | IDSCHOOL2), data=data2016)
+reg8 <- lmer(S_ILLACT ~ 1 + factor(IDCNTRY2) + (1 | IDSCHOOL2), data=data2016)
+reg9 <- lmer(S_ILLACT ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + PV1CIV + factor(IDCNTRY2) + (1 | IDSCHOOL2), data=data2016)
+#reg9 <- lmer(S_ILLACT ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + mean_op_esc + PV1CIV + (1 | IDSCHOOL2), data=data2016)
+
+caption <- "Students' expected participation in future illegal protest (2016)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8,reg9),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = c(coef_names, 
+                              "Colombia (Ref. Chile)",
+                              "Dominican Republic",
+                              "Mexico"),
+       scalebox = 0.75,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
 ## Participación política formal
 
 ### Chile
@@ -937,7 +1142,7 @@ reg7 <- lmer(S_ELECPART ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2016_chl)
 reg8 <- lmer(S_ELECPART ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + PV1CIV + (1 | IDSCHOOL), data=data2016_chl)
 #reg8 <- lmer(S_ELECPART ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + mean_op_esc + PV1CIV + (1 | IDSCHOOL), data=data2016_chl)
 
-caption <- "Students' expected participation in future illegal protest (Chile 2016)"
+caption <- "Students' expected adult electoral participation (Chile 2016)"
 knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
         #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
          #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
@@ -966,7 +1171,7 @@ reg7 <- lmer(S_ELECPART ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2016_col)
 reg8 <- lmer(S_ELECPART ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + PV1CIV + (1 | IDSCHOOL), data=data2016_col)
 #reg8 <- lmer(S_ELECPART ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + mean_op_esc + PV1CIV + (1 | IDSCHOOL), data=data2016_col)
 
-caption <- "Students' expected participation in future illegal protest (Colombia 2016)"
+caption <- "Students' expected adult electoral participation (Colombia 2016)"
 knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
         #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
          #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
@@ -995,7 +1200,7 @@ reg7 <- lmer(S_ELECPART ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2016_dom)
 reg8 <- lmer(S_ELECPART ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + PV1CIV + (1 | IDSCHOOL), data=data2016_dom)
 #reg8 <- lmer(S_ELECPART ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + mean_op_esc + PV1CIV + (1 | IDSCHOOL), data=data2016_dom)
 
-caption <- "Students' expected participation in future illegal protest (Dominican Republic 2016)"
+caption <- "Students' expected adult electoral participation (Dominican Republic 2016)"
 knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
         #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
          #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
@@ -1024,7 +1229,7 @@ reg7 <- lmer(S_ELECPART ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2016_mex)
 reg8 <- lmer(S_ELECPART ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + PV1CIV + (1 | IDSCHOOL), data=data2016_mex)
 #reg8 <- lmer(S_ELECPART ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + mean_op_esc + PV1CIV + (1 | IDSCHOOL), data=data2016_mex)
 
-caption <- "Students' expected participation in future illegal protest (Mexico 2016)"
+caption <- "Students' expected adult electoral participation (Mexico 2016)"
 knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
         #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
          #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
@@ -1040,9 +1245,43 @@ knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
 ```
 \newpage
 
+### Todos los países
+```{r, echo=FALSE, results='asis'}
+data2016 <- rbind(data2016_chl,data2016_col,data2016_dom,data2016_mex)
+data2016$IDSCHOOL2<- as.numeric(data2016$IDCNTRY*100000 + data2016$IDSCHOOL) # se genera ID único por colegio (se repetían los mismos códigos entre países)
 
+data2016$IDCNTRY2 <- ifelse((data2016$IDCNTRY==152), 1, # Chile
+                   ifelse((data2016$IDCNTRY==170), 2, # Colombia                               
+                          ifelse((data2016$IDCNTRY==214), 3, # Republica Dominicana
+                                 ifelse((data2016$IDCNTRY==484), 4, NA)))) # Mexico
 
+reg1 <- lmer(S_ELECPART ~ 1 + factor(S_HISCED2) + (1 | IDSCHOOL2), data=data2016)
+reg2 <- lmer(S_ELECPART ~ 1 + factor(S_HOMLIT) + (1 | IDSCHOOL2), data=data2016)
+reg3 <- lmer(S_ELECPART ~ 1 + L_DISLAW + (1 | IDSCHOOL2), data=data2016)
+reg4 <- lmer(S_ELECPART ~ 1 + L_ATTVIOL + (1 | IDSCHOOL2), data=data2016)
+reg5 <- lmer(S_ELECPART ~ 1 + S_CITEFF + (1 | IDSCHOOL2), data=data2016)
+reg6 <- lmer(S_ELECPART ~ 1 + C_STDCOM + (1 | IDSCHOOL2), data=data2016)
+#reg6 <- lmer(S_ELECPART ~ 1 + C_STDCOM + mean_op_esc + (1 | IDSCHOOL2), data=data2016)
+reg7 <- lmer(S_ELECPART ~ 1 + PV1CIV + (1 | IDSCHOOL2), data=data2016)
+reg8 <- lmer(S_ELECPART ~ 1 + factor(IDCNTRY2) + (1 | IDSCHOOL2), data=data2016)
+reg9 <- lmer(S_ELECPART ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + PV1CIV + factor(IDCNTRY2) + (1 | IDSCHOOL2), data=data2016)
+#reg9 <- lmer(S_ELECPART ~ 1 + factor(S_HISCED2) + factor(S_HOMLIT) + L_DISLAW + L_ATTVIOL + S_CITEFF + C_STDCOM + mean_op_esc + PV1CIV + (1 | IDSCHOOL2), data=data2016)
 
-
-
-
+caption <- "Students' expected adult electoral participation (2016)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8,reg9),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = c(coef_names, 
+                              "Colombia (Ref. Chile)",
+                              "Dominican Republic",
+                              "Mexico"),
+       scalebox = 0.75,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage

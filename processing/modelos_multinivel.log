@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.12.1)  1 DEC 2021 12:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.12.1)  1 DEC 2021 14:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -646,6 +646,24 @@ LaTeX Warning: Label `table:coefficients' multiply defined.
 
 LaTeX Warning: Label `table:coefficients' multiply defined.
 
+
+LaTeX Warning: Label `table:coefficients' multiply defined.
+
+
+LaTeX Warning: Label `table:coefficients' multiply defined.
+
+
+LaTeX Warning: Label `table:coefficients' multiply defined.
+
+
+LaTeX Warning: Label `table:coefficients' multiply defined.
+
+
+LaTeX Warning: Label `table:coefficients' multiply defined.
+
+
+LaTeX Warning: Label `table:coefficients' multiply defined.
+
 )
 \openout1 = `modelos_multinivel.aux'.
 
@@ -813,91 +831,121 @@ Overfull \hbox (32.8568pt too wide) in paragraph at lines 338--340
  []
 
 [4]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 400--402
+Overfull \hbox (27.44249pt too wide) in paragraph at lines 402--404
  [] 
  []
 
 [5]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 458--460
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 464--466
  [] 
  []
 
 [6]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 516--518
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 522--524
  [] 
  []
 
 [7]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 574--576
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 580--582
  [] 
  []
 
 [8]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 636--638
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 638--640
  [] 
  []
 
 [9]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 694--696
+Overfull \hbox (27.44249pt too wide) in paragraph at lines 702--704
  [] 
  []
 
 [10]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 752--754
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 764--766
  [] 
  []
 
 [11]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 810--812
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 822--824
  [] 
  []
 
 [12]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 879--881
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 880--882
  [] 
  []
 
 [13]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 937--939
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 938--940
  [] 
  []
 
-[14] [15]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 1053--1055
+[14]
+Overfull \hbox (27.44249pt too wide) in paragraph at lines 1002--1004
+ [] 
+ []
+
+[15]
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 1071--1073
  [] 
  []
 
 [16]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 1115--1117
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 1129--1131
  [] 
  []
 
-[17]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 1173--1175
+[17] [18]
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 1245--1247
  [] 
  []
 
-[18] [19]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 1289--1291
+[19]
+Overfull \hbox (27.44249pt too wide) in paragraph at lines 1309--1311
  [] 
  []
 
 [20]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 1351--1353
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 1371--1373
  [] 
  []
 
 [21]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 1409--1411
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 1429--1431
  [] 
  []
 
 [22] [23]
-Overfull \hbox (32.8568pt too wide) in paragraph at lines 1525--1527
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 1545--1547
  [] 
  []
 
 [24]
+Overfull \hbox (27.44249pt too wide) in paragraph at lines 1609--1611
+ [] 
+ []
+
+[25]
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 1671--1673
+ [] 
+ []
+
+[26]
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 1729--1731
+ [] 
+ []
+
+[27] [28]
+Overfull \hbox (32.8568pt too wide) in paragraph at lines 1845--1847
+ [] 
+ []
+
+[29]
+Overfull \hbox (27.44249pt too wide) in paragraph at lines 1909--1911
+ [] 
+ []
+
+[30]
 
 Package caption Warning: Unused \captionsetup[figure] on input line \caption@op
 t@figure@lineno .
@@ -913,13 +961,13 @@ See the caption package documentation for explanation.
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `modelos_multinivel.out' has not changed.
-(rerunfilecheck)             Checksum: 26683496AA0392E78868190A8EE84343;4899.
+(rerunfilecheck)             Checksum: A102C5AE3535DC2EDA2B0A84F249990E;5774.
  ) 
 Here is how much of TeX's memory you used:
- 14071 strings out of 480295
- 228845 string characters out of 5894845
- 565834 words of memory out of 5000000
- 31554 multiletter control sequences out of 15000+600000
+ 14113 strings out of 480295
+ 229480 string characters out of 5894845
+ 566071 words of memory out of 5000000
+ 31566 multiletter control sequences out of 15000+600000
  453402 words of font info for 76 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,14n,63p,523b,456s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -937,10 +985,10 @@ nts/type1/public/lm/lmr7.pfb><c:/Users/Anais/AppData/Roaming/TinyTeX/texmf-dist
 exmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/Anais/AppData/Roaming/TinyT
 eX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/Users/Anais/AppData/Roaming/
 TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on modelos_multinivel.pdf (24 pages, 149438 bytes).
+Output written on modelos_multinivel.pdf (30 pages, 164444 bytes).
 PDF statistics:
- 408 PDF objects out of 1000 (max. 8388607)
- 360 compressed objects within 4 object streams
- 141 named destinations out of 1000 (max. 500000)
- 273 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 482 PDF objects out of 1000 (max. 8388607)
+ 427 compressed objects within 5 object streams
+ 171 named destinations out of 1000 (max. 500000)
+ 321 words of extra memory for PDF output out of 10000 (max. 10000000)
 
