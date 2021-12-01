@@ -1,0 +1,616 @@
+---
+title: "modelos_multinivel"
+author: "Anais Herrera Leighton"
+date: "29-11-2021"
+output:
+  pdf_document:
+    toc: no
+  bookdown::pdf_document2:
+    template: null
+    keep_tex: no
+    number_sections: no
+    toc: no
+  html_document:
+    toc: yes
+    code_folding: hide
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+      number_sections: yes
+editor_options:
+  chunk_output_type: console
+header-includes:
+- \usepackage{times}
+- \usepackage{caption}
+- \captionsetup[figure, table]{labelfont={bf},labelformat={default},labelsep=period}
+- \usepackage{graphicx}
+- \usepackage{float}
+- \usepackage{booktabs}
+- \usepackage{longtable}
+- \usepackage{array}
+- \usepackage{multirow}
+- \usepackage{wrapfig}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+geometry: margin=0.78in
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	error = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+```{r, include=FALSE}
+pacman::p_load(haven,dplyr)
+```
+
+# Datos 2009
+```{r, include=FALSE}
+load(file= "../input/data/proc/2009/data_chl.Rdata")
+data2009_chl=data2009_chl0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, SCSTUDOP, CITEFF, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
+# data2009_chl2=data2009_chl0 %>% dplyr::select(HISCED2, HOMELIT2, HISEI, LEGPROT, ILLPROT, ELECPART, HISCED2, HOMELIT2, DISLAW, ATTVIOL, SCSTUDOP, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit() # bbdd con variable de estatus ocupacional,, disminuye el n y no se mide de la misma manera en las dos olas (en un caso solo se pregunta por la ocupación y en iccs 2016 se pregunta además por las actividades que hace). Esta es la variable: HISEI
+
+load(file= "../input/data/proc/2009/data_col.Rdata")
+data2009_col=data2009_col0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, SCSTUDOP, CITEFF, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2009/data_dom.Rdata")
+data2009_dom=data2009_dom0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, SCSTUDOP, CITEFF, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2009/data_mex.Rdata")
+data2009_mex=data2009_mex0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT, ELECPART, DISLAW, ATTVIOL, SCSTUDOP, CITEFF, PV1CIV, IDSCHOOL=IDSCHOOL.x) %>% as.data.frame() %>%  na.omit()
+```
+
+```{r, include=FALSE}
+#### Variables dependientes ####
+
+# Variable Name: LEGPROT 
+# Description: Students' expected participation in future legal protest
+# Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally weighted countries
+# Source: 
+#IS2P31A Writing a letter to a newspaper / Escribir una carta a un periódico
+#IS2P31B Wearing a badge or t-shirt expressing your opinion / Llevar una insignia o camiseta que exprese su opinión
+#IS2P31C Contacting an <elected representative> / Ponerse en contacto con un <representante electo>
+#IS2P31D Taking part in a peaceful march or rally / Participar en una marcha o manifestación pacífica
+#IS2P31E Collecting signatures for a petition / Recopilar firmas para una petición
+#IS2P31F Choosing not to buy certain products / Elegir no comprar determinados productos
+
+# Variable Name: ILLPROT 
+# Description: Students' expected participation in future illegal protest
+# Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally  weighted countries
+# Source: 
+#IS2P31G Spray-painting protest slogans on walls / Pintar eslóganes de protesta con aerosol en las paredes
+#IS2P31H Blocking traffic / Bloquear el tráfico
+#IS2P31I Occupying public buildings / Ocupar edificios públicos
+
+# Variable Name: ELECPART 
+# Description: Students' expected adult electoral participation
+# Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally  weighted countries
+# Source: 
+#IS2P32A Vote in <local elections> / Votar en <elecciones locales>
+#IS2P32B Vote in <national elections> / Votar en <elecciones nacionales>
+#IS2P32C Get information about candidates before voting in an election / Obtener información sobre los candidatos antes de votar en una elección
+
+#### Variables independientes ####
+# HISCED2 # Educación
+# HOMELIT2 # Cantidad de libros en el hogar
+
+# Variable Name: DISLAW
+# Description: Student attitudes towards disobeying the law
+# Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally weighted countries
+# Source: 
+#LS2P05A when it is the only alternative left for achieving important objectives. 
+#LS2P05B when it is the only way one has to help one's family. 
+#LS2P05C when others who disobeyed it were not punished.
+#LS2P05D when others do it. 
+#LS2P05E when one distrusts the enacting body. 
+#LS2P05F when one is sure nobody will realize. 
+#LS2P05H when nobody gets hurt. 
+#LS2P05I when it is not done with bad intentions. 
+#LS2P05J when one is not familiar with the law. 
+#LS2P05K when one distrusts the authority executing the law. 
+#LS2P05L when one can obtain economic benefits. 
+
+# Variable Name: ATTVIOL
+# Description: Student attitudes towards the use of violence
+# Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally weighted countries
+# Source: 
+#LS2P08A He who does me harm will have to pay for it.
+#LS2P08B Watching fights between classmates is fun.
+#LS2P08C If you cannot do it the easy way, do it the hard way. 
+#LS2P08D You have to fight so people do not think you are a coward.
+
+# Variable Name: SCSTUDOP
+# Description: Principals' perceptions of student opportunities to participate in community activities
+# Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally weighted countries
+# Source: 
+#IC2G06A Activities related to the environment, geared to the local area
+#IC2G06B Human rights projects
+#IC2G06C Activities related to underprivileged people or groups
+#IC2G06D Cultural activities (for example, theatre, music, cinema)
+#IC2G06E Multicultural and intercultural initiatives within the <local community>
+#IC2G06F Campaigns to raise people’s awareness, such as <AIDS World Day, World No Tobacco Day>
+#IC2G06G Activities related to improving facilities for the <local community> (for example, public gardens, libraries, health centres, recreation centres, community hall)
+
+# Variable  Name: CITEFF
+# Description: Students' citizenship self-efficacy
+# Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally weighted countries
+# Source: 
+#IS2P30A Discuss a newspaper article about a conflict between countries
+#IS2P30B Argue your point of view about a controversial political or social issue
+#IS2P30C Stand as a candidate in a <school election>
+#IS2P30D Organise a group of students in order to achieve changes at school
+#IS2P30E Follow a television debate about a controversial issue
+#IS2P30F Write a letter to a newspaper giving your view on a current issue
+#IS2P30G Speak in front of your class about a social or political issue
+```
+
+# Modelos de regresión multinivel: 2009
+```{r, include=FALSE}
+pacman::p_load(summarytools,haven,sjPlot,dplyr,lme4,haven,texreg,knitr,kableExtra,bda,lmerTest)
+
+coef_names <- c(
+          "Intercepto",
+          "ISCED level 2 (Ref. Not complete level 2)",
+          "ISCED level 3",
+          "ISCED level 4, 5A, 5B or 6",
+          "11-25 books (Ref. 0-10 books)",
+          "26-100 books",
+          "101-200 books",
+          "More than 200 books",
+          "Attitudes towards disobeying the law",
+          "Attitudes towards the use of violence",
+          "Civic learning opportunities at school",
+          "Students' citizenship self-efficacy",
+          "Civic knowledge"
+          )
+#omit_coef <- "(PV1CIV)"
+#footnote<- "\\item %stars. \\item Todos los modelos son controlados por la región de residencia (p>0.05), la dependencia administrativa de la escuela (p>0.05) y el nivel de conocimiento cívico del estudiante ($p$<0.05)"
+scale_box <- 0.825
+```
+
+## Participación política en actividades legales
+
+### Chile
+```{r, echo=FALSE, results='asis'}
+reg1 <- lmer(LEGPROT ~ 1 + factor(HISCED2) + (1 | IDSCHOOL), data=data2009_chl)
+reg2 <- lmer(LEGPROT ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL), data=data2009_chl)
+reg3 <- lmer(LEGPROT ~ 1 + DISLAW + (1 | IDSCHOOL), data=data2009_chl)
+reg4 <- lmer(LEGPROT ~ 1 + ATTVIOL + (1 | IDSCHOOL), data=data2009_chl)
+reg5 <- lmer(LEGPROT ~ 1 + SCSTUDOP + (1 | IDSCHOOL), data=data2009_chl)
+reg6 <- lmer(LEGPROT ~ 1 + CITEFF + (1 | IDSCHOOL), data=data2009_chl)
+reg7 <- lmer(LEGPROT ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2009_chl)
+reg8 <- lmer(LEGPROT ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + SCSTUDOP + CITEFF + PV1CIV + (1 | IDSCHOOL), data=data2009_chl)
+
+caption <- "Students' expected participation in future legal protest (Chile 2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = coef_names,
+       scalebox = scale_box,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
+### Colombia
+```{r, echo=FALSE, results='asis'}
+reg1 <- lmer(LEGPROT ~ 1 + factor(HISCED2) + (1 | IDSCHOOL), data=data2009_col)
+reg2 <- lmer(LEGPROT ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL), data=data2009_col)
+reg3 <- lmer(LEGPROT ~ 1 + DISLAW + (1 | IDSCHOOL), data=data2009_col)
+reg4 <- lmer(LEGPROT ~ 1 + ATTVIOL + (1 | IDSCHOOL), data=data2009_col)
+reg5 <- lmer(LEGPROT ~ 1 + SCSTUDOP + (1 | IDSCHOOL), data=data2009_col)
+reg6 <- lmer(LEGPROT ~ 1 + CITEFF + (1 | IDSCHOOL), data=data2009_col)
+reg7 <- lmer(LEGPROT ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2009_col)
+reg8 <- lmer(LEGPROT ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + SCSTUDOP + CITEFF + PV1CIV + (1 | IDSCHOOL), data=data2009_col)
+
+caption <- "Students' expected participation in future legal protest (Colombia 2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = coef_names,
+       scalebox = scale_box,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
+### República Dominicana
+```{r, echo=FALSE, results='asis'}
+reg1 <- lmer(LEGPROT ~ 1 + factor(HISCED2) + (1 | IDSCHOOL), data=data2009_dom)
+reg2 <- lmer(LEGPROT ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL), data=data2009_dom)
+reg3 <- lmer(LEGPROT ~ 1 + DISLAW + (1 | IDSCHOOL), data=data2009_dom)
+reg4 <- lmer(LEGPROT ~ 1 + ATTVIOL + (1 | IDSCHOOL), data=data2009_dom)
+reg5 <- lmer(LEGPROT ~ 1 + SCSTUDOP + (1 | IDSCHOOL), data=data2009_dom)
+reg6 <- lmer(LEGPROT ~ 1 + CITEFF + (1 | IDSCHOOL), data=data2009_dom)
+reg7 <- lmer(LEGPROT ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2009_dom)
+reg8 <- lmer(LEGPROT ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + SCSTUDOP + CITEFF + PV1CIV + (1 | IDSCHOOL), data=data2009_dom)
+
+caption <- "Students' expected participation in future legal protest (Dominican Republic 2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = coef_names,
+       scalebox = scale_box,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
+### México
+```{r, echo=FALSE, results='asis'}
+reg1 <- lmer(LEGPROT ~ 1 + factor(HISCED2) + (1 | IDSCHOOL), data=data2009_mex)
+reg2 <- lmer(LEGPROT ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL), data=data2009_mex)
+reg3 <- lmer(LEGPROT ~ 1 + DISLAW + (1 | IDSCHOOL), data=data2009_mex)
+reg4 <- lmer(LEGPROT ~ 1 + ATTVIOL + (1 | IDSCHOOL), data=data2009_mex)
+reg5 <- lmer(LEGPROT ~ 1 + SCSTUDOP + (1 | IDSCHOOL), data=data2009_mex)
+reg6 <- lmer(LEGPROT ~ 1 + CITEFF + (1 | IDSCHOOL), data=data2009_mex)
+reg7 <- lmer(LEGPROT ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2009_mex)
+reg8 <- lmer(LEGPROT ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + SCSTUDOP + CITEFF + PV1CIV + (1 | IDSCHOOL), data=data2009_mex)
+
+caption <- "Students' expected participation in future legal protest (Mexico 2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = coef_names,
+       scalebox = scale_box,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
+## Participación política en actividades ilegales
+
+### Chile
+```{r, echo=FALSE, results='asis'}
+reg1 <- lmer(ILLPROT ~ 1 + factor(HISCED2) + (1 | IDSCHOOL), data=data2009_chl)
+reg2 <- lmer(ILLPROT ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL), data=data2009_chl)
+reg3 <- lmer(ILLPROT ~ 1 + DISLAW + (1 | IDSCHOOL), data=data2009_chl)
+reg4 <- lmer(ILLPROT ~ 1 + ATTVIOL + (1 | IDSCHOOL), data=data2009_chl)
+reg5 <- lmer(ILLPROT ~ 1 + SCSTUDOP + (1 | IDSCHOOL), data=data2009_chl)
+reg6 <- lmer(ILLPROT ~ 1 + CITEFF + (1 | IDSCHOOL), data=data2009_chl)
+reg7 <- lmer(ILLPROT ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2009_chl)
+reg8 <- lmer(ILLPROT ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + SCSTUDOP + CITEFF + PV1CIV + (1 | IDSCHOOL), data=data2009_chl)
+
+caption <- "Students' expected participation in future illegal protest (Chile 2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = coef_names,
+       scalebox = scale_box,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
+### Colombia
+```{r, echo=FALSE, results='asis'}
+reg1 <- lmer(ILLPROT ~ 1 + factor(HISCED2) + (1 | IDSCHOOL), data=data2009_col)
+reg2 <- lmer(ILLPROT ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL), data=data2009_col)
+reg3 <- lmer(ILLPROT ~ 1 + DISLAW + (1 | IDSCHOOL), data=data2009_col)
+reg4 <- lmer(ILLPROT ~ 1 + ATTVIOL + (1 | IDSCHOOL), data=data2009_col)
+reg5 <- lmer(ILLPROT ~ 1 + SCSTUDOP + (1 | IDSCHOOL), data=data2009_col)
+reg6 <- lmer(ILLPROT ~ 1 + CITEFF + (1 | IDSCHOOL), data=data2009_col)
+reg7 <- lmer(ILLPROT ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2009_col)
+reg8 <- lmer(ILLPROT ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + SCSTUDOP + CITEFF + PV1CIV + (1 | IDSCHOOL), data=data2009_col)
+
+caption <- "Students' expected participation in future illegal protest (Colombia 2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = coef_names,
+       scalebox = scale_box,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
+### República Dominicana
+```{r, echo=FALSE, results='asis'}
+reg1 <- lmer(ILLPROT ~ 1 + factor(HISCED2) + (1 | IDSCHOOL), data=data2009_dom)
+reg2 <- lmer(ILLPROT ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL), data=data2009_dom)
+reg3 <- lmer(ILLPROT ~ 1 + DISLAW + (1 | IDSCHOOL), data=data2009_dom)
+reg4 <- lmer(ILLPROT ~ 1 + ATTVIOL + (1 | IDSCHOOL), data=data2009_dom)
+reg5 <- lmer(ILLPROT ~ 1 + SCSTUDOP + (1 | IDSCHOOL), data=data2009_dom)
+reg6 <- lmer(ILLPROT ~ 1 + CITEFF + (1 | IDSCHOOL), data=data2009_dom)
+reg7 <- lmer(ILLPROT ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2009_dom)
+reg8 <- lmer(ILLPROT ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + SCSTUDOP + CITEFF + PV1CIV + (1 | IDSCHOOL), data=data2009_dom)
+
+caption <- "Students' expected participation in future illegal protest (Dominican Republic 2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = coef_names,
+       scalebox = scale_box,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
+### México
+```{r, echo=FALSE, results='asis'}
+reg1 <- lmer(ILLPROT ~ 1 + factor(HISCED2) + (1 | IDSCHOOL), data=data2009_mex)
+reg2 <- lmer(ILLPROT ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL), data=data2009_mex)
+reg3 <- lmer(ILLPROT ~ 1 + DISLAW + (1 | IDSCHOOL), data=data2009_mex)
+reg4 <- lmer(ILLPROT ~ 1 + ATTVIOL + (1 | IDSCHOOL), data=data2009_mex)
+reg5 <- lmer(ILLPROT ~ 1 + SCSTUDOP + (1 | IDSCHOOL), data=data2009_mex)
+reg6 <- lmer(ILLPROT ~ 1 + CITEFF + (1 | IDSCHOOL), data=data2009_mex)
+reg7 <- lmer(ILLPROT ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2009_mex)
+reg8 <- lmer(ILLPROT ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + SCSTUDOP + CITEFF + PV1CIV + (1 | IDSCHOOL), data=data2009_mex)
+
+caption <- "Students' expected participation in future illegal protest (Mexico 2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = coef_names,
+       scalebox = scale_box,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
+## Participación política formal
+
+### Chile
+```{r, echo=FALSE, results='asis'}
+reg1 <- lmer(ELECPART ~ 1 + factor(HISCED2) + (1 | IDSCHOOL), data=data2009_chl)
+reg2 <- lmer(ELECPART ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL), data=data2009_chl)
+reg3 <- lmer(ELECPART ~ 1 + DISLAW + (1 | IDSCHOOL), data=data2009_chl)
+reg4 <- lmer(ELECPART ~ 1 + ATTVIOL + (1 | IDSCHOOL), data=data2009_chl)
+reg5 <- lmer(ELECPART ~ 1 + SCSTUDOP + (1 | IDSCHOOL), data=data2009_chl)
+reg6 <- lmer(ELECPART ~ 1 + CITEFF + (1 | IDSCHOOL), data=data2009_chl)
+reg7 <- lmer(ELECPART ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2009_chl)
+reg8 <- lmer(ELECPART ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + SCSTUDOP + CITEFF + PV1CIV + (1 | IDSCHOOL), data=data2009_chl)
+
+caption <- "Students' expected adult electoral participation (Chile 2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = coef_names,
+       scalebox = scale_box,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
+### Colombia
+```{r, echo=FALSE, results='asis'}
+reg1 <- lmer(ELECPART ~ 1 + factor(HISCED2) + (1 | IDSCHOOL), data=data2009_col)
+reg2 <- lmer(ELECPART ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL), data=data2009_col)
+reg3 <- lmer(ELECPART ~ 1 + DISLAW + (1 | IDSCHOOL), data=data2009_col)
+reg4 <- lmer(ELECPART ~ 1 + ATTVIOL + (1 | IDSCHOOL), data=data2009_col)
+reg5 <- lmer(ELECPART ~ 1 + SCSTUDOP + (1 | IDSCHOOL), data=data2009_col)
+reg6 <- lmer(ELECPART ~ 1 + CITEFF + (1 | IDSCHOOL), data=data2009_col)
+reg7 <- lmer(ELECPART ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2009_col)
+reg8 <- lmer(ELECPART ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + SCSTUDOP + CITEFF + PV1CIV + (1 | IDSCHOOL), data=data2009_col)
+
+caption <- "Students' expected adult electoral participation (Colombia 2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = coef_names,
+       scalebox = scale_box,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
+### República Dominicana
+```{r, echo=FALSE, results='asis'}
+reg1 <- lmer(ELECPART ~ 1 + factor(HISCED2) + (1 | IDSCHOOL), data=data2009_dom)
+reg2 <- lmer(ELECPART ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL), data=data2009_dom)
+reg3 <- lmer(ELECPART ~ 1 + DISLAW + (1 | IDSCHOOL), data=data2009_dom)
+reg4 <- lmer(ELECPART ~ 1 + ATTVIOL + (1 | IDSCHOOL), data=data2009_dom)
+reg5 <- lmer(ELECPART ~ 1 + SCSTUDOP + (1 | IDSCHOOL), data=data2009_dom)
+reg6 <- lmer(ELECPART ~ 1 + CITEFF + (1 | IDSCHOOL), data=data2009_dom)
+reg7 <- lmer(ELECPART ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2009_dom)
+reg8 <- lmer(ELECPART ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + SCSTUDOP + CITEFF + PV1CIV + (1 | IDSCHOOL), data=data2009_dom)
+
+caption <- "Students' expected adult electoral participation (Dominican Republic 2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = coef_names,
+       scalebox = scale_box,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
+### México
+```{r, echo=FALSE, results='asis'}
+reg1 <- lmer(ELECPART ~ 1 + factor(HISCED2) + (1 | IDSCHOOL), data=data2009_mex)
+reg2 <- lmer(ELECPART ~ 1 + factor(HOMELIT2) + (1 | IDSCHOOL), data=data2009_mex)
+reg3 <- lmer(ELECPART ~ 1 + DISLAW + (1 | IDSCHOOL), data=data2009_mex)
+reg4 <- lmer(ELECPART ~ 1 + ATTVIOL + (1 | IDSCHOOL), data=data2009_mex)
+reg5 <- lmer(ELECPART ~ 1 + SCSTUDOP + (1 | IDSCHOOL), data=data2009_mex)
+reg6 <- lmer(ELECPART ~ 1 + CITEFF + (1 | IDSCHOOL), data=data2009_mex)
+reg7 <- lmer(ELECPART ~ 1 + PV1CIV + (1 | IDSCHOOL), data=data2009_mex)
+reg8 <- lmer(ELECPART ~ 1 + factor(HISCED2) + factor(HOMELIT2) + DISLAW + ATTVIOL + SCSTUDOP + CITEFF + PV1CIV + (1 | IDSCHOOL), data=data2009_mex)
+
+caption <- "Students' expected adult electoral participation (Mexico 2009)"
+knitreg(list(reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8),
+        #custom.model.names = c("Modelo 1",  "Modelo 2",  "Modelo 3",  "Modelo 4",  
+         #                      "Modelo 5",  "Modelo 6",  "Modelo 7"),
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = coef_names,
+       scalebox = scale_box,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+```
+\newpage
+
+# Datos 2016
+```{r, include=FALSE}
+#load(file= "../input/data/proc/2016/data2016.Rdata")
+#data2016=data2016 %>% dplyr::select(S_HISCED2, S_HOMELIT, S_LEGACT, S_ILLACT, S_ELECPART, L_DISLAW, L_ATTVIOL, C_STDCOM, S_CITEFF, PV1CIV, idschool2) %>% as.data.frame() %>%  na.omit()
+
+#load(file= "../input/data/proc/2016/datalat.Rdata")
+
+#load(file= "../input/data/proc/2016/datachl.Rdata")
+#datachl=datachl %>% dplyr::select(S_HISCED2, S_HOMELIT, S_LEGACT, S_ILLACT, S_ELECPART, L_DISLAW, L_ATTVIOL, C_STDCOM, S_CITEFF, PV1CIV, idschool2) %>% as.data.frame() %>%  na.omit()
+
+#load(file= "../input/data/proc/2016/datacol.Rdata")
+#load(file= "../input/data/proc/2016/datadom.Rdata")
+#load(file= "../input/data/proc/2016/datamex.Rdata")
+```
+
+```{r, include=FALSE}
+# Variable Name: S_LEGACT 
+# Description: Students' expected participation in legal activities
+# Procedure: IRT WLE scores with mean of 10 and standard deviation of 2 within each participating country
+# Interpretation: Higher values indicating higher levels of expected engagement
+# Trend Status: Not equated to ICCS 2009 given changes in stem and wording, new scale for ICCS 2016 (with similar content as in the last cycle)
+# Source
+#IS3G30A Talk to others about your views on political or social issues / Hablar con otras personas sobre sus puntos de vista sobre cuestiones políticas o sociales
+#IS3G30B Contact an <elected representative> / Ponerse en contacto con un <representante electo>
+#IS3G30C Take part in a peaceful march or rally / Participar en una marcha o mitin pacífico
+#IS3G30D Collect signatures for a petition / Recoger firmas para una petición
+#IS3G30E Contribute to an online discussion forum about social or political issues / Contribuir a un foro de discusión en línea sobre temas sociales o políticos
+#IS3G30F Organize an online group to take a stance on a controversial political or social issue / Organizar un grupo en línea para tomar una postura sobre un tema político o social controvertido
+#IS3G30G Participate in an online campaign / Participar en una campaña online
+
+# Variable Name: S_ILLACT 
+# Description: Students' expected participation in illegal protest activities
+# Procedure: IRT WLE scores with mean of 10 and standard deviation of 2 within each participating country
+# Interpretation: Higher values indicating higher levels of expected engagement
+# Trend Status: Not equated to ICCS 2009 given changes in stem and wording, new scale for ICCS 2016 (with similar content as in the last cycle)
+# Source 
+#IS3G30I Spray-paint protest slogans on walls / Pintar eslóganes de protesta con aerosol en las paredes
+#IS3G30J Stage a protest by blocking traffic / Organizar una protesta bloqueando el tráfico
+#IS3G30K Occupy public buildings as a sign of protest / Ocupar edificios públicos como señal de protesta
+
+# Variable Name: S_ELECPART 
+# Description: Students' expected electoral participation
+# Procedure: IRT WLE scores with mean of 10 and standard deviation of 2 within each participating country
+# Interpretation: Higher values indicating higher levels of expected engagement
+# Trend Status: Same scale as in ICCS 2009
+# Source 
+#IS3G31A Vote in <local elections> / Votar en <elecciones locales>
+#IS3G31B Vote in <national elections> / Votar en <elecciones nacionales>
+#IS3G31C Get information about candidates before voting in an election / Obtener información sobre los candidatos antes de votar en una elección
+
+#### Variables independientes ####
+# Variable Name L_DISLAW 
+# Description Students' endorsement of disobedience to the law
+# Procedure IRT WLE scores with mean of 10 and standard deviation of 2 within each participating country
+# Interpretation Higher values indicating higher levels of endorsement of disobedience to the law
+# Trend Status Same scale as in ICCS 2009
+# Source 
+#LS3G05A When it is the only alternative left for achieving important objectives. 
+#LS3G05B When it is the only way one has to help one's family. 
+#LS3G05C When others who disobeyed it were not punished. 
+#LS3G05D When others do it. 
+#LS3G05E When one distrusts the enacting body. 
+#LS3G05F When one is sure nobody will realize. 
+#LS3G05H When nobody gets hurt. 
+#LS3G05I When it is not done with bad intentions. 
+#LS3G05J	 When one can obtain economic benefits.
+
+# Variable Name L_ATTVIOL 
+# Description Students' endorsement of the use of violence
+# Procedure IRT WLE scores with mean of 10 and standard deviation of 2 within each participating country
+# Interpretation Higher values indicating higher levels of endorsement toward violence
+# Trend Status Same scale as in ICCS 2009 with additional items
+# Source 
+#LS3G04E He who does me harm will have to pay for it. 
+#LS3G04F Watching fights between classmates is fun.
+#LS3G04G If you can’t succeed by doing good things, <try> the bad ones. 
+#LS3G04H You have to fight so people do not think you are a coward.
+#LS3G04I Revenge is sweet. 
+#LS3G04J Aggression serves to achieve what one wants. 
+
+# Variable Name C_STDCOM 
+# Description Principals' perceptions of student opportunities to participate in community activities
+# Procedure IRT WLE scores with mean of 10 and standard deviation of 2 within each participating country
+# Interpretation Higher values indicating higher levels of student opportunities
+# Trend Status Not equated to ICCS 2009 given changes in stem: new scale with new name for ICCS 2016 (with similar content)
+# Source 
+#IC3G04A Activities related to environmental sustainability (e.g. <energy and water saving, recycling>)
+#IC3G04B Human rights projects
+#IC3G04C Activities for underprivileged people or groups
+#IC3G04D Cultural activities (e.g. theatre, music)
+#IC3G04E Multicultural and intercultural activities within the <local community> (e.g. <promotion and celebration of cultural diversity, food street market>)
+#IC3G04F Campaigns to raise people’s awareness, such as <campaigns to raise people’s awareness about social issues, campaigns to raise people’s awareness of environmental issues>
+#IC3G04G Activities aimed at protecting the cultural heritage within the <local community> 
+#IC3G04H	Visits to political institutions (e.g. <Parliament house, Prime Minister’s/President’s official residence>)
+#IC3G04I Sports events
+
+# Variable Name S_CITEFF 
+# Description	 Students' sense of citizenship self-efficacy
+# Procedure IRT WLE scores with mean of 10 and standard deviation of 2 within each participating country
+# Interpretation	 Higher values indicating higherlevels of confidence
+# Trend Status Same scale as in ICCS 2009
+# Source
+#IS3G29A Discuss a newspaper article about a conflict between countries
+#IS3G29B Argue your point of view about a controversial political or social issue
+#IS3G29C Stand as a candidate in a <school election>
+#IS3G29D Organize a group of students in order to achieve changes at school
+#IS3G29E Follow a television debate about a controversial issue
+#IS3G29F Write a letter or email to a newspaper giving your view on a current issue
+#IS3G29G Speak in front of your class about a social or political issue
+```
+

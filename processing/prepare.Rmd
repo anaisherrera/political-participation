@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-pacman::p_load(haven,dplyr)
+pacman::p_load(misty,haven,dplyr)
 ```
 
 # Datos 2009
@@ -23,8 +23,8 @@ data2009_chl$HISCED2 <- ifelse((data2009_chl$HISCED==0), 0, # did not complete <
                    ifelse((data2009_chl$HISCED==1), 0,  # did not complete <ISCED level 2>              
                           ifelse((data2009_chl$HISCED==2), 1,  # <ISCED level 2>                        
                                  ifelse((data2009_chl$HISCED==3), 2, # <ISCED level 3>
-                                        ifelse((data2009_chl$HISCED==4), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
-                                               ifelse((data2009_chl$HISCED==5), 3, NA)))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+                                        ifelse((data2009_chl$HISCED==4), 3, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
+                                               ifelse((data2009_chl$HISCED==5), 3, NA)))))) # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
 
 # según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 (que corresponde a isced 4 (o CINE)) corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
 
@@ -46,11 +46,16 @@ data2009_chl$IS2P31H <-sjmisc::rec(data2009_chl$IS2P31H,rec="1=4;2=3;3=2;4=1;els
 data2009_chl$IS2P31G <-sjmisc::rec(data2009_chl$IS2P31G,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, pintar muros
 data2009_chl$IS2P31I <-sjmisc::rec(data2009_chl$IS2P31I,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, ocupar edificios
 
+data2009_chl_lat <- read_sav("../input/data/original/2009/ISLCHLC2.sav")
+data2009_chl0 <- left_join(data2009_chl, data2009_chl_lat, by="IDSTUD")
+
+data2009_chl_esc <- read_sav("../input/data/original/2009/ICGCHLC2.sav")
+data2009_chl0 <- full_join(data2009_chl0, data2009_chl_esc, by=c("IDSCHOOL.x"="IDSCHOOL"))
 ```
 
 ### Guardar base
 ```{r}
-save(data2009_chl, file= "../input/data/proc/2009/data_chl.Rdata")
+save(data2009_chl0, file= "../input/data/proc/2009/data_chl.Rdata")
 ```
 
 ## Tratamiento de datos Colombia
@@ -74,11 +79,25 @@ data2009_col$HOMELIT2 <- ifelse((data2009_col$HOMELIT==0), 0,
                                  ifelse((data2009_col$HOMELIT==3), 3,
                                         ifelse((data2009_col$HOMELIT==4), 4,
                                                ifelse((data2009_col$HOMELIT==5), 4, NA)))))) #más de 200 libros (así queda igual que en iccs 2016)
+
+data2009_col_lat <- read_sav("../input/data/original/2009/ISLCOLC2.sav")
+data2009_col0 <- full_join(data2009_col, data2009_col_lat, by="IDSTUD")
+
+data2009_col_esc <- read_sav("../input/data/original/2009/ICGCOLC2.sav")
+
+# Centrado
+## Nivel 1: al promedio del grupo
+data2009_col_esc$SCSTUDOP = misty::center(data2009_col_esc$SCSTUDOP, type = "CWC", group = data2009_col_esc$IDSCHOOL)
+## Nivel 2: al gran promedio
+data2009_col_esc = data2009_col_esc %>% group_by(IDSCHOOL) %>% mutate(mean_op_esc=mean(SCSTUDOP, na.rm = T))
+data2009_col_esc$mean_op_esc = center(data2009_col_esc$mean_op_esc, type = c("CGM"))
+
+data2009_col0 <- full_join(data2009_col0, data2009_col_esc, by=c("IDSCHOOL.x"="IDSCHOOL"))
 ```
 
 ### Guardar base
 ```{r}
-save(data2009_col, file= "../input/data/proc/2009/data_col.Rdata")
+save(data2009_col0, file= "../input/data/proc/2009/data_col.Rdata")
 ```
 
 ## Tratamiento de datos República Dominicana
@@ -102,11 +121,17 @@ data2009_dom$HOMELIT2 <- ifelse((data2009_dom$HOMELIT==0), 0,
                                  ifelse((data2009_dom$HOMELIT==3), 3,
                                         ifelse((data2009_dom$HOMELIT==4), 4,
                                                ifelse((data2009_dom$HOMELIT==5), 4, NA)))))) #más de 200 libros (así queda igual que en iccs 2016)
+
+data2009_dom_lat <- read_sav("../input/data/original/2009/ISLDOMC2.sav")
+data2009_dom0 <- full_join(data2009_dom, data2009_dom_lat, by="IDSTUD")
+
+data2009_dom_esc <- read_sav("../input/data/original/2009/ICGDOMC2.sav")
+data2009_dom0 <- full_join(data2009_dom0, data2009_dom_esc, by=c("IDSCHOOL.x"="IDSCHOOL"))
 ```
 
 ### Guardar base
 ```{r}
-save(data2009_dom, file= "../input/data/proc/2009/data_dom.Rdata")
+save(data2009_dom0, file= "../input/data/proc/2009/data_dom.Rdata")
 ```
 
 ## Tratamiento de datos México
@@ -130,11 +155,17 @@ data2009_mex$HOMELIT2 <- ifelse((data2009_mex$HOMELIT==0), 0,
                                  ifelse((data2009_mex$HOMELIT==3), 3,
                                         ifelse((data2009_mex$HOMELIT==4), 4,
                                                ifelse((data2009_mex$HOMELIT==5), 4, NA)))))) #más de 200 libros (así queda igual que en iccs 2016)
+
+data2009_mex_lat <- read_sav("../input/data/original/2009/ISLMEXC2.sav")
+data2009_mex0 <- full_join(data2009_mex, data2009_mex_lat, by="IDSTUD")
+
+data2009_mex_esc <- read_sav("../input/data/original/2009/ICGMEXC2.sav")
+data2009_mex0 <- full_join(data2009_mex0, data2009_mex_esc, by=c("IDSCHOOL.x"="IDSCHOOL"))
 ```
 
 ### Guardar base
 ```{r}
-save(data2009_mex, file= "../input/data/proc/2009/data_mex.Rdata")
+save(data2009_mex0, file= "../input/data/proc/2009/data_mex.Rdata")
 ```
 
 # Datos 2016
@@ -184,6 +215,7 @@ data2016$IS3G30J <-sjmisc::rec(data2016$IS3G30J,rec="1=4;2=3;3=2;4=1;else=copy")
 data2016$IS3G30I <-sjmisc::rec(data2016$IS3G30I,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, pintar muros
 data2016$IS3G30K <-sjmisc::rec(data2016$IS3G30K,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, ocupar edificios
 
+save(data2016, file= "../input/data/proc/2016/data2016.Rdata")
 
 datalat1 = data2016 %>%  filter(idcntry == 152 | idcntry == 170 | idcntry == 214 | idcntry == 484) %>% as.data.frame()
 #table(datalat$idcntry)
@@ -192,6 +224,12 @@ datalat1$idschool2<- as.numeric(datalat1$idcntry*100000 + datalat1$idschool) # s
 datachl <- read_spss("../input/data/original/2016/ICGCHLC3.sav")
 datachl=datachl %>% select(IC3G20,"idschool"=IDSCHOOL,"idcntry"=IDCNTRY) %>% as.data.frame()
 datachl$idschool2<- as.numeric(datachl$idcntry*100000 + datachl$idschool)
+# Educación
+datachl$S_HISCED2 <- ifelse((datachl$S_HISCED==0), 0, # did not complete <ISCED level 2>
+                   ifelse((datachl$S_HISCED==1), 1, # <ISCED level 2>                               
+                          ifelse((datachl$S_HISCED==2), 2, # <ISCED level 3> 
+                                 ifelse((datachl$S_HISCED==3), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+                                        ifelse((datachl$S_HISCED==4), 3, NA))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
 datachl=datachl %>% select(-idschool) %>% as.data.frame()
 datacol <- read_spss("../input/data/original/2016/ICGCOLC3.sav")
 datacol=datacol %>% select(IC3G20,"idschool"=IDSCHOOL,"idcntry"=IDCNTRY) %>% as.data.frame()
