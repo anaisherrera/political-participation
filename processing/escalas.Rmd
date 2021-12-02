@@ -1,0 +1,149 @@
+---
+title: "Untitled"
+author: "Kevin Carrasco"
+date: "01-12-2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+pacman::p_load(dplyr, psych)
+```
+
+```{r}
+load("../input/data/proc/2009/data_chl.Rdata")
+load("../input/data/proc/2016/data_chl.Rdata")
+```
+
+Para comparar las escalas de los años 2009 y 2016 se estimarán a partir de los indicadores utilizados en ambas escalas construidas por ICCS. Por ejemplo:
+
+iccs 2009
+* Variable Name: LEGPROT
+* Description: Students' expected participation in future legal protest
+* Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally weighted countries
+* Source:
+- IS2P31A Writing a letter to a newspaper / Escribir una carta a un periódico
+- IS2P31B Wearing a badge or t-shirt expressing your opinion / Llevar una insignia o camiseta que exprese su opinión
+- IS2P31C Contacting an <elected representative> / Ponerse en contacto con un <representante electo>
+- IS2P31D Taking part in a peaceful march or rally / Participar en una marcha o manifestación pacífica
+- IS2P31E Collecting signatures for a petition / Recopilar firmas para una petición
+- IS2P31F Choosing not to buy certain products / Elegir no comprar determinados productos
+iccs 2016
+* Variable Name: S_LEGACT
+* Description: Students' expected participation in legal activities
+* Procedure: IRT WLE scores with mean of 10 and standard deviation of 2 within each participating country
+* Source:
+- IS3G30A Talk to others about your views on political or social issues / Hablar con otras personas sobre sus puntos de vista sobre cuestiones políticas o sociales
+- IS3G30B Contact an <elected representative> / Ponerse en contacto con un <representante electo>
+- IS3G30C Take part in a peaceful march or rally / Participar en una marcha o mitin pacífico
+- IS3G30D Collect signatures for a petition / Recoger firmas para una petición
+- IS3G30E Contribute to an online discussion forum about social or political issues / Contribuir a un foro de discusión en línea sobre temas sociales o políticos
+- IS3G30F Organize an online group to take a stance on a controversial political or social issue / Organizar un grupo en línea para tomar una postura sobre un tema político o social controvertido
+- IS3G30G Participate in an online campaign / Participar en una campaña online
+
+Para la construcción de las escalas se utilizarán estos indicadores, presentes en ambos años:
+
+- Ponerse en contacto con un <representante electo>
+- Participar en una marcha o manifestación pacífica
+- Recopilar firmas para una petición
+
+```{r}
+data2009_chl0 <- data2009_chl0 %>%
+  rowwise() %>%
+  mutate(LEGPROT_rec =
+           sum(c(IS2P31C, IS2P31D, IS2P31E), na.rm = T))
+
+data2009_chl0$LEGPROT_rec <- psych::rescale(data2009_chl0$LEGPROT_rec, mean = 50, sd = 10,df=F)
+data2009_chl0$LEGPROT_rec <- as.numeric(data2009_chl0$LEGPROT_rec)
+
+summary(data2009_chl0$LEGPROT_rec)
+```
+
+```{r}
+data2016_chl0 <- data2016_chl0 %>% 
+  rowwise() %>% 
+  mutate(S_LEGACT_rec =
+           sum(c(IS3G30B, IS3G30C, IS3G30D), na.rm = T))
+
+data2016_chl0$S_LEGACT_rec <- psych::rescale(data2016_chl0$S_LEGACT_rec, mean = 50, sd = 10,df=F)
+data2016_chl0$S_LEGACT_rec <- as.numeric(data2016_chl0$S_LEGACT_rec)
+
+summary(data2016_chl0$S_LEGACT_rec)
+summary(data2016_chl0$S_LEGACT)
+```
+
+## ICCS 2019 ATTVIOL y 2016 L_ATTVIOL
+
+```{r}
+data2009_chl0 <- data2009_chl0 %>%
+  rowwise() %>%
+  mutate(ATTVIOL_rec =
+           sum(c(LS2P08A, LS2P08B, LS2P08C, LS2P08D), na.rm = T))
+
+data2009_chl0$ATTVIOL_rec <- psych::rescale(data2009_chl0$ATTVIOL_rec, mean = 50, sd = 10,df=F)
+data2009_chl0$ATTVIOL_rec <- as.numeric(data2009_chl0$ATTVIOL_rec)
+
+summary(data2009_chl0$LEGPROT)
+summary(data2009_chl0$LEGPROT_rec)
+```
+
+```{r}
+data2016_chl0 <- data2016_chl0 %>% 
+  rowwise() %>% 
+  mutate(L_ATTVIOL_rec =
+           sum(c(LS3G04E, LS3G04F, LS3G04G, LS3G04H), na.rm = T))
+
+data2016_chl0$L_ATTVIOL_rec <- psych::rescale(data2016_chl0$L_ATTVIOL_rec, mean = 50, sd = 10,df=F)
+data2016_chl0$L_ATTVIOL_rec <- as.numeric(data2016_chl0$L_ATTVIOL_rec)
+
+summary(data2016_chl0$L_ATTVIOL_rec)
+summary(data2016_chl0$L_ATTVIOL)
+```
+
+## ICCS 2009 PARTSCHL y 2016 S_PARTSCHL
+
+```{r}
+data2009_chl0 <- data2009_chl0 %>%
+  rowwise() %>%
+  mutate(PARTSCHL_rec =
+           sum(c(IS2G15B, IS2G15C, IS2G15D, IS2G15E, IS2G15F), na.rm = T))
+
+data2009_chl0$PARTSCHL_rec <- psych::rescale(data2009_chl0$PARTSCHL_rec, mean = 50, sd = 10,df=F)
+data2009_chl0$PARTSCHL_rec <- as.numeric(data2009_chl0$PARTSCHL_rec)
+
+summary(data2009_chl0$PARTSCHL)
+summary(data2009_chl0$PARTSCHL_rec)
+```
+
+```{r}
+data2016_chl0 <- data2016_chl0 %>% 
+  rowwise() %>% 
+  mutate(S_SCHPART_rec =
+           sum(c(IS3G16A, IS3G16B, IS3G16C, IS3G16D, IS3G16E), na.rm = T))
+
+data2016_chl0$S_SCHPART_rec <- psych::rescale(data2016_chl0$S_SCHPART_rec, mean = 50, sd = 10,df=F)
+data2016_chl0$S_SCHPART_rec <- as.numeric(data2016_chl0$S_SCHPART_rec)
+
+summary(data2016_chl0$S_SCHPART_rec)
+summary(data2016_chl0$S_SCHPART)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

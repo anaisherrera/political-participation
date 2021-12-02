@@ -10,108 +10,507 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-pacman::p_load(dplyr, ggplot2)
+pacman::p_load(dplyr, ggplot2, haven)
 ```
 
-```{r}
-load("../input/data/proc/2009/data_chl.Rdata")
-load("../input/data/proc/2016/datalat.Rdata")
+# Datos 2009
+```{r, include=FALSE}
+load(file= "../input/data/proc/2009/data_chl.Rdata")
+data2009_chl <- data2009_chl0 %>% select(IS2P32A, IS2P32B, IS2P31D, IS2P31H, IS2P31G, IS2P31I, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2009/data_col.Rdata")
+data2009_col=data2009_col0 %>% dplyr::select(IS2P32A, IS2P32B, IS2P31D, IS2P31H, IS2P31G, IS2P31I, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2009/data_dom.Rdata")
+data2009_dom=data2009_dom0 %>% dplyr::select(IS2P32A, IS2P32B, IS2P31D, IS2P31H, IS2P31G, IS2P31I, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2009/data_mex.Rdata")
+data2009_mex=data2009_mex0 %>% dplyr::select(IS2P32A, IS2P32B, IS2P31D, IS2P31H, IS2P31G, IS2P31I, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+```
+
+# Datos 2016
+```{r, include=FALSE}
+load(file= "../input/data/proc/2016/data_chl.Rdata")
+data2016_chl=data2016_chl0 %>% dplyr::select(IS3G31A, IS3G31B, IS3G30C, IS3G30J, IS3G30I, IS3G30K, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2016/data_col.Rdata")
+data2016_col=data2016_col0 %>% dplyr::select(IS3G31A, IS3G31B, IS3G30C, IS3G30J, IS3G30I, IS3G30K, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2016/data_dom.Rdata")
+data2016_dom=data2016_dom0 %>% dplyr::select(IS3G31A, IS3G31B, IS3G30C, IS3G30J, IS3G30I, IS3G30K, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2016/data_mex.Rdata")
+data2016_mex=data2016_mex0 %>% dplyr::select(IS3G31A, IS3G31B, IS3G30C, IS3G30J, IS3G30I, IS3G30K, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+remove(data2009_chl0, data2009_col0, data2009_dom0, data2009_mex0, data2016_chl0, data2016_col0, data2016_dom0, data2016_mex0)
 ```
 
 # Recodificar en dos categorías. La idea es que "sure and probabily i do it" estén en una sola categoría. Ese porcentaje (por ejemplo, el 40% participaria) es lo que hay que representar. Este porcentaje en eje x y los dos años (2009 y 2016) van en eje y
 
+## 2009
 ```{r}
-part_2009 <- data2009_chl %>% select(IS2P32A, IS2P32B, IS2P31D, IS2P31H, IS2P31G, IS2P31I)
+data2009_col$IS2P32A <-sjmisc::rec(data2009_col$IS2P32A,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones locales
+data2009_col$IS2P32B <-sjmisc::rec(data2009_col$IS2P32B,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones nacionales
+# Falta demostraciones?
+data2009_col$IS2P31D <-sjmisc::rec(data2009_col$IS2P31D,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, marcha pacifica
+data2009_col$IS2P31H <-sjmisc::rec(data2009_col$IS2P31H,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, bloquear trafico
+data2009_col$IS2P31G <-sjmisc::rec(data2009_col$IS2P31G,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, pintar muros
+data2009_col$IS2P31I <-sjmisc::rec(data2009_col$IS2P31I,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, ocupar edificios
 
-part_2009$municipales <- ifelse(part_2009$IS2P32A<=2, 1,
-                                   ifelse(part_2009$IS2P32A>=3,2, NA))
-part_2009$presidenciales <- ifelse(part_2009$IS2P32B<=2, 1,
-                                   ifelse(part_2009$IS2P32B>=3,2, NA))
-part_2009$marchar <- ifelse(part_2009$IS2P31D<=2, 1,
-                                   ifelse(part_2009$IS2P31D>=3,2, NA))
-part_2009$bloquear <- ifelse(part_2009$IS2P31H<=2, 1,
-                                   ifelse(part_2009$IS2P31H>=3,2, NA))
-part_2009$pintar <- ifelse(part_2009$IS2P31G<=2, 1,
-                                   ifelse(part_2009$IS2P31G>=3,2, NA))
-part_2009$edificios <- ifelse(part_2009$IS2P31I<=2, 1,
-                                   ifelse(part_2009$IS2P31I>=3,2, NA))
+
+data2009_dom$IS2P32A <-sjmisc::rec(data2009_dom$IS2P32A,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones locales
+data2009_dom$IS2P32B <-sjmisc::rec(data2009_dom$IS2P32B,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones nacionales
+# Falta demostraciones?
+data2009_dom$IS2P31D <-sjmisc::rec(data2009_dom$IS2P31D,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, marcha pacifica
+data2009_dom$IS2P31H <-sjmisc::rec(data2009_dom$IS2P31H,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, bloquear trafico
+data2009_dom$IS2P31G <-sjmisc::rec(data2009_dom$IS2P31G,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, pintar muros
+data2009_dom$IS2P31I <-sjmisc::rec(data2009_dom$IS2P31I,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, ocupar edificios
+
+data2009_mex$IS2P32A <-sjmisc::rec(data2009_mex$IS2P32A,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones locales
+data2009_mex$IS2P32B <-sjmisc::rec(data2009_mex$IS2P32B,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones nacionales
+# Falta demostraciones?
+data2009_mex$IS2P31D <-sjmisc::rec(data2009_mex$IS2P31D,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, marcha pacifica
+data2009_mex$IS2P31H <-sjmisc::rec(data2009_mex$IS2P31H,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, bloquear trafico
+data2009_mex$IS2P31G <-sjmisc::rec(data2009_mex$IS2P31G,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, pintar muros
+data2009_mex$IS2P31I <-sjmisc::rec(data2009_mex$IS2P31I,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, ocupar edificios
+```
+
+
+```{r}
+#Chile
+data2009_chl$municipales <- ifelse(data2009_chl$IS2P32A<=2, 1,
+                                   ifelse(data2009_chl$IS2P32A>=3,2, NA))
+data2009_chl$presidenciales <- ifelse(data2009_chl$IS2P32B<=2, 1,
+                                   ifelse(data2009_chl$IS2P32B>=3,2, NA))
+data2009_chl$marchar <- ifelse(data2009_chl$IS2P31D<=2, 1,
+                                   ifelse(data2009_chl$IS2P31D>=3,2, NA))
+data2009_chl$bloquear <- ifelse(data2009_chl$IS2P31H<=2, 1,
+                                   ifelse(data2009_chl$IS2P31H>=3,2, NA))
+data2009_chl$pintar <- ifelse(data2009_chl$IS2P31G<=2, 1,
+                                   ifelse(data2009_chl$IS2P31G>=3,2, NA))
+data2009_chl$edificios <- ifelse(data2009_chl$IS2P31I<=2, 1,
+                                   ifelse(data2009_chl$IS2P31I>=3,2, NA))
+
+#Col
+data2009_col$municipales <- ifelse(data2009_col$IS2P32A<=2, 1,
+                                   ifelse(data2009_col$IS2P32A>=3,2, NA))
+data2009_col$presidenciales <- ifelse(data2009_col$IS2P32B<=2, 1,
+                                   ifelse(data2009_col$IS2P32B>=3,2, NA))
+data2009_col$marchar <- ifelse(data2009_col$IS2P31D<=2, 1,
+                                   ifelse(data2009_col$IS2P31D>=3,2, NA))
+data2009_col$bloquear <- ifelse(data2009_col$IS2P31H<=2, 1,
+                                   ifelse(data2009_col$IS2P31H>=3,2, NA))
+data2009_col$pintar <- ifelse(data2009_col$IS2P31G<=2, 1,
+                                   ifelse(data2009_col$IS2P31G>=3,2, NA))
+data2009_col$edificios <- ifelse(data2009_col$IS2P31I<=2, 1,
+                                   ifelse(data2009_col$IS2P31I>=3,2, NA))
+
+#Dom
+data2009_dom$municipales <- ifelse(data2009_dom$IS2P32A<=2, 1,
+                                   ifelse(data2009_dom$IS2P32A>=3,2, NA))
+data2009_dom$presidenciales <- ifelse(data2009_dom$IS2P32B<=2, 1,
+                                   ifelse(data2009_dom$IS2P32B>=3,2, NA))
+data2009_dom$marchar <- ifelse(data2009_dom$IS2P31D<=2, 1,
+                                   ifelse(data2009_dom$IS2P31D>=3,2, NA))
+data2009_dom$bloquear <- ifelse(data2009_dom$IS2P31H<=2, 1,
+                                   ifelse(data2009_dom$IS2P31H>=3,2, NA))
+data2009_dom$pintar <- ifelse(data2009_dom$IS2P31G<=2, 1,
+                                   ifelse(data2009_dom$IS2P31G>=3,2, NA))
+data2009_dom$edificios <- ifelse(data2009_dom$IS2P31I<=2, 1,
+                                   ifelse(data2009_dom$IS2P31I>=3,2, NA))
+
+#MEx
+data2009_mex$municipales <- ifelse(data2009_mex$IS2P32A<=2, 1,
+                                   ifelse(data2009_mex$IS2P32A>=3,2, NA))
+data2009_mex$presidenciales <- ifelse(data2009_mex$IS2P32B<=2, 1,
+                                   ifelse(data2009_mex$IS2P32B>=3,2, NA))
+data2009_mex$marchar <- ifelse(data2009_mex$IS2P31D<=2, 1,
+                                   ifelse(data2009_mex$IS2P31D>=3,2, NA))
+data2009_mex$bloquear <- ifelse(data2009_mex$IS2P31H<=2, 1,
+                                   ifelse(data2009_mex$IS2P31H>=3,2, NA))
+data2009_mex$pintar <- ifelse(data2009_mex$IS2P31G<=2, 1,
+                                   ifelse(data2009_mex$IS2P31G>=3,2, NA))
+data2009_mex$edificios <- ifelse(data2009_mex$IS2P31I<=2, 1,
+                                   ifelse(data2009_mex$IS2P31I>=3,2, NA))
+
+```
+
+
+## 2016
+
+```{r}
+data2016_chl$IS3G31A <-sjmisc::rec(data2016_chl$IS3G31A,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones locales
+data2016_chl$IS3G31B <-sjmisc::rec(data2016_chl$IS3G31B,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones nacionales
+# Falta demostraciones?
+data2016_chl$IS3G30C <-sjmisc::rec(data2016_chl$IS3G30C,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, marcha pacifica
+data2016_chl$IS3G30J <-sjmisc::rec(data2016_chl$IS3G30J,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, bloquear trafico
+data2016_chl$IS3G30I <-sjmisc::rec(data2016_chl$IS3G30I,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, pintar muros
+data2016_chl$IS3G30K <-sjmisc::rec(data2016_chl$IS3G30K,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, ocupar edificios
+
+data2016_col$IS3G31A <-sjmisc::rec(data2016_col$IS3G31A,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones locales
+data2016_col$IS3G31B <-sjmisc::rec(data2016_col$IS3G31B,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones nacionales
+# Falta demostraciones?
+data2016_col$IS3G30C <-sjmisc::rec(data2016_col$IS3G30C,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, marcha pacifica
+data2016_col$IS3G30J <-sjmisc::rec(data2016_col$IS3G30J,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, bloquear trafico
+data2016_col$IS3G30I <-sjmisc::rec(data2016_col$IS3G30I,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, pintar muros
+data2016_col$IS3G30K <-sjmisc::rec(data2016_col$IS3G30K,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, ocupar edificios
+
+data2016_dom$IS3G31A <-sjmisc::rec(data2016_dom$IS3G31A,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones locales
+data2016_dom$IS3G31B <-sjmisc::rec(data2016_dom$IS3G31B,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones nacionales
+# Falta demostraciones?
+data2016_dom$IS3G30C <-sjmisc::rec(data2016_dom$IS3G30C,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, marcha pacifica
+data2016_dom$IS3G30J <-sjmisc::rec(data2016_dom$IS3G30J,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, bloquear trafico
+data2016_dom$IS3G30I <-sjmisc::rec(data2016_dom$IS3G30I,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, pintar muros
+data2016_dom$IS3G30K <-sjmisc::rec(data2016_dom$IS3G30K,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, ocupar edificios
+
+data2016_mex$IS3G31A <-sjmisc::rec(data2016_mex$IS3G31A,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones locales
+data2016_mex$IS3G31B <-sjmisc::rec(data2016_mex$IS3G31B,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones nacionales
+# Falta demostraciones?
+data2016_mex$IS3G30C <-sjmisc::rec(data2016_mex$IS3G30C,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, marcha pacifica
+data2016_mex$IS3G30J <-sjmisc::rec(data2016_mex$IS3G30J,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, bloquear trafico
+data2016_mex$IS3G30I <-sjmisc::rec(data2016_mex$IS3G30I,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, pintar muros
+data2016_mex$IS3G30K <-sjmisc::rec(data2016_mex$IS3G30K,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, ocupar edificios
+```
+
+
+```{r}
+#Chile
+data2016_chl$municipales <- ifelse(data2016_chl$IS3G31A<=2, 1,
+                                   ifelse(data2016_chl$IS3G31A>=3,2, NA))
+data2016_chl$presidenciales <- ifelse(data2016_chl$IS3G31B<=2, 1,
+                                   ifelse(data2016_chl$IS3G31B>=3,2, NA))
+data2016_chl$marchar <- ifelse(data2016_chl$IS3G30C<=2, 1,
+                                   ifelse(data2016_chl$IS3G30C>=3,2, NA))
+data2016_chl$bloquear <- ifelse(data2016_chl$IS3G30J<=2, 1,
+                                   ifelse(data2016_chl$IS3G30J>=3,2, NA))
+data2016_chl$pintar <- ifelse(data2016_chl$IS3G30I<=2, 1,
+                                   ifelse(data2016_chl$IS3G30J>=3,2, NA))
+data2016_chl$edificios <- ifelse(data2016_chl$IS3G30K<=2, 1,
+                                   ifelse(data2016_chl$IS3G30K>=3,2, NA))
+
+#Col
+data2016_col$municipales <- ifelse(data2016_col$IS3G31A<=2, 1,
+                                   ifelse(data2016_col$IS3G31A>=3,2, NA))
+data2016_col$presidenciales <- ifelse(data2016_col$IS3G31B<=2, 1,
+                                   ifelse(data2016_col$IS3G31B>=3,2, NA))
+data2016_col$marchar <- ifelse(data2016_col$IS3G30C<=2, 1,
+                                   ifelse(data2016_col$IS3G30C>=3,2, NA))
+data2016_col$bloquear <- ifelse(data2016_col$IS3G30J<=2, 1,
+                                   ifelse(data2016_col$IS3G30J>=3,2, NA))
+data2016_col$pintar <- ifelse(data2016_col$IS3G30I<=2, 1,
+                                   ifelse(data2016_col$IS3G30J>=3,2, NA))
+data2016_col$edificios <- ifelse(data2016_col$IS3G30K<=2, 1,
+                                   ifelse(data2016_col$IS3G30K>=3,2, NA))
+
+#Dom
+data2016_dom$municipales <- ifelse(data2016_dom$IS3G31A<=2, 1,
+                                   ifelse(data2016_dom$IS3G31A>=3,2, NA))
+data2016_dom$presidenciales <- ifelse(data2016_dom$IS3G31B<=2, 1,
+                                   ifelse(data2016_dom$IS3G31B>=3,2, NA))
+data2016_dom$marchar <- ifelse(data2016_dom$IS3G30C<=2, 1,
+                                   ifelse(data2016_dom$IS3G30C>=3,2, NA))
+data2016_dom$bloquear <- ifelse(data2016_dom$IS3G30J<=2, 1,
+                                   ifelse(data2016_dom$IS3G30J>=3,2, NA))
+data2016_dom$pintar <- ifelse(data2016_dom$IS3G30I<=2, 1,
+                                   ifelse(data2016_dom$IS3G30J>=3,2, NA))
+data2016_dom$edificios <- ifelse(data2016_dom$IS3G30K<=2, 1,
+                                   ifelse(data2016_dom$IS3G30K>=3,2, NA))
+
+#Mex
+data2016_mex$municipales <- ifelse(data2016_mex$IS3G31A<=2, 1,
+                                   ifelse(data2016_mex$IS3G31A>=3,2, NA))
+data2016_mex$presidenciales <- ifelse(data2016_mex$IS3G31B<=2, 1,
+                                   ifelse(data2016_mex$IS3G31B>=3,2, NA))
+data2016_mex$marchar <- ifelse(data2016_mex$IS3G30C<=2, 1,
+                                   ifelse(data2016_mex$IS3G30C>=3,2, NA))
+data2016_mex$bloquear <- ifelse(data2016_mex$IS3G30J<=2, 1,
+                                   ifelse(data2016_mex$IS3G30J>=3,2, NA))
+data2016_mex$pintar <- ifelse(data2016_mex$IS3G30I<=2, 1,
+                                   ifelse(data2016_mex$IS3G30J>=3,2, NA))
+data2016_mex$edificios <- ifelse(data2016_mex$IS3G30K<=2, 1,
+                                   ifelse(data2016_mex$IS3G30K>=3,2, NA))
+
+```
+
+# Porcentajes por pais
+
+```{r}
+#Chl
+muni2009_chl = round(prop.table(table(muni2009_chl=data2009_chl$municipales)),2)
+muni2009_chl = as.data.frame(muni2009_chl)
+muni2009_chl <- muni2009_chl %>% filter(muni2009_chl==2) %>% select(Freq)
+
+presiden2009_chl = round(prop.table(table(presiden2009_chl=data2009_chl$presidenciales)),2)
+presiden2009_chl = as.data.frame(presiden2009_chl)
+presiden2009_chl <- presiden2009_chl %>% filter(presiden2009_chl==2) %>% select(Freq)
+
+marchar2009_chl = round(prop.table(table(marchar2009_chl=data2009_chl$marchar)),2)
+marchar2009_chl = as.data.frame(marchar2009_chl)
+marchar2009_chl <- marchar2009_chl %>% filter(marchar2009_chl==2) %>% select(Freq)
+
+bloquear2009_chl = round(prop.table(table(bloquear2009_chl=data2009_chl$bloquear)),2)
+bloquear2009_chl = as.data.frame(bloquear2009_chl)
+bloquear2009_chl <- bloquear2009_chl %>% filter(bloquear2009_chl==2) %>% select(Freq)
+
+pintar2009_chl = round(prop.table(table(pintar2009_chl=data2009_chl$pintar)),2)
+pintar2009_chl = as.data.frame(pintar2009_chl)
+pintar2009_chl <- pintar2009_chl %>% filter(pintar2009_chl==2) %>% select(Freq)
+
+edificios2009_chl = round(prop.table(table(edificios2009_chl=data2009_chl$edificios)),2)
+edificios2009_chl = as.data.frame(edificios2009_chl)
+edificios2009_chl <- edificios2009_chl %>% filter(edificios2009_chl==2) %>% select(Freq)
 ```
 
 ```{r}
-datalat <- filter(datalat, country=="CHL")
+#Col
+muni2009_col = round(prop.table(table(muni2009_col=data2009_col$municipales)),2)
+muni2009_col = as.data.frame(muni2009_col)
+muni2009_col <- muni2009_col %>% filter(muni2009_col==2) %>% select(Freq)
 
-part_2016 <- datalat %>% select(IS3G31A, IS3G31B, IS3G30C, IS3G30J, IS3G30I, IS3G30K)
+presiden2009_col = round(prop.table(table(presiden2009_col=data2009_col$presidenciales)),2)
+presiden2009_col = as.data.frame(presiden2009_col)
+presiden2009_col <- presiden2009_col %>% filter(presiden2009_col==2) %>% select(Freq)
 
-part_2016$municipales <- ifelse(part_2016$IS3G31A<=2, 1,
-                                   ifelse(part_2016$IS3G31A>=3,2, NA))
-part_2016$presidenciales <- ifelse(part_2016$IS3G31B<=2, 1,
-                                   ifelse(part_2016$IS3G31B>=3,2, NA))
-part_2016$marchar <- ifelse(part_2016$IS3G30C<=2, 1,
-                                   ifelse(part_2016$IS3G30C>=3,2, NA))
-part_2016$bloquear <- ifelse(part_2016$IS3G30J<=2, 1,
-                                   ifelse(part_2016$IS3G30J>=3,2, NA))
-part_2016$pintar <- ifelse(part_2016$IS3G30I<=2, 1,
-                                   ifelse(part_2016$IS3G30J>=3,2, NA))
-part_2016$edificios <- ifelse(part_2016$IS3G30K<=2, 1,
-                                   ifelse(part_2016$IS3G30K>=3,2, NA))
+marchar2009_col = round(prop.table(table(marchar2009_col=data2009_col$marchar)),2)
+marchar2009_col = as.data.frame(marchar2009_col)
+marchar2009_col <- marchar2009_col %>% filter(marchar2009_col==2) %>% select(Freq)
+
+bloquear2009_col = round(prop.table(table(bloquear2009_col=data2009_col$bloquear)),2)
+bloquear2009_col = as.data.frame(bloquear2009_col)
+bloquear2009_col <- bloquear2009_col %>% filter(bloquear2009_col==2) %>% select(Freq)
+
+pintar2009_col = round(prop.table(table(pintar2009_col=data2009_col$pintar)),2)
+pintar2009_col = as.data.frame(pintar2009_col)
+pintar2009_col <- pintar2009_col %>% filter(pintar2009_col==2) %>% select(Freq)
+
+edificios2009_col = round(prop.table(table(edificios2009_col=data2009_col$edificios)),2)
+edificios2009_col = as.data.frame(edificios2009_col)
+edificios2009_col <- edificios2009_col %>% filter(edificios2009_col==2) %>% select(Freq)
 ```
 
 ```{r}
-muni2009 = round(prop.table(table(muni2009=part_2009$municipales)),2)
-muni2009 = as.data.frame(muni2009)
-muni2009 <- muni2009 %>% filter(muni2009==2) %>% select(Freq)
+#dom
+muni2009_dom = round(prop.table(table(muni2009_dom=data2009_dom$municipales)),2)
+muni2009_dom = as.data.frame(muni2009_dom)
+muni2009_dom <- muni2009_dom %>% filter(muni2009_dom==2) %>% select(Freq)
 
-presiden2009 = round(prop.table(table(presiden2009=part_2009$presidenciales)),2)
-presiden2009 = as.data.frame(presiden2009)
-presiden2009 <- presiden2009 %>% filter(presiden2009==2) %>% select(Freq)
+presiden2009_dom = round(prop.table(table(presiden2009_dom=data2009_dom$presidenciales)),2)
+presiden2009_dom = as.data.frame(presiden2009_dom)
+presiden2009_dom <- presiden2009_dom %>% filter(presiden2009_dom==2) %>% select(Freq)
 
-marchar2009 = round(prop.table(table(marchar2009=part_2009$marchar)),2)
-marchar2009 = as.data.frame(marchar2009)
-marchar2009 <- marchar2009 %>% filter(marchar2009==2) %>% select(Freq)
+marchar2009_dom = round(prop.table(table(marchar2009_dom=data2009_dom$marchar)),2)
+marchar2009_dom = as.data.frame(marchar2009_dom)
+marchar2009_dom <- marchar2009_dom %>% filter(marchar2009_dom==2) %>% select(Freq)
 
-bloquear2009 = round(prop.table(table(bloquear2009=part_2009$bloquear)),2)
-bloquear2009 = as.data.frame(bloquear2009)
-bloquear2009 <- bloquear2009 %>% filter(bloquear2009==2) %>% select(Freq)
+bloquear2009_dom = round(prop.table(table(bloquear2009_dom=data2009_dom$bloquear)),2)
+bloquear2009_dom = as.data.frame(bloquear2009_dom)
+bloquear2009_dom <- bloquear2009_dom %>% filter(bloquear2009_dom==2) %>% select(Freq)
 
-pintar2009 = round(prop.table(table(pintar2009=part_2009$pintar)),2)
-pintar2009 = as.data.frame(pintar2009)
-pintar2009 <- pintar2009 %>% filter(pintar2009==2) %>% select(Freq)
+pintar2009_dom = round(prop.table(table(pintar2009_dom=data2009_dom$pintar)),2)
+pintar2009_dom = as.data.frame(pintar2009_dom)
+pintar2009_dom <- pintar2009_dom %>% filter(pintar2009_dom==2) %>% select(Freq)
 
-edificios2009 = round(prop.table(table(edificios2009=part_2009$edificios)),2)
-edificios2009 = as.data.frame(edificios2009)
-edificios2009 <- edificios2009 %>% filter(edificios2009==2) %>% select(Freq)
+edificios2009_dom = round(prop.table(table(edificios2009_dom=data2009_dom$edificios)),2)
+edificios2009_dom = as.data.frame(edificios2009_dom)
+edificios2009_dom <- edificios2009_dom %>% filter(edificios2009_dom==2) %>% select(Freq)
 ```
 
 ```{r}
-muni2016 = round(prop.table(table(muni2016=part_2016$municipales)),2)
-muni2016 = as.data.frame(muni2016)
-muni2016 <- muni2016 %>% filter(muni2016==2) %>% select(Freq)
+#mex
+muni2009_mex = round(prop.table(table(muni2009_mex=data2009_mex$municipales)),2)
+muni2009_mex = as.data.frame(muni2009_mex)
+muni2009_mex <- muni2009_mex %>% filter(muni2009_mex==2) %>% select(Freq)
 
-presiden2016 = round(prop.table(table(presiden2016=part_2016$presidenciales)),2)
-presiden2016 = as.data.frame(presiden2016)
-presiden2016 <- presiden2016 %>% filter(presiden2016==2) %>% select(Freq)
+presiden2009_mex = round(prop.table(table(presiden2009_mex=data2009_mex$presidenciales)),2)
+presiden2009_mex = as.data.frame(presiden2009_mex)
+presiden2009_mex <- presiden2009_mex %>% filter(presiden2009_mex==2) %>% select(Freq)
 
-marchar2016 = round(prop.table(table(marchar2016=part_2016$marchar)),2)
-marchar2016 = as.data.frame(marchar2016)
-marchar2016 <- marchar2016 %>% filter(marchar2016==2) %>% select(Freq)
+marchar2009_mex = round(prop.table(table(marchar2009_mex=data2009_mex$marchar)),2)
+marchar2009_mex = as.data.frame(marchar2009_mex)
+marchar2009_mex <- marchar2009_mex %>% filter(marchar2009_mex==2) %>% select(Freq)
 
-bloquear2016 = round(prop.table(table(bloquear2016=part_2016$bloquear)),2)
-bloquear2016 = as.data.frame(bloquear2016)
-bloquear2016 <- bloquear2016 %>% filter(bloquear2016==2) %>% select(Freq)
+bloquear2009_mex = round(prop.table(table(bloquear2009_mex=data2009_mex$bloquear)),2)
+bloquear2009_mex = as.data.frame(bloquear2009_mex)
+bloquear2009_mex <- bloquear2009_mex %>% filter(bloquear2009_mex==2) %>% select(Freq)
 
-pintar2016 = round(prop.table(table(pintar2016=part_2016$pintar)),2)
-pintar2016 = as.data.frame(pintar2016)
-pintar2016 <- pintar2016 %>% filter(pintar2016==2) %>% select(Freq)
+pintar2009_mex = round(prop.table(table(pintar2009_mex=data2009_mex$pintar)),2)
+pintar2009_mex = as.data.frame(pintar2009_mex)
+pintar2009_mex <- pintar2009_mex %>% filter(pintar2009_mex==2) %>% select(Freq)
 
-edificios2016 = round(prop.table(table(edificios2016=part_2016$edificios)),2)
-edificios2016 = as.data.frame(edificios2016)
-edificios2016 <- edificios2016 %>% filter(edificios2016==2) %>% select(Freq)
+edificios2009_mex = round(prop.table(table(edificios2009_mex=data2009_mex$edificios)),2)
+edificios2009_mex = as.data.frame(edificios2009_mex)
+edificios2009_mex <- edificios2009_mex %>% filter(edificios2009_mex==2) %>% select(Freq)
+```
+
+
+
+```{r}
+#chl
+muni2016_chl = round(prop.table(table(muni2016_chl=data2016_chl$municipales)),2)
+muni2016_chl = as.data.frame(muni2016_chl)
+muni2016_chl <- muni2016_chl %>% filter(muni2016_chl==2) %>% select(Freq)
+
+presiden2016_chl = round(prop.table(table(presiden2016_chl=data2016_chl$presidenciales)),2)
+presiden2016_chl = as.data.frame(presiden2016_chl)
+presiden2016_chl <- presiden2016_chl %>% filter(presiden2016_chl==2) %>% select(Freq)
+
+marchar2016_chl = round(prop.table(table(marchar2016_chl=data2016_chl$marchar)),2)
+marchar2016_chl = as.data.frame(marchar2016_chl)
+marchar2016_chl <- marchar2016_chl %>% filter(marchar2016_chl==2) %>% select(Freq)
+
+bloquear2016_chl = round(prop.table(table(bloquear2016_chl=data2016_chl$bloquear)),2)
+bloquear2016_chl = as.data.frame(bloquear2016_chl)
+bloquear2016_chl <- bloquear2016_chl %>% filter(bloquear2016_chl==2) %>% select(Freq)
+
+pintar2016_chl = round(prop.table(table(pintar2016_chl=data2016_chl$pintar)),2)
+pintar2016_chl = as.data.frame(pintar2016_chl)
+pintar2016_chl <- pintar2016_chl %>% filter(pintar2016_chl==2) %>% select(Freq)
+
+edificios2016_chl = round(prop.table(table(edificios2016_chl=data2016_chl$edificios)),2)
+edificios2016_chl = as.data.frame(edificios2016_chl)
+edificios2016_chl <- edificios2016_chl %>% filter(edificios2016_chl==2) %>% select(Freq)
+```
+
+
+```{r}
+#col
+muni2016_col = round(prop.table(table(muni2016_col=data2016_col$municipales)),2)
+muni2016_col = as.data.frame(muni2016_col)
+muni2016_col <- muni2016_col %>% filter(muni2016_col==2) %>% select(Freq)
+
+presiden2016_col = round(prop.table(table(presiden2016_col=data2016_col$presidenciales)),2)
+presiden2016_col = as.data.frame(presiden2016_col)
+presiden2016_col <- presiden2016_col %>% filter(presiden2016_col==2) %>% select(Freq)
+
+marchar2016_col = round(prop.table(table(marchar2016_col=data2016_col$marchar)),2)
+marchar2016_col = as.data.frame(marchar2016_col)
+marchar2016_col <- marchar2016_col %>% filter(marchar2016_col==2) %>% select(Freq)
+
+bloquear2016_col = round(prop.table(table(bloquear2016_col=data2016_col$bloquear)),2)
+bloquear2016_col = as.data.frame(bloquear2016_col)
+bloquear2016_col <- bloquear2016_col %>% filter(bloquear2016_col==2) %>% select(Freq)
+
+pintar2016_col = round(prop.table(table(pintar2016_col=data2016_col$pintar)),2)
+pintar2016_col = as.data.frame(pintar2016_col)
+pintar2016_col <- pintar2016_col %>% filter(pintar2016_col==2) %>% select(Freq)
+
+edificios2016_col = round(prop.table(table(edificios2016_col=data2016_col$edificios)),2)
+edificios2016_col = as.data.frame(edificios2016_col)
+edificios2016_col <- edificios2016_col %>% filter(edificios2016_col==2) %>% select(Freq)
 ```
 
 ```{r}
-porcentaje <- rbind(muni2009, presiden2009, marchar2009, bloquear2009, pintar2009, edificios2009, muni2016, presiden2016, marchar2016, bloquear2016, pintar2016, edificios2016)
-year <- c(rep("2009", 6), rep("2016",6))
+#dom
+muni2016_dom = round(prop.table(table(muni2016_dom=data2016_dom$municipales)),2)
+muni2016_dom = as.data.frame(muni2016_dom)
+muni2016_dom <- muni2016_dom %>% filter(muni2016_dom==2) %>% select(Freq)
+
+presiden2016_dom = round(prop.table(table(presiden2016_dom=data2016_dom$presidenciales)),2)
+presiden2016_dom = as.data.frame(presiden2016_dom)
+presiden2016_dom <- presiden2016_dom %>% filter(presiden2016_dom==2) %>% select(Freq)
+
+marchar2016_dom = round(prop.table(table(marchar2016_dom=data2016_dom$marchar)),2)
+marchar2016_dom = as.data.frame(marchar2016_dom)
+marchar2016_dom <- marchar2016_dom %>% filter(marchar2016_dom==2) %>% select(Freq)
+
+bloquear2016_dom = round(prop.table(table(bloquear2016_dom=data2016_dom$bloquear)),2)
+bloquear2016_dom = as.data.frame(bloquear2016_dom)
+bloquear2016_dom <- bloquear2016_dom %>% filter(bloquear2016_dom==2) %>% select(Freq)
+
+pintar2016_dom = round(prop.table(table(pintar2016_dom=data2016_dom$pintar)),2)
+pintar2016_dom = as.data.frame(pintar2016_dom)
+pintar2016_dom <- pintar2016_dom %>% filter(pintar2016_dom==2) %>% select(Freq)
+
+edificios2016_dom = round(prop.table(table(edificios2016_dom=data2016_dom$edificios)),2)
+edificios2016_dom = as.data.frame(edificios2016_dom)
+edificios2016_dom <- edificios2016_dom %>% filter(edificios2016_dom==2) %>% select(Freq)
+```
+
+```{r}
+#mex
+muni2016_mex = round(prop.table(table(muni2016_mex=data2016_mex$municipales)),2)
+muni2016_mex = as.data.frame(muni2016_mex)
+muni2016_mex <- muni2016_mex %>% filter(muni2016_mex==2) %>% select(Freq)
+
+presiden2016_mex = round(prop.table(table(presiden2016_mex=data2016_mex$presidenciales)),2)
+presiden2016_mex = as.data.frame(presiden2016_mex)
+presiden2016_mex <- presiden2016_mex %>% filter(presiden2016_mex==2) %>% select(Freq)
+
+marchar2016_mex = round(prop.table(table(marchar2016_mex=data2016_mex$marchar)),2)
+marchar2016_mex = as.data.frame(marchar2016_mex)
+marchar2016_mex <- marchar2016_mex %>% filter(marchar2016_mex==2) %>% select(Freq)
+
+bloquear2016_mex = round(prop.table(table(bloquear2016_mex=data2016_mex$bloquear)),2)
+bloquear2016_mex = as.data.frame(bloquear2016_mex)
+bloquear2016_mex <- bloquear2016_mex %>% filter(bloquear2016_mex==2) %>% select(Freq)
+
+pintar2016_mex = round(prop.table(table(pintar2016_mex=data2016_mex$pintar)),2)
+pintar2016_mex = as.data.frame(pintar2016_mex)
+pintar2016_mex <- pintar2016_mex %>% filter(pintar2016_mex==2) %>% select(Freq)
+
+edificios2016_mex = round(prop.table(table(edificios2016_mex=data2016_mex$edificios)),2)
+edificios2016_mex = as.data.frame(edificios2016_mex)
+edificios2016_mex <- edificios2016_mex %>% filter(edificios2016_mex==2) %>% select(Freq)
+```
+
+
+
+```{r}
+porcentaje <- rbind(muni2009_chl, 
+                    presiden2009_chl, 
+                    marchar2009_chl, 
+                    bloquear2009_chl, 
+                    pintar2009_chl, 
+                    edificios2009_chl, 
+                    muni2009_col, 
+                    presiden2009_col, 
+                    marchar2009_col, 
+                    bloquear2009_col, 
+                    pintar2009_col, 
+                    edificios2009_col,
+                    muni2009_dom, 
+                    presiden2009_dom, 
+                    marchar2009_dom, 
+                    bloquear2009_dom, 
+                    pintar2009_dom, 
+                    edificios2009_dom, 
+                    muni2009_mex, 
+                    presiden2009_mex, 
+                    marchar2009_mex, 
+                    bloquear2009_mex, 
+                    pintar2009_mex, 
+                    edificios2009_mex, 
+                    muni2016_chl, 
+                    presiden2016_chl, 
+                    marchar2016_chl, 
+                    bloquear2016_chl, 
+                    pintar2016_chl, 
+                    edificios2016_chl,
+                    muni2016_col, 
+                    presiden2016_col, 
+                    marchar2016_col, 
+                    bloquear2016_col, 
+                    pintar2016_col, 
+                    edificios2016_col,
+                    muni2016_dom, 
+                    presiden2016_dom, 
+                    marchar2016_dom, 
+                    bloquear2016_dom, 
+                    pintar2016_dom, 
+                    edificios2016_dom,
+                    muni2016_mex, 
+                    presiden2016_mex, 
+                    marchar2016_mex, 
+                    bloquear2016_mex, 
+                    pintar2016_mex, 
+                    edificios2016_mex)
+
+year <- c(rep("2009", 24), rep("2016",24))
 year <- as.data.frame(year)
+
+ctr <- c(rep("Chile", 6), rep("Colombia", 6), rep("Dominican", 6), rep("Mexico", 6), rep("Chile", 6), rep("Colombia", 6), rep("Dominican", 6), rep("Mexico", 6))
+ctr <- as.data.frame(ctr)
+
 collapse_rows <-
     data.frame(vars = c("Local vote",
                         "National vote",
@@ -120,22 +519,25 @@ collapse_rows <-
                         "Paint",
                         "Occupy"),
                porcentaje,
-               year)
+               year,
+               ctr)
 
 colnames(collapse_rows) <- c("Participation",
                             "Percent",
-                            "year")
+                            "year",
+                            "country")
 
 ```
 
 ```{r}
 participacion <- ggplot() +
-  geom_point(collapse_rows, size=8, mapping=aes(x=year, y=Percent, shape=Participation, color=Participation)) +
+  geom_point(collapse_rows, size=4, mapping=aes(x=year, y=Percent, shape=Participation, color=Participation)) +
   coord_flip() +
   theme_bw() +
   xlab(label = "Year") +
-  ylab(label = "% I'll sure/probably do")
+  ylab(label = "% I'll sure/probably do") +
+  facet_wrap(~country)
 participacion
-ggsave(participacion, file="../output/graphs/participacion.png")
+ggsave(participacion, file="../output/graphs/participacion_paises.png")
 ```
 
