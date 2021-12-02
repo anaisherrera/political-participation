@@ -53,12 +53,12 @@ data2009_chl_esc <- read_sav("../input/data/original/2009/ICGCHLC2.sav")
 data2009_chl0 <- full_join(data2009_chl0, data2009_chl_esc, by=c("IDSCHOOL.x"="IDSCHOOL"))
 
 # Centrado
-data2009_chl0 = data2009_chl0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(SCSTUDOP, na.rm = T))
+data2009_chl0 = data2009_chl0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(PARTSCHL, na.rm = T))
 
 ## Nivel 1: al promedio del grupo
-#data2009_chl0$SCSTUDOP = misty::center(data2009_chl0$SCSTUDOP, type = "CWC", group = data2009_chl0$IDSCHOOL.x)
+data2009_chl0$PARTSCHL = misty::center(data2009_chl0$PARTSCHL, type = "CWC", group = data2009_chl0$IDSCHOOL.x)
 ## Nivel 2: al gran promedio
-data2009_chl0$mean_op_esc = center(data2009_chl0$mean_op_esc, type = c("CGM"))
+data2009_chl0$mean_op_esc = misty::center(data2009_chl0$mean_op_esc, type = c("CGM"))
 ```
 
 ### Guardar base
@@ -96,11 +96,11 @@ data2009_col_esc <- read_sav("../input/data/original/2009/ICGCOLC2.sav")
 data2009_col0 <- full_join(data2009_col0, data2009_col_esc, by=c("IDSCHOOL.x"="IDSCHOOL"))
 
 # Centrado
-data2009_col0 = data2009_col0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(SCSTUDOP, na.rm = T))
+data2009_col0 = data2009_col0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(PARTSCHL, na.rm = T))
 ## Nivel 1: al promedio del grupo
-#data2009_col0$SCSTUDOP = misty::center(data2009_col0$SCSTUDOP, type = "CWC", group = data2009_col0$IDSCHOOL.x)
+data2009_col0$PARTSCHL = misty::center(data2009_col0$PARTSCHL, type = "CWC", group = data2009_col0$IDSCHOOL.x)
 ## Nivel 2: al gran promedio
-data2009_col0$mean_op_esc = center(data2009_col0$mean_op_esc, type = c("CGM"))
+data2009_col0$mean_op_esc = misty::center(data2009_col0$mean_op_esc, type = c("CGM"))
 ```
 
 ### Guardar base
@@ -136,13 +136,12 @@ data2009_dom0 <- full_join(data2009_dom, data2009_dom_lat, by="IDSTUD")
 data2009_dom_esc <- read_sav("../input/data/original/2009/ICGDOMC2.sav")
 data2009_dom0 <- full_join(data2009_dom0, data2009_dom_esc, by=c("IDSCHOOL.x"="IDSCHOOL"))
 
-
 # Centrado
-data2009_dom0 = data2009_dom0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(SCSTUDOP, na.rm = T))
+data2009_dom0 = data2009_dom0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(PARTSCHL, na.rm = T))
 ## Nivel 1: al promedio del grupo
-#data2009_dom0$SCSTUDOP = misty::center(data2009_dom0$SCSTUDOP, type = "CWC", group = data2009_dom0$IDSCHOOL.x)
+data2009_dom0$PARTSCHL = misty::center(data2009_dom0$PARTSCHL, type = "CWC", group = data2009_dom0$IDSCHOOL.x)
 ## Nivel 2: al gran promedio
-data2009_dom0$mean_op_esc = center(data2009_dom0$mean_op_esc, type = c("CGM"))
+data2009_dom0$mean_op_esc = misty::center(data2009_dom0$mean_op_esc, type = c("CGM"))
 ```
 
 ### Guardar base
@@ -180,11 +179,11 @@ data2009_mex0 <- full_join(data2009_mex0, data2009_mex_esc, by=c("IDSCHOOL.x"="I
 
 
 # Centrado
-data2009_mex0 = data2009_mex0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(SCSTUDOP, na.rm = T))
+data2009_mex0 = data2009_mex0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(PARTSCHL, na.rm = T))
 ## Nivel 1: al promedio del grupo
-#data2009_mex0$SCSTUDOP = misty::center(data2009_mex0$SCSTUDOP, type = "CWC", group = data2009_mex0$IDSCHOOL.x)
+data2009_mex0$PARTSCHL = misty::center(data2009_mex0$PARTSCHL, type = "CWC", group = data2009_mex0$IDSCHOOL.x)
 ## Nivel 2: al gran promedio
-data2009_mex0$mean_op_esc = center(data2009_mex0$mean_op_esc, type = c("CGM"))
+data2009_mex0$mean_op_esc = misty::center(data2009_mex0$mean_op_esc, type = c("CGM"))
 ```
 
 ### Guardar base
@@ -290,13 +289,14 @@ data2016_chl_esc <- read_sav("../input/data/original/2016/ICGCHLC3.sav")
 data2016_chl0 <- full_join(data2016_chl0, data2016_chl_esc, by=c("IDSCHOOL.x"="IDSCHOOL"))
 
 # Centrado
-data2016_chl0 = data2016_chl0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(C_STDCOM, na.rm = T))
+data2016_chl0 = data2016_chl0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(S_SCHPART, na.rm = T))
 
 ## Nivel 1: al promedio del grupo
-#data2016_chl0$C_STDCOM = misty::center(data2016_chl0$C_STDCOM, type = "CWC", group = data2016_chl0$IDSCHOOL.x)
+data2016_chl0$S_SCHPART = misty::center(data2016_chl0$S_SCHPART, type = "CWC", group = data2016_chl0$IDSCHOOL.x)
 ## Nivel 2: al gran promedio
-data2016_chl0$mean_op_esc = center(data2016_chl0$mean_op_esc, type = c("CGM"))
-
+data2016_chl0$mean_op_esc = misty::center(data2016_chl0$mean_op_esc, type = c("CGM"))
+data2016_chl0$S_SCHPART
+data2016_chl0$mean_op_esc
 ```
 
 ### Guardar base
@@ -320,12 +320,12 @@ data2016_col_esc <- read_sav("../input/data/original/2016/ICGCOLC3.sav")
 data2016_col0 <- full_join(data2016_col0, data2016_col_esc, by=c("IDSCHOOL.x"="IDSCHOOL"))
 
 # Centrado
-data2016_col0 = data2016_col0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(C_STDCOM, na.rm = T))
+data2016_col0 = data2016_col0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(S_SCHPART, na.rm = T))
 
 ## Nivel 1: al promedio del grupo
-#data2016_col0$C_STDCOM = misty::center(data2016_col0$C_STDCOM, type = "CWC", group = data2016_col0$IDSCHOOL.x)
+data2016_col0$S_SCHPART = misty::center(data2016_col0$S_SCHPART, type = "CWC", group = data2016_col0$IDSCHOOL.x)
 ## Nivel 2: al gran promedio
-data2016_col0$mean_op_esc = center(data2016_col0$mean_op_esc, type = c("CGM"))
+data2016_col0$mean_op_esc = misty::center(data2016_col0$mean_op_esc, type = c("CGM"))
 ```
 
 ### Guardar base
@@ -349,12 +349,12 @@ data2016_dom_esc <- read_sav("../input/data/original/2016/ICGDOMC3.sav")
 data2016_dom0 <- full_join(data2016_dom0, data2016_dom_esc, by=c("IDSCHOOL.x"="IDSCHOOL"))
 
 # Centrado
-data2016_dom0 = data2016_dom0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(C_STDCOM, na.rm = T))
+data2016_dom0 = data2016_dom0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(S_SCHPART, na.rm = T))
 
 ## Nivel 1: al promedio del grupo
-#data2016_dom0$C_STDCOM = misty::center(data2016_dom0$C_STDCOM, type = "CWC", group = data2016_dom0$IDSCHOOL.x)
+data2016_dom0$S_SCHPART = misty::center(data2016_dom0$S_SCHPART, type = "CWC", group = data2016_dom0$IDSCHOOL.x)
 ## Nivel 2: al gran promedio
-data2016_dom0$mean_op_esc = center(data2016_dom0$mean_op_esc, type = c("CGM"))
+data2016_dom0$mean_op_esc = misty::center(data2016_dom0$mean_op_esc, type = c("CGM"))
 ```
 
 ### Guardar base
@@ -383,11 +383,11 @@ data2016_mex_esc <- read_sav("../input/data/original/2016/ICGMEXC3.sav")
 data2016_mex0 <- full_join(data2016_mex0, data2016_mex_esc, by=c("IDSCHOOL.x"="IDSCHOOL"))
 
 # Centrado
-data2016_mex0 = data2016_mex0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(C_STDCOM, na.rm = T))
+data2016_mex0 = data2016_mex0 %>% group_by(IDSCHOOL.x) %>% mutate(mean_op_esc=mean(S_SCHPART, na.rm = T))
 ## Nivel 1: al promedio del grupo
-#data2016_mex0$C_STDCOM = misty::center(data2016_mex0$C_STDCOM, type = "CWC", group = data2016_mex0$IDSCHOOL.x)
+data2016_mex0$S_SCHPART = misty::center(data2016_mex0$S_SCHPART, type = "CWC", group = data2016_mex0$IDSCHOOL.x)
 ## Nivel 2: al gran promedio
-data2016_mex0$mean_op_esc = center(data2016_mex0$mean_op_esc, type = c("CGM"))
+data2016_mex0$mean_op_esc = misty::center(data2016_mex0$mean_op_esc, type = c("CGM"))
 ```
 
 ### Guardar base
