@@ -45,7 +45,7 @@ data2016_mex=data2016_mex0 %>% dplyr::select(IS3G31A, IS3G31B, IS3G30C, IS3G30J,
 remove(data2009_chl0, data2009_col0, data2009_dom0, data2009_mex0, data2016_chl0, data2016_col0, data2016_dom0, data2016_mex0)
 ```
 
-# Recodificar en dos categorías. La idea es que "sure and probabily i do it" estén en una sola categoría. Ese porcentaje (por ejemplo, el 40% participaria) es lo que hay que representar. Este porcentaje en eje x y los dos años (2009 y 2016) van en eje y
+#### Recodificar en dos categorías. La idea es que "sure and probabily i do it" estén en una sola categoría. Ese porcentaje (por ejemplo, el 40% participaria) es lo que hay que representar. Este porcentaje en eje x y los dos años (2009 y 2016) van en eje y
 
 ## 2009
 ```{r}
@@ -453,7 +453,53 @@ edificios2016_mex = as.data.frame(edificios2016_mex)
 edificios2016_mex <- edificios2016_mex %>% filter(edificios2016_mex==2) %>% select(Freq)
 ```
 
+# graphs chile
 
+```{r}
+porcentaje_chl <- rbind(muni2009_chl,
+                    presiden2009_chl, 
+                    marchar2009_chl, 
+                    bloquear2009_chl, 
+                    pintar2009_chl, 
+                    edificios2009_chl, 
+                    muni2016_chl, 
+                    presiden2016_chl, 
+                    marchar2016_chl, 
+                    bloquear2016_chl, 
+                    pintar2016_chl, 
+                    edificios2016_chl)
+
+year_chl <- c(rep("2009", 6), rep("2016", 6))
+year_chl <- as.data.frame(year_chl)
+
+collapse_rows_chl <-
+    data.frame(vars = c("Local vote",
+                        "National vote",
+                        "March",
+                        "Block",
+                        "Paint",
+                        "Occupy"),
+               porcentaje_chl,
+               year_chl)
+
+colnames(collapse_rows_chl) <- c("Participation",
+                            "Percent",
+                            "year")
+
+```
+
+```{r}
+participacion_chl <- ggplot() +
+  geom_point(collapse_rows_chl, size=4, mapping=aes(x=year, y=Percent, shape=Participation, color=Participation)) +
+  coord_flip() +
+  theme_bw() +
+  xlab(label = "Year") +
+  ylab(label = "% I'll sure/probably do")
+participacion_chl
+ggsave(participacion_chl, file="../output/graphs/participacion_chl.png")
+```
+
+# graphs 4 country
 
 ```{r}
 porcentaje <- rbind(muni2009_chl, 
@@ -530,14 +576,14 @@ colnames(collapse_rows) <- c("Participation",
 ```
 
 ```{r}
-participacion <- ggplot() +
+participacion_ctr <- ggplot() +
   geom_point(collapse_rows, size=4, mapping=aes(x=year, y=Percent, shape=Participation, color=Participation)) +
   coord_flip() +
   theme_bw() +
   xlab(label = "Year") +
   ylab(label = "% I'll sure/probably do") +
   facet_wrap(~country)
-participacion
-ggsave(participacion, file="../output/graphs/participacion_paises.png")
+participacion_ctr
+ggsave(participacion_ctr, file="../output/graphs/participacion_paises.png")
 ```
 
