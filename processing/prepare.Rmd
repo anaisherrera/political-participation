@@ -19,7 +19,7 @@ pacman::p_load(misty,haven,dplyr)
 data2009_chl <- read_sav("../input/data/original/2009/ISGCHLC2.sav")
 
 # Educación
-data2009_chl$HISCED2 <- ifelse((data2009_chl$HISCED==0), 0, # did not complete <ISCED level 2>
+data2009_chl$HISCED_idem <- ifelse((data2009_chl$HISCED==0), 0, # did not complete <ISCED level 2>
                    ifelse((data2009_chl$HISCED==1), 0,  # did not complete <ISCED level 2>              
                           ifelse((data2009_chl$HISCED==2), 1,  # <ISCED level 2>                        
                                  ifelse((data2009_chl$HISCED==3), 2, # <ISCED level 3>
@@ -28,13 +28,27 @@ data2009_chl$HISCED2 <- ifelse((data2009_chl$HISCED==0), 0, # did not complete <
 
 # según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 (que corresponde a isced 4 (o CINE)) corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
 
+data2009_chl$HISCED2 <- ifelse((data2009_chl$HISCED==0), 0, # did not complete <ISCED level 2>
+                   ifelse((data2009_chl$HISCED==1), 0,  # did not complete <ISCED level 2>              
+                          ifelse((data2009_chl$HISCED==2), 0,  # <ISCED level 2>                        
+                                 ifelse((data2009_chl$HISCED==3), 0, # <ISCED level 3>
+                                        ifelse((data2009_chl$HISCED==4), 1, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
+                                               ifelse((data2009_chl$HISCED==5), 1, NA)))))) # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
+
 # Cantidad de libros en el hogar
-data2009_chl$HOMELIT2 <- ifelse((data2009_chl$HOMELIT==0), 0,
+data2009_chl$HOMELIT_idem <- ifelse((data2009_chl$HOMELIT==0), 0,
                    ifelse((data2009_chl$HOMELIT==1), 1,                                 
                           ifelse((data2009_chl$HOMELIT==2), 2,                           
                                  ifelse((data2009_chl$HOMELIT==3), 3,
                                         ifelse((data2009_chl$HOMELIT==4), 4,
                                                ifelse((data2009_chl$HOMELIT==5), 4, NA)))))) #más de 200 libros (así queda igual que en iccs 2016)
+
+data2009_chl$HOMELIT2 <- ifelse((data2009_chl$HOMELIT==0), 0,
+                   ifelse((data2009_chl$HOMELIT==1), 0,                                 
+                          ifelse((data2009_chl$HOMELIT==2), 0,                           
+                                 ifelse((data2009_chl$HOMELIT==3), 1,
+                                        ifelse((data2009_chl$HOMELIT==4), 1,
+                                               ifelse((data2009_chl$HOMELIT==5), 1, NA)))))) #más de 100 libros
 
 
 # Las que usaremos son: participacion electoral, demostraciones, bloquear una calle, pintar muros y ocupar edificios
@@ -70,23 +84,39 @@ save(data2009_chl0, file= "../input/data/proc/2009/data_chl.Rdata")
 ```{r}
 data2009_col <- read_sav("../input/data/original/2009/ISGCOLC2.sav")
 
+
 # Educación
-data2009_col$HISCED2 <- ifelse((data2009_col$HISCED==0), 0, # did not complete <ISCED level 2>
+data2009_col$HISCED_idem <- ifelse((data2009_col$HISCED==0), 0, # did not complete <ISCED level 2>
                    ifelse((data2009_col$HISCED==1), 0,  # did not complete <ISCED level 2>              
                           ifelse((data2009_col$HISCED==2), 1,  # <ISCED level 2>                        
                                  ifelse((data2009_col$HISCED==3), 2, # <ISCED level 3>
-                                        ifelse((data2009_col$HISCED==4), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
-                                               ifelse((data2009_col$HISCED==5), 3, NA)))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+                                        ifelse((data2009_col$HISCED==4), 3, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
+                                               ifelse((data2009_col$HISCED==5), 3, NA)))))) # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
 
 # según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 (que corresponde a isced 4 (o CINE)) corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
 
+data2009_col$HISCED2 <- ifelse((data2009_col$HISCED==0), 0, # did not complete <ISCED level 2>
+                   ifelse((data2009_col$HISCED==1), 0,  # did not complete <ISCED level 2>              
+                          ifelse((data2009_col$HISCED==2), 0,  # <ISCED level 2>                        
+                                 ifelse((data2009_col$HISCED==3), 0, # <ISCED level 3>
+                                        ifelse((data2009_col$HISCED==4), 1, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
+                                               ifelse((data2009_col$HISCED==5), 1, NA)))))) # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
+
 # Cantidad de libros en el hogar
-data2009_col$HOMELIT2 <- ifelse((data2009_col$HOMELIT==0), 0,
+data2009_col$HOMELIT_idem <- ifelse((data2009_col$HOMELIT==0), 0,
                    ifelse((data2009_col$HOMELIT==1), 1,                                 
                           ifelse((data2009_col$HOMELIT==2), 2,                           
                                  ifelse((data2009_col$HOMELIT==3), 3,
                                         ifelse((data2009_col$HOMELIT==4), 4,
                                                ifelse((data2009_col$HOMELIT==5), 4, NA)))))) #más de 200 libros (así queda igual que en iccs 2016)
+
+data2009_col$HOMELIT2 <- ifelse((data2009_col$HOMELIT==0), 0,
+                   ifelse((data2009_col$HOMELIT==1), 0,                                 
+                          ifelse((data2009_col$HOMELIT==2), 0,                           
+                                 ifelse((data2009_col$HOMELIT==3), 1,
+                                        ifelse((data2009_col$HOMELIT==4), 1,
+                                               ifelse((data2009_col$HOMELIT==5), 1, NA)))))) #más de 100 libros
+
 
 data2009_col_lat <- read_sav("../input/data/original/2009/ISLCOLC2.sav")
 data2009_col0 <- full_join(data2009_col, data2009_col_lat, by="IDSTUD")
@@ -113,22 +143,36 @@ save(data2009_col0, file= "../input/data/proc/2009/data_col.Rdata")
 data2009_dom <- read_sav("../input/data/original/2009/ISGDOMC2.sav")
 
 # Educación
-data2009_dom$HISCED2 <- ifelse((data2009_dom$HISCED==0), 0, # did not complete <ISCED level 2>
+data2009_dom$HISCED_idem <- ifelse((data2009_dom$HISCED==0), 0, # did not complete <ISCED level 2>
                    ifelse((data2009_dom$HISCED==1), 0,  # did not complete <ISCED level 2>              
                           ifelse((data2009_dom$HISCED==2), 1,  # <ISCED level 2>                        
                                  ifelse((data2009_dom$HISCED==3), 2, # <ISCED level 3>
-                                        ifelse((data2009_dom$HISCED==4), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
-                                               ifelse((data2009_dom$HISCED==5), 3, NA)))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+                                        ifelse((data2009_dom$HISCED==4), 3, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
+                                               ifelse((data2009_dom$HISCED==5), 3, NA)))))) # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
 
 # según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 (que corresponde a isced 4 (o CINE)) corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
 
+data2009_dom$HISCED2 <- ifelse((data2009_dom$HISCED==0), 0, # did not complete <ISCED level 2>
+                   ifelse((data2009_dom$HISCED==1), 0,  # did not complete <ISCED level 2>              
+                          ifelse((data2009_dom$HISCED==2), 0,  # <ISCED level 2>                        
+                                 ifelse((data2009_dom$HISCED==3), 0, # <ISCED level 3>
+                                        ifelse((data2009_dom$HISCED==4), 1, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
+                                               ifelse((data2009_dom$HISCED==5), 1, NA)))))) # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
+
 # Cantidad de libros en el hogar
-data2009_dom$HOMELIT2 <- ifelse((data2009_dom$HOMELIT==0), 0,
+data2009_dom$HOMELIT_idem <- ifelse((data2009_dom$HOMELIT==0), 0,
                    ifelse((data2009_dom$HOMELIT==1), 1,                                 
                           ifelse((data2009_dom$HOMELIT==2), 2,                           
                                  ifelse((data2009_dom$HOMELIT==3), 3,
                                         ifelse((data2009_dom$HOMELIT==4), 4,
                                                ifelse((data2009_dom$HOMELIT==5), 4, NA)))))) #más de 200 libros (así queda igual que en iccs 2016)
+
+data2009_dom$HOMELIT2 <- ifelse((data2009_dom$HOMELIT==0), 0,
+                   ifelse((data2009_dom$HOMELIT==1), 0,                                 
+                          ifelse((data2009_dom$HOMELIT==2), 0,                           
+                                 ifelse((data2009_dom$HOMELIT==3), 1,
+                                        ifelse((data2009_dom$HOMELIT==4), 1,
+                                               ifelse((data2009_dom$HOMELIT==5), 1, NA)))))) #más de 100 libros
 
 data2009_dom_lat <- read_sav("../input/data/original/2009/ISLDOMC2.sav")
 data2009_dom0 <- full_join(data2009_dom, data2009_dom_lat, by="IDSTUD")
@@ -154,22 +198,36 @@ save(data2009_dom0, file= "../input/data/proc/2009/data_dom.Rdata")
 data2009_mex <- read_sav("../input/data/original/2009/ISGMEXC2.sav")
 
 # Educación
-data2009_mex$HISCED2 <- ifelse((data2009_mex$HISCED==0), 0, # did not complete <ISCED level 2>
+data2009_mex$HISCED_idem <- ifelse((data2009_mex$HISCED==0), 0, # did not complete <ISCED level 2>
                    ifelse((data2009_mex$HISCED==1), 0,  # did not complete <ISCED level 2>              
                           ifelse((data2009_mex$HISCED==2), 1,  # <ISCED level 2>                        
                                  ifelse((data2009_mex$HISCED==3), 2, # <ISCED level 3>
-                                        ifelse((data2009_mex$HISCED==4), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
-                                               ifelse((data2009_mex$HISCED==5), 3, NA)))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+                                        ifelse((data2009_mex$HISCED==4), 3, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
+                                               ifelse((data2009_mex$HISCED==5), 3, NA)))))) # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
 
 # según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 (que corresponde a isced 4 (o CINE)) corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
 
+data2009_mex$HISCED2 <- ifelse((data2009_mex$HISCED==0), 0, # did not complete <ISCED level 2>
+                   ifelse((data2009_mex$HISCED==1), 0,  # did not complete <ISCED level 2>              
+                          ifelse((data2009_mex$HISCED==2), 0,  # <ISCED level 2>                        
+                                 ifelse((data2009_mex$HISCED==3), 0, # <ISCED level 3>
+                                        ifelse((data2009_mex$HISCED==4), 1, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
+                                               ifelse((data2009_mex$HISCED==5), 1, NA)))))) # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
+
 # Cantidad de libros en el hogar
-data2009_mex$HOMELIT2 <- ifelse((data2009_mex$HOMELIT==0), 0,
+data2009_mex$HOMELIT_idem <- ifelse((data2009_mex$HOMELIT==0), 0,
                    ifelse((data2009_mex$HOMELIT==1), 1,                                 
                           ifelse((data2009_mex$HOMELIT==2), 2,                           
                                  ifelse((data2009_mex$HOMELIT==3), 3,
                                         ifelse((data2009_mex$HOMELIT==4), 4,
                                                ifelse((data2009_mex$HOMELIT==5), 4, NA)))))) #más de 200 libros (así queda igual que en iccs 2016)
+
+data2009_mex$HOMELIT2 <- ifelse((data2009_mex$HOMELIT==0), 0,
+                   ifelse((data2009_mex$HOMELIT==1), 0,                                 
+                          ifelse((data2009_mex$HOMELIT==2), 0,                           
+                                 ifelse((data2009_mex$HOMELIT==3), 1,
+                                        ifelse((data2009_mex$HOMELIT==4), 1,
+                                               ifelse((data2009_mex$HOMELIT==5), 1, NA)))))) #más de 100 libros
 
 data2009_mex_lat <- read_sav("../input/data/original/2009/ISLMEXC2.sav")
 data2009_mex0 <- full_join(data2009_mex, data2009_mex_lat, by="IDSTUD")
@@ -203,6 +261,13 @@ data2016$S_HISCED2 <- ifelse((data2016$S_HISCED==0), 0, # did not complete <ISCE
                                  ifelse((data2016$S_HISCED==3), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
                                         ifelse((data2016$S_HISCED==4), 3, NA))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
 # según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
+
+# Libros
+data2016$S_HOMLIT2 <- ifelse((data2016$S_HOMLIT==0), 0,
+                   ifelse((data2016$S_HOMLIT==1), 0, 
+                          ifelse((data2016$S_HOMLIT==2), 0,
+                                 ifelse((data2016$S_HOMLIT==3), 1, 
+                                        ifelse((data2016$S_HOMLIT==4), 1, NA))))) 
 
 # Cuando adulto
 data2016$IS3G31C <-sjmisc::rec(data2016$IS3G31C,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Obtener informacion sobre candidatos
@@ -282,6 +347,13 @@ data2016_chl$S_HISCED2 <- ifelse((data2016_chl$S_HISCED==0), 0, # did not comple
                                  ifelse((data2016_chl$S_HISCED==3), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
                                         ifelse((data2016_chl$S_HISCED==4), 3, NA))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
 
+# Libros
+data2016_chl$S_HOMLIT2 <- ifelse((data2016_chl$S_HOMLIT==0), 0,
+                   ifelse((data2016_chl$S_HOMLIT==1), 0, 
+                          ifelse((data2016_chl$S_HOMLIT==2), 0,
+                                 ifelse((data2016_chl$S_HOMLIT==3), 1, 
+                                        ifelse((data2016_chl$S_HOMLIT==4), 1, NA))))) 
+
 data2016_chl_lat <- read_sav("../input/data/original/2016/ISLCHLC3.sav")
 data2016_chl0 <- left_join(data2016_chl, data2016_chl_lat, by="IDSTUD")
 
@@ -313,6 +385,13 @@ data2016_col$S_HISCED2 <- ifelse((data2016_col$S_HISCED==0), 0, # did not comple
                                  ifelse((data2016_col$S_HISCED==3), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
                                         ifelse((data2016_col$S_HISCED==4), 3, NA))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
 
+# Libros
+data2016_col$S_HOMLIT2 <- ifelse((data2016_col$S_HOMLIT==0), 0,
+                   ifelse((data2016_col$S_HOMLIT==1), 0, 
+                          ifelse((data2016_col$S_HOMLIT==2), 0,
+                                 ifelse((data2016_col$S_HOMLIT==3), 1, 
+                                        ifelse((data2016_col$S_HOMLIT==4), 1, NA))))) 
+
 data2016_col_lat <- read_sav("../input/data/original/2016/ISLCOLC3.sav")
 data2016_col0 <- left_join(data2016_col, data2016_col_lat, by="IDSTUD")
 
@@ -341,6 +420,14 @@ data2016_dom$S_HISCED2 <- ifelse((data2016_dom$S_HISCED==0), 0, # did not comple
                           ifelse((data2016_dom$S_HISCED==2), 2, # <ISCED level 3> 
                                  ifelse((data2016_dom$S_HISCED==3), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
                                         ifelse((data2016_dom$S_HISCED==4), 3, NA))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+
+# Libros
+data2016_dom$S_HOMLIT2 <- ifelse((data2016_dom$S_HOMLIT==0), 0,
+                   ifelse((data2016_dom$S_HOMLIT==1), 0, 
+                          ifelse((data2016_dom$S_HOMLIT==2), 0,
+                                 ifelse((data2016_dom$S_HOMLIT==3), 1, 
+                                        ifelse((data2016_dom$S_HOMLIT==4), 1, NA))))) 
+
 
 data2016_dom_lat <- read_sav("../input/data/original/2016/ISLDOMC3.sav")
 data2016_dom0 <- left_join(data2016_dom, data2016_dom_lat, by="IDSTUD")
@@ -372,6 +459,13 @@ data2016_mex$S_HISCED2 <- ifelse((data2016_mex$S_HISCED==0), 0, # did not comple
                           ifelse((data2016_mex$S_HISCED==2), 2, # <ISCED level 3> 
                                  ifelse((data2016_mex$S_HISCED==3), 3, # <ISCED level 4 or 5> o <ISCED level 4 or 5>
                                         ifelse((data2016_mex$S_HISCED==4), 3, NA))))) # <ISCED level 4 or 5> o <ISCED level 4 or 5>
+
+# Libros
+data2016_mex$S_HOMLIT2 <- ifelse((data2016_mex$S_HOMLIT==0), 0,
+                   ifelse((data2016_mex$S_HOMLIT==1), 0, 
+                          ifelse((data2016_mex$S_HOMLIT==2), 0,
+                                 ifelse((data2016_mex$S_HOMLIT==3), 1, 
+                                        ifelse((data2016_mex$S_HOMLIT==4), 1, NA))))) 
 
 # según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 (que corresponde a isced 4 (o CINE)) corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
 
