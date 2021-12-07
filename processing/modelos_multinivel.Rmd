@@ -67,53 +67,61 @@ data2009_mex=data2009_mex0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT
 ```
 
 ```{r, include=FALSE}
+#################################
 #### Variables dependientes ####
+#################################
 
 # Variable Name: LEGPROT 
 # Description: Students' expected participation in future legal protest
 # Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally weighted countries
 # Source: 
-#IS2P31A Writing a letter to a newspaper / Escribir una carta a un periódico
-#IS2P31B Wearing a badge or t-shirt expressing your opinion / Llevar una insignia o camiseta que exprese su opinión
-#IS2P31C Contacting an <elected representative> / Ponerse en contacto con un <representante electo>
-#IS2P31D Taking part in a peaceful march or rally / Participar en una marcha o manifestación pacífica
-#IS2P31E Collecting signatures for a petition / Recopilar firmas para una petición
-#IS2P31F Choosing not to buy certain products / Elegir no comprar determinados productos
+#IS2P31A Writing a letter to a newspaper
+#IS2P31B Wearing a badge or t-shirt expressing your opinion
+#IS2P31C Contacting an <elected representative>
+#IS2P31D Taking part in a peaceful march or rally
+#IS2P31E Collecting signatures for a petition
+#IS2P31F Choosing not to buy certain products
 
 # Variable Name: ILLPROT 
 # Description: Students' expected participation in future illegal protest
 # Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally  weighted countries
 # Source: 
-#IS2P31G Spray-painting protest slogans on walls / Pintar eslóganes de protesta con aerosol en las paredes
-#IS2P31H Blocking traffic / Bloquear el tráfico
-#IS2P31I Occupying public buildings / Ocupar edificios públicos
+#IS2P31G Spray-painting protest slogans on walls
+#IS2P31H Blocking traffic
+#IS2P31I Occupying public buildings
 
 # Variable Name: ELECPART 
 # Description: Students' expected adult electoral participation
 # Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally  weighted countries
 # Source: 
-#IS2P32A Vote in <local elections> / Votar en <elecciones locales>
-#IS2P32B Vote in <national elections> / Votar en <elecciones nacionales>
-#IS2P32C Get information about candidates before voting in an election / Obtener información sobre los candidatos antes de votar en una elección
+#IS2P32A Vote in <local elections>
+#IS2P32B Vote in <national elections>
+#IS2P32C Get information about candidates before voting in an election
 
+##################################
 #### Variables independientes ####
+##################################
+
 # HISCED2 # Educación
+
 # HOMELIT2 # Cantidad de libros en el hogar
 
 # Variable Name: DISLAW
 # Description: Student attitudes towards disobeying the law
 # Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally weighted countries
+# Pregunta: ¿En qué medida está de acuerdo o en desacuerdo con las siguientes declaraciones sobre situaciones en las que se desobedece la ley?
+# Se puede desobedecer una ley ...
 # Source: 
-#LS2P05A when it is the only alternative left for achieving important objectives. 
-#LS2P05B when it is the only way one has to help one's family. 
+#LS2P05A when it is the only alternative left for achieving important objectives.
+#LS2P05B when it is the only way one has to help one's family.
 #LS2P05C when others who disobeyed it were not punished.
-#LS2P05D when others do it. 
-#LS2P05E when one distrusts the enacting body. 
-#LS2P05F when one is sure nobody will realize. 
-#LS2P05H when nobody gets hurt. 
-#LS2P05I when it is not done with bad intentions. 
-#LS2P05J when one is not familiar with the law. 
-#LS2P05K when one distrusts the authority executing the law. 
+#LS2P05D when others do it.
+#LS2P05E when one distrusts the enacting body.
+#LS2P05F when one is sure nobody will realize.
+#LS2P05H when nobody gets hurt.
+#LS2P05I when it is not done with bad intentions.
+#LS2P05J when one is not familiar with the law. (no se repite)
+#LS2P05K when one distrusts the authority executing the law. (no se repite) 
 #LS2P05L when one can obtain economic benefits. 
 
 # Variable Name: ATTVIOL
@@ -122,7 +130,7 @@ data2009_mex=data2009_mex0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT
 # Source: 
 #LS2P08A He who does me harm will have to pay for it.
 #LS2P08B Watching fights between classmates is fun.
-#LS2P08C If you cannot do it the easy way, do it the hard way. 
+#LS2P08C If you cannot do it the easy way, do it the hard way.
 #LS2P08D You have to fight so people do not think you are a coward.
 
 # Variable  Name: CITEFF
@@ -137,16 +145,26 @@ data2009_mex=data2009_mex0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT, ILLPROT
 #IS2P30F Write a letter to a newspaper giving your view on a current issue
 #IS2P30G Speak in front of your class about a social or political issue
 
+#Variable Name: INTPOLS
+#Description: Students' Interest in politics and social issues
+#Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally weighted countries
+#Source: 
+#IS2P22A Political issues within your <local community>
+#IS2P22B Political issues in your country
+#IS2P22C Social issues in your country
+#IS2P22D Politics in other countries
+#IS2P22E International politics
+
 # Variable Name: PARTSCHL
 # Description: Students' civic participation at school
 # Procedure: IRT WLE scores with mean of 50 and standard deviation of 10 for equally weighted countries
 # Source: 
-#IS2G15A Voluntary participation in school-based music or drama activities outside of regular lessons
+#IS2G15A Voluntary participation in school-based music or drama activities outside of regular lessons (no se repite)
 #IS2G15B Active participation in a debate
 #IS2G15C Voting for <class representative> or <school parliament>
 #IS2G15D Taking part in decision-making about how the school is run
 #IS2G15E Taking part in discussions at a <student assembly>
-#IS2G15F Becoming a candidate for <class representative> or <school parliament>
+#IS2G15F Becoming a candidate for <class representative> or <school parliament> (no se repite)
 ```
 
 # Modelos de regresión multinivel: 2009
@@ -655,19 +673,22 @@ data2016_mex=data2016_mex0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_IL
 ```
 
 ```{r, include=FALSE}
+#################################
+#### Variables dependientes ####
+#################################
 # Variable Name: S_LEGACT 
 # Description: Students' expected participation in legal activities
 # Procedure: IRT WLE scores with mean of 10 and standard deviation of 2 within each participating country
 # Interpretation: Higher values indicating higher levels of expected engagement
 # Trend Status: Not equated to ICCS 2009 given changes in stem and wording, new scale for ICCS 2016 (with similar content as in the last cycle)
 # Source
-#IS3G30A Talk to others about your views on political or social issues / Hablar con otras personas sobre sus puntos de vista sobre cuestiones políticas o sociales
-#IS3G30B Contact an <elected representative> / Ponerse en contacto con un <representante electo>
-#IS3G30C Take part in a peaceful march or rally / Participar en una marcha o mitin pacífico
-#IS3G30D Collect signatures for a petition / Recoger firmas para una petición
-#IS3G30E Contribute to an online discussion forum about social or political issues / Contribuir a un foro de discusión en línea sobre temas sociales o políticos
-#IS3G30F Organize an online group to take a stance on a controversial political or social issue / Organizar un grupo en línea para tomar una postura sobre un tema político o social controvertido
-#IS3G30G Participate in an online campaign / Participar en una campaña online
+#IS3G30A Talk to others about your views on political or social issues
+#IS3G30B Contact an <elected representative>
+#IS3G30C Take part in a peaceful march or rally
+#IS3G30D Collect signatures for a petition
+#IS3G30E Contribute to an online discussion forum about social or political issues
+#IS3G30F Organize an online group to take a stance on a controversial political or social issue
+#IS3G30G Participate in an online campaign
 
 # Variable Name: S_ILLACT 
 # Description: Students' expected participation in illegal protest activities
@@ -675,9 +696,9 @@ data2016_mex=data2016_mex0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_IL
 # Interpretation: Higher values indicating higher levels of expected engagement
 # Trend Status: Not equated to ICCS 2009 given changes in stem and wording, new scale for ICCS 2016 (with similar content as in the last cycle)
 # Source 
-#IS3G30I Spray-paint protest slogans on walls / Pintar eslóganes de protesta con aerosol en las paredes
-#IS3G30J Stage a protest by blocking traffic / Organizar una protesta bloqueando el tráfico
-#IS3G30K Occupy public buildings as a sign of protest / Ocupar edificios públicos como señal de protesta
+#IS3G30I Spray-paint protest slogans on walls
+#IS3G30J Stage a protest by blocking traffic
+#IS3G30K Occupy public buildings as a sign of protest
 
 # Variable Name: S_ELECPART 
 # Description: Students' expected electoral participation
@@ -685,26 +706,31 @@ data2016_mex=data2016_mex0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_IL
 # Interpretation: Higher values indicating higher levels of expected engagement
 # Trend Status: Same scale as in ICCS 2009
 # Source 
-#IS3G31A Vote in <local elections> / Votar en <elecciones locales>
-#IS3G31B Vote in <national elections> / Votar en <elecciones nacionales>
-#IS3G31C Get information about candidates before voting in an election / Obtener información sobre los candidatos antes de votar en una elección
+#IS3G31A Vote in <local elections>
+#IS3G31B Vote in <national elections>
+#IS3G31C Get information about candidates before voting in an election
 
+##################################
 #### Variables independientes ####
+##################################
+
 # Variable Name L_DISLAW 
 # Description Students' endorsement of disobedience to the law
 # Procedure IRT WLE scores with mean of 10 and standard deviation of 2 within each participating country
 # Interpretation Higher values indicating higher levels of endorsement of disobedience to the law
 # Trend Status Same scale as in ICCS 2009
+# Pregunta: ¿En qué medida está de acuerdo o en desacuerdo con las siguientes declaraciones sobre situaciones en las que se desobedece la ley?
+# Se puede desobedecer una ley ...
 # Source 
-#LS3G05A When it is the only alternative left for achieving important objectives. 
-#LS3G05B When it is the only way one has to help one's family. 
-#LS3G05C When others who disobeyed it were not punished. 
-#LS3G05D When others do it. 
-#LS3G05E When one distrusts the enacting body. 
-#LS3G05F When one is sure nobody will realize. 
-#LS3G05H When nobody gets hurt. 
+#LS3G05A When it is the only alternative left for achieving important objectives.
+#LS3G05B When it is the only way one has to help one's family.
+#LS3G05C When others who disobeyed it were not punished.
+#LS3G05D When others do it.
+#LS3G05E When one distrusts the enacting body.
+#LS3G05F When one is sure nobody will realize.
+#LS3G05H When nobody gets hurt.
 #LS3G05I When it is not done with bad intentions. 
-#LS3G05J	 When one can obtain economic benefits.
+#LS3G05J When one can obtain economic benefits.
 
 # Variable Name L_ATTVIOL 
 # Description Students' endorsement of the use of violence
@@ -714,10 +740,10 @@ data2016_mex=data2016_mex0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_IL
 # Source 
 #LS3G04E He who does me harm will have to pay for it. 
 #LS3G04F Watching fights between classmates is fun.
-#LS3G04G If you can’t succeed by doing good things, <try> the bad ones. 
+#LS3G04G If you can’t succeed by doing good things, <try> the bad ones.
 #LS3G04H You have to fight so people do not think you are a coward.
-#LS3G04I Revenge is sweet. 
-#LS3G04J Aggression serves to achieve what one wants. 
+#LS3G04I Revenge is sweet. (no se repite)
+#LS3G04J Aggression serves to achieve what one wants. (no se repite)
 
 # Variable Name S_CITEFF 
 # Description	 Students' sense of citizenship self-efficacy
@@ -732,6 +758,10 @@ data2016_mex=data2016_mex0 %>% dplyr::select(S_HISCED2, S_HOMLIT, S_LEGACT, S_IL
 #IS3G29E Follow a television debate about a controversial issue
 #IS3G29F Write a letter or email to a newspaper giving your view on a current issue
 #IS3G29G Speak in front of your class about a social or political issue
+
+# IS3G10A
+# How interested are you and your parent(s) in political and social issues?
+# Very interested (1) / Quite interested (2) / Not very interested (3) / Not interested at all (4)
 
 # Variable Name S_SCHPART 
 # Description Students' participation at school

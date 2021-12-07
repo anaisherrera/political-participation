@@ -18,10 +18,42 @@ pacman::p_load(misty,haven,dplyr)
 ```{r}
 data2009_chl <- read_sav("../input/data/original/2009/ISGCHLC2.sav")
 
+##### VARIABLES DEPENDIENTES #####
+# Participación en actividades legales
+data2009_chl$IS2P31C <-sjmisc::rec(data2009_chl$IS2P31C,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2P31D <-sjmisc::rec(data2009_chl$IS2P31D,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2P31E <-sjmisc::rec(data2009_chl$IS2P31E,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl <- data2009_chl %>%
+  rowwise() %>%
+  mutate(LEGPROT_rec =
+           mean(c(IS2P31C, IS2P31D, IS2P31E), na.rm = T))
+data2009_chl$LEGPROT_rec <- as.numeric(data2009_chl$LEGPROT_rec)
+
+# Participación en actividades ilegales
+data2009_chl$IS2P31G <-sjmisc::rec(data2009_chl$IS2P31G,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2P31H <-sjmisc::rec(data2009_chl$IS2P31H,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2P31I <-sjmisc::rec(data2009_chl$IS2P31I,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl <- data2009_chl %>%
+  rowwise() %>%
+  mutate(ILLPROT_rec =
+           mean(c(IS2P31G, IS2P31H, IS2P31I), na.rm = T))
+data2009_chl$ILLPROT_rec <- as.numeric(data2009_chl$ILLPROT_rec)
+
+# Participación electoral
+data2009_chl$IS2P32A <-sjmisc::rec(data2009_chl$IS2P32A,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2P32B <-sjmisc::rec(data2009_chl$IS2P32B,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2P32C <-sjmisc::rec(data2009_chl$IS2P32C,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl <- data2009_chl %>%
+  rowwise() %>%
+  mutate(ELECPART_rec =
+           mean(c(IS2P32A, IS2P32B, IS2P32C), na.rm = T))
+data2009_chl$ELECPART_rec <- as.numeric(data2009_chl$ELECPART_rec)
+
+##### VARIABLES INDEPENDIENTES #####
 # Educación
 data2009_chl$HISCED_idem <- ifelse((data2009_chl$HISCED==0), 0, # did not complete <ISCED level 2>
-                   ifelse((data2009_chl$HISCED==1), 0,  # did not complete <ISCED level 2>              
-                          ifelse((data2009_chl$HISCED==2), 1,  # <ISCED level 2>                        
+                   ifelse((data2009_chl$HISCED==1), 0,  # did not complete <ISCED level 2>        
+                          ifelse((data2009_chl$HISCED==2), 1,  # <ISCED level 2>                
                                  ifelse((data2009_chl$HISCED==3), 2, # <ISCED level 3>
                                         ifelse((data2009_chl$HISCED==4), 3, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
                                                ifelse((data2009_chl$HISCED==5), 3, NA)))))) # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
@@ -29,8 +61,8 @@ data2009_chl$HISCED_idem <- ifelse((data2009_chl$HISCED==0), 0, # did not comple
 # según lo que pude ver en https://centroestudios.mineduc.cl/wp-content/uploads/sites/100/2017/06/2013.pdf y en https://alianzapacifico.net/wp-content/uploads/GU%C3%8DA-SISTEMA-EDUCATIVO-DE-CHILE.pdf con la recodificación ahora el nivel 3 (que corresponde a isced 4 (o CINE)) corresponde a Educación Post-Secundaria no Terciaria, Educación terciaria, o postgrado
 
 data2009_chl$HISCED2 <- ifelse((data2009_chl$HISCED==0), 0, # did not complete <ISCED level 2>
-                   ifelse((data2009_chl$HISCED==1), 0,  # did not complete <ISCED level 2>              
-                          ifelse((data2009_chl$HISCED==2), 0,  # <ISCED level 2>                        
+                   ifelse((data2009_chl$HISCED==1), 0,  # did not complete <ISCED level 2>
+                          ifelse((data2009_chl$HISCED==2), 0,  # <ISCED level 2>
                                  ifelse((data2009_chl$HISCED==3), 0, # <ISCED level 3>
                                         ifelse((data2009_chl$HISCED==4), 1, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
                                                ifelse((data2009_chl$HISCED==5), 1, NA)))))) # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
@@ -50,18 +82,60 @@ data2009_chl$HOMELIT2 <- ifelse((data2009_chl$HOMELIT==0), 0,
                                         ifelse((data2009_chl$HOMELIT==4), 1,
                                                ifelse((data2009_chl$HOMELIT==5), 1, NA)))))) #más de 100 libros
 
+# Autoeficacia política
+data2009_chl$IS2P30A <-sjmisc::rec(data2009_chl$IS2P30A,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2P30B <-sjmisc::rec(data2009_chl$IS2P30B,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2P30C <-sjmisc::rec(data2009_chl$IS2P30C,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2P30D <-sjmisc::rec(data2009_chl$IS2P30D,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2P30E <-sjmisc::rec(data2009_chl$IS2P30E,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2P30F <-sjmisc::rec(data2009_chl$IS2P30F,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2P30G <-sjmisc::rec(data2009_chl$IS2P30G,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl <- data2009_chl %>%
+  rowwise() %>%
+  mutate(CITEFF_rec =
+           mean(c(IS2P30A, IS2P30B, IS2P30C, IS2P30D, IS2P30E, IS2P30F, IS2P30G), na.rm = T))
+data2009_chl$CITEFF_rec <- as.numeric(data2009_chl$CITEFF_rec)
 
-# Las que usaremos son: participacion electoral, demostraciones, bloquear una calle, pintar muros y ocupar edificios
-data2009_chl$IS2P32A <-sjmisc::rec(data2009_chl$IS2P32A,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones locales
-data2009_chl$IS2P32B <-sjmisc::rec(data2009_chl$IS2P32B,rec="1=4;2=3;3=2;4=1;else=copy") # Cuando adulto, Votar en elecciones nacionales
-# Falta demostraciones?
-data2009_chl$IS2P31D <-sjmisc::rec(data2009_chl$IS2P31D,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, marcha pacifica
-data2009_chl$IS2P31H <-sjmisc::rec(data2009_chl$IS2P31H,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, bloquear trafico
-data2009_chl$IS2P31G <-sjmisc::rec(data2009_chl$IS2P31G,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, pintar muros
-data2009_chl$IS2P31I <-sjmisc::rec(data2009_chl$IS2P31I,rec="1=4;2=3;3=2;4=1;else=copy") # En el futuro, ocupar edificios
+# Participación cívica en la escuela
+data2009_chl$IS2G15B <-sjmisc::rec(data2009_chl$IS2G15B,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2G15C <-sjmisc::rec(data2009_chl$IS2G15C,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2G15D <-sjmisc::rec(data2009_chl$IS2G15D,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2G15E <-sjmisc::rec(data2009_chl$IS2G15E,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl <- data2009_chl %>%
+  rowwise() %>%
+  mutate(PARTSCHL_rec =
+           mean(c(IS2G15B, IS2G15C, IS2G15D, IS2G15E), na.rm = T))
+data2009_chl$PARTSCHL_rec <- as.numeric(data2009_chl$PARTSCHL_rec)
 
 data2009_chl_lat <- read_sav("../input/data/original/2009/ISLCHLC2.sav")
 data2009_chl0 <- left_join(data2009_chl, data2009_chl_lat, by="IDSTUD")
+
+# Desobediencia a la ley
+data2009_chl0$LS2P05A <-sjmisc::rec(data2009_chl0$LS2P05A,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl0$LS2P05B <-sjmisc::rec(data2009_chl0$LS2P05B,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl0$LS2P05C <-sjmisc::rec(data2009_chl0$LS2P05C,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl0$LS2P05D <-sjmisc::rec(data2009_chl0$LS2P05D,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl0$LS2P05E <-sjmisc::rec(data2009_chl0$LS2P05E,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl0$LS2P05F <-sjmisc::rec(data2009_chl0$LS2P05F,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl0$LS2P05H <-sjmisc::rec(data2009_chl0$LS2P05H,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl0$LS2P05I <-sjmisc::rec(data2009_chl0$LS2P05I,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl0$LS2P05L <-sjmisc::rec(data2009_chl0$LS2P05L,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl0 <- data2009_chl0 %>%
+  rowwise() %>%
+  mutate(DISLAW_rec =
+           mean(c(LS2P05A, LS2P05B, LS2P05C, LS2P05D, LS2P05E, LS2P05F, LS2P05H, LS2P05I, LS2P05L), na.rm = T))
+data2009_chl0$DISLAW_rec <- as.numeric(data2009_chl0$DISLAW_rec)
+
+# uso de la violencia
+data2009_chl0$LS2P08A <-sjmisc::rec(data2009_chl0$LS2P08A,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl0$LS2P08B <-sjmisc::rec(data2009_chl0$LS2P08B,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl0$LS2P08C <-sjmisc::rec(data2009_chl0$LS2P08C,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl0$LS2P08D <-sjmisc::rec(data2009_chl0$LS2P08D,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl0 <- data2009_chl0 %>%
+  rowwise() %>%
+  mutate(ATTVIOL_rec =
+           mean(c(LS2P08A, LS2P08B, LS2P08C, LS2P08D), na.rm = T))
+data2009_chl0$ATTVIOL_rec <- as.numeric(data2009_chl0$ATTVIOL_rec)
 
 data2009_chl_esc <- read_sav("../input/data/original/2009/ICGCHLC2.sav")
 data2009_chl0 <- full_join(data2009_chl0, data2009_chl_esc, by=c("IDSCHOOL.x"="IDSCHOOL"))
@@ -338,9 +412,44 @@ datalat$col <- ifelse(datalat$idcntry==170,1,0)
 datalat$dom <- ifelse(datalat$idcntry==214,1,0)
 datalat$mex <- ifelse(datalat$idcntry==484,1,0)
 ```
+
 ## Tratamiento de datos Chile
 ```{r}
 data2016_chl <- read_sav("../input/data/original/2016/ISGCHLC3.sav")
+
+###################################
+##### VARIABLES DEPENDIENTES #####
+###################################
+# Participación en actividades legales
+data2016_chl <- data2016_chl %>% 
+  rowwise() %>% 
+  mutate(S_LEGACT_rec =
+           mean(c(IS3G30B, IS3G30C, IS3G30D), na.rm = T))
+data2016_chl$S_LEGACT_rec <- as.numeric(data2016_chl$S_LEGACT_rec)
+
+# Participación en actividades ilegales
+data2016_chl$IS3G30I <-sjmisc::rec(data2016_chl$IS3G30I,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G30J <-sjmisc::rec(data2016_chl$IS3G30J,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G30K <-sjmisc::rec(data2016_chl$IS3G30K,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl <- data2016_chl %>%
+  rowwise() %>%
+  mutate(S_ILLACT_rec =
+           mean(c(IS3G30I, IS3G30J, IS3G30K), na.rm = T))
+data2016_chl$S_ILLACT_rec <- as.numeric(data2016_chl$S_ILLACT_rec)
+
+# Participación electoral
+data2016_chl$IS3G31A <-sjmisc::rec(data2016_chl$IS3G31A,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G31B <-sjmisc::rec(data2016_chl$IS3G31B,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G31C <-sjmisc::rec(data2016_chl$IS3G31C,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl <- data2016_chl %>%
+  rowwise() %>%
+  mutate(S_ELECPART_rec =
+           mean(c(IS3G31A, IS3G31B, IS3G31C), na.rm = T))
+data2016_chl$S_ELECPART_rec <- as.numeric(data2016_chl$S_ELECPART_rec)
+
+####################################
+##### VARIABLES INDEPENDIENTES #####
+####################################
 data2016_chl$S_HISCED2 <- ifelse((data2016_chl$S_HISCED==0), 0, # did not complete <ISCED level 2>
                    ifelse((data2016_chl$S_HISCED==1), 1, # <ISCED level 2>                               
                           ifelse((data2016_chl$S_HISCED==2), 2, # <ISCED level 3> 
@@ -354,8 +463,60 @@ data2016_chl$S_HOMLIT2 <- ifelse((data2016_chl$S_HOMLIT==0), 0,
                                  ifelse((data2016_chl$S_HOMLIT==3), 1, 
                                         ifelse((data2016_chl$S_HOMLIT==4), 1, NA))))) 
 
+# Autoeficacia política
+data2016_chl$IS3G29A <-sjmisc::rec(data2016_chl$IS3G29A,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G29B <-sjmisc::rec(data2016_chl$IS3G29B,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G29C <-sjmisc::rec(data2016_chl$IS3G29C,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G29D <-sjmisc::rec(data2016_chl$IS3G29D,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G29E <-sjmisc::rec(data2016_chl$IS3G29E,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G29F <-sjmisc::rec(data2016_chl$IS3G29F,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G29G <-sjmisc::rec(data2016_chl$IS3G29G,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl <- data2016_chl %>%
+  rowwise() %>%
+  mutate(S_CITEFF_rec =
+           mean(c(IS3G29A, IS3G29B, IS3G29C, IS3G29D, IS3G29E, IS3G29F, IS3G29G), na.rm = T))
+data2016_chl$S_CITEFF_rec <- as.numeric(data2016_chl$S_CITEFF_rec)
+
+# Participación cívica en la escuela
+data2016_chl$IS3G16A <-sjmisc::rec(data2016_chl$IS3G16A,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G16B <-sjmisc::rec(data2016_chl$IS3G16B,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G16C <-sjmisc::rec(data2016_chl$IS3G16C,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G16D <-sjmisc::rec(data2016_chl$IS3G16D,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl <- data2016_chl %>%
+  rowwise() %>%
+  mutate(S_SCHPART_rec =
+           mean(c(IS3G16A, IS3G16B, IS3G16C, IS3G16D), na.rm = T))
+data2016_chl$S_SCHPART_rec <- as.numeric(data2016_chl$S_SCHPART_rec)
+
 data2016_chl_lat <- read_sav("../input/data/original/2016/ISLCHLC3.sav")
 data2016_chl0 <- left_join(data2016_chl, data2016_chl_lat, by="IDSTUD")
+
+# Desobediencia a la ley
+data2016_chl0$LS3G05A <-sjmisc::rec(data2016_chl0$LS3G05A,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl0$LS3G05B <-sjmisc::rec(data2016_chl0$LS3G05B,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl0$LS3G05C <-sjmisc::rec(data2016_chl0$LS3G05C,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl0$LS3G05D <-sjmisc::rec(data2016_chl0$LS3G05D,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl0$LS3G05E <-sjmisc::rec(data2016_chl0$LS3G05E,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl0$LS3G05F <-sjmisc::rec(data2016_chl0$LS3G05F,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl0$LS3G05H <-sjmisc::rec(data2016_chl0$LS3G05H,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl0$LS3G05I <-sjmisc::rec(data2016_chl0$LS3G05I,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl0$LS3G05J <-sjmisc::rec(data2016_chl0$LS3G05J,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl0 <- data2016_chl0 %>%
+  rowwise() %>%
+  mutate(L_DISLAW_rec =
+           mean(c(LS3G05A, LS3G05B, LS3G05C, LS3G05D, LS3G05E, LS3G05F, LS3G05H, LS3G05I, LS3G05J), na.rm = T))
+data2016_chl0$L_DISLAW_rec <- as.numeric(data2016_chl0$L_DISLAW_rec)
+
+# uso de la violencia
+data2016_chl0$LS3G04E <-sjmisc::rec(data2016_chl0$LS3G04E,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl0$LS3G04F <-sjmisc::rec(data2016_chl0$LS3G04F,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl0$LS3G04G <-sjmisc::rec(data2016_chl0$LS3G04G,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl0$LS3G04H <-sjmisc::rec(data2016_chl0$LS3G04H,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl0 <- data2016_chl0 %>%
+  rowwise() %>%
+  mutate(L_ATTVIOL_rec =
+           mean(c(LS3G04E, LS3G04F, LS3G04G, LS3G04H), na.rm = T))
+data2016_chl0$L_ATTVIOL_rec <- as.numeric(data2016_chl0$L_ATTVIOL_rec)
 
 data2016_chl_esc <- read_sav("../input/data/original/2016/ICGCHLC3.sav")
 data2016_chl0 <- full_join(data2016_chl0, data2016_chl_esc, by=c("IDSCHOOL.x"="IDSCHOOL"))
