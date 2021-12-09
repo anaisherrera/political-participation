@@ -1,0 +1,1010 @@
+---
+title: "Segunda opción de tipos de gráficos"
+author: "Anais Herrera Leighton"
+date: "09-12-2021"
+output:
+  html_document:
+    toc: yes
+    code_folding: hide
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+      number_sections: yes
+editor_options:
+  chunk_output_type: console
+header-includes:
+- \usepackage{times}
+- \usepackage{caption}
+- \captionsetup[figure, table]{labelfont={bf},labelformat={default},labelsep=period}
+- \usepackage{graphicx}
+- \usepackage{float}
+- \usepackage{booktabs}
+- \usepackage{longtable}
+- \usepackage{array}
+- \usepackage{multirow}
+- \usepackage{wrapfig}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+geometry: margin=0.78in
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	error = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+```{r, include=FALSE}
+pacman::p_load(ggplot2,haven,dplyr)
+```
+
+# Bases de datos
+```{r, include=FALSE}
+## 2009 ##
+load(file= "../input/data/proc/2009/data_chl.Rdata")
+data2009_chl=data2009_chl0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT_rec, ILLPROT_rec, ELECPART_rec, DISLAW_rec, ATTVIOL_rec, CITEFF_rec, PARTSCHL_rec, mean_op_esc, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2009/data_col.Rdata")
+data2009_col=data2009_col0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT_rec, ILLPROT_rec, ELECPART_rec, DISLAW_rec, ATTVIOL_rec, CITEFF_rec, PARTSCHL_rec, mean_op_esc, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2009/data_dom.Rdata")
+data2009_dom=data2009_dom0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT_rec, ILLPROT_rec, ELECPART_rec, DISLAW_rec, ATTVIOL_rec, CITEFF_rec, PARTSCHL_rec, mean_op_esc, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2009/data_mex.Rdata")
+data2009_mex=data2009_mex0 %>% dplyr::select(HISCED2, HOMELIT2, LEGPROT_rec, ILLPROT_rec, ELECPART_rec, DISLAW_rec, ATTVIOL_rec, CITEFF_rec, PARTSCHL_rec, mean_op_esc, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+data2009 <- rbind(data2009_chl,data2009_col,data2009_dom,data2009_mex)
+data2009$IDSCHOOL2<- as.numeric(data2009$IDCNTRY*100000 + data2009$IDSCHOOL) # se genera ID único por colegio (se repetían los mismos códigos entre países)
+
+data2009$IDCNTRY2 <- ifelse((data2009$IDCNTRY==152), 1, # Chile
+                   ifelse((data2009$IDCNTRY==170), 2, # Colombia                               
+                          ifelse((data2009$IDCNTRY==214), 3, # Republica Dominicana
+                                 ifelse((data2009$IDCNTRY==484), 4, NA)))) # Mexico
+
+## 2016 ##
+load(file= "../input/data/proc/2016/data_chl.Rdata")
+data2016_chl=data2016_chl0 %>% dplyr::select(S_HISCED2, S_HOMLIT2, S_LEGACT_rec, S_ILLACT_rec, S_ELECPART_rec, L_DISLAW_rec, L_ATTVIOL_rec, S_SCHPART_rec, S_CITEFF_rec, mean_op_esc, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2016/data_col.Rdata")
+data2016_col=data2016_col0 %>% dplyr::select(S_HISCED2, S_HOMLIT2, S_LEGACT_rec, S_ILLACT_rec, S_ELECPART_rec, L_DISLAW_rec, L_ATTVIOL_rec, S_SCHPART_rec, S_CITEFF_rec, mean_op_esc, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2016/data_dom.Rdata")
+data2016_dom=data2016_dom0 %>% dplyr::select(S_HISCED2, S_HOMLIT2, S_LEGACT_rec, S_ILLACT_rec, S_ELECPART_rec, L_DISLAW_rec, L_ATTVIOL_rec, S_SCHPART_rec, S_CITEFF_rec, mean_op_esc, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+load(file= "../input/data/proc/2016/data_mex.Rdata")
+data2016_mex=data2016_mex0 %>% dplyr::select(S_HISCED2, S_HOMLIT2, S_LEGACT_rec, S_ILLACT_rec, S_ELECPART_rec, L_DISLAW_rec, L_ATTVIOL_rec, S_SCHPART_rec, S_CITEFF_rec, mean_op_esc, PV1CIV, IDSCHOOL=IDSCHOOL.x, IDCNTRY) %>% as.data.frame() %>%  na.omit()
+
+data2016 <- rbind(data2016_chl,data2016_col,data2016_dom,data2016_mex)
+data2016$IDSCHOOL2<- as.numeric(data2016$IDCNTRY*100000 + data2016$IDSCHOOL) # se genera ID único por colegio (se repetían los mismos códigos entre países)
+
+data2016$IDCNTRY2 <- ifelse((data2016$IDCNTRY==152), 1, # Chile
+                   ifelse((data2016$IDCNTRY==170), 2, # Colombia                               
+                          ifelse((data2016$IDCNTRY==214), 3, # Republica Dominicana
+                                 ifelse((data2016$IDCNTRY==484), 4, NA)))) # Mexico
+```
+
+#info
+```{r, echo=FALSE, results='asis'}
+reg_legal <- lmer(LEGPROT_rec ~ 1 + factor(IDCNTRY2) + factor(HISCED2) + factor(HOMELIT2) + DISLAW_rec + ATTVIOL_rec + CITEFF_rec + PARTSCHL_rec + mean_op_esc + PV1CIV + (1 | IDSCHOOL2), data=data2009)
+reg_illegal <- lmer(ILLPROT_rec ~ 1 + factor(IDCNTRY2) + factor(HISCED2) + factor(HOMELIT2) + DISLAW_rec + ATTVIOL_rec + CITEFF_rec + PARTSCHL_rec + mean_op_esc + PV1CIV + (1 | IDSCHOOL2), data=data2009)
+reg_elect <- lmer(ELECPART_rec ~ 1 + factor(IDCNTRY2) + factor(HISCED2) + factor(HOMELIT2) + DISLAW_rec + ATTVIOL_rec + CITEFF_rec + PARTSCHL_rec + mean_op_esc + PV1CIV + (1 | IDSCHOOL2), data=data2009)
+
+caption <- "Students' expected... (ICCS 2009)"
+knitreg(list(reg_legal,reg_illegal,reg_elect), 
+        custom.model.names = c(
+          "participation in future legal protest",
+          "participation in future illegal protest",
+          "adult electoral participation"
+        ), 
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = c("Colombia (Ref. Chile)",
+                              "Dominican Republic",
+                              "Mexico",
+                              "Intercepto",
+                              "ISCED level 4, 5A, 5B or 6 (Ref. Level 3 or less)",
+                              "More than 100 books (Ref. 0-100 books)",
+                              "Attitudes towards disobeying the law",
+                              "Attitudes towards the use of violence",
+                              "Citizenship self-efficacy",
+                              "Civic participation at school (student)",
+                              "Civic participation at school (school)",
+                              "Civic knowledge"),
+       scalebox = 0.75,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+
+```
+
+# Education
+```{r}
+#################
+### ICCS 2009 ###
+#################
+
+#LEGPROT_rec #Students' expected participation in future legal protest
+#ILLPROT_rec #Students' expected participation in future illegal protest
+#ELECPART_rec #Students' expected adult electoral participation
+
+#1
+mean_leg_2009 <- mean(data2009$LEGPROT_rec)
+
+plotdata <- data2009 %>%
+  group_by(HISCED2) %>%
+  summarize(n = n(),
+         mean = mean(LEGPROT_rec),
+         sd = sd(LEGPROT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$HISCED2 <- factor(plotdata$HISCED2, levels = c(0,1), labels = c("ISCED level 3 or less","ISCED level 4, 5A, 5B or 6"))
+plotdata<-na.omit(plotdata)
+
+plot_ed1 <- ggplot(plotdata, 
+       aes(x = HISCED2, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_leg_2009,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Highest parental educational level") + ylab("Participation in future legal protest") + ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, angle = 45, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.9,3.4)  #+ ylim(400,550)
+plot_ed1
+
+#2
+mean_illeg_2009 <- mean(data2009$ILLPROT_rec)
+
+plotdata <- data2009 %>%
+  group_by(HISCED2) %>%
+  summarize(n = n(),
+         mean = mean(ILLPROT_rec),
+         sd = sd(ILLPROT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$HISCED2 <- factor(plotdata$HISCED2, levels = c(0,1), labels = c("ISCED level 3 or less","ISCED level 4, 5A, 5B or 6"))
+plotdata<-na.omit(plotdata)
+
+plot_ed2 <- ggplot(plotdata, 
+       aes(x = HISCED2, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_illeg_2009,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Highest parental educational level") + ylab("Participation in future illegal protest")  + ggtitle("2009") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, angle = 45, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.9,3.4) #+ ylim(400,550)
+plot_ed2
+
+#3
+mean_elect_2009 <- mean(data2009$ELECPART_rec)
+
+plotdata <- data2009 %>%
+  group_by(HISCED2) %>%
+  summarize(n = n(),
+         mean = mean(ELECPART_rec),
+         sd = sd(ELECPART_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$HISCED2 <- factor(plotdata$HISCED2, levels = c(0,1), labels = c("ISCED level 3 or less","ISCED level 4, 5A, 5B or 6"))
+plotdata<-na.omit(plotdata)
+
+plot_ed3 <- ggplot(plotdata, 
+       aes(x = HISCED2, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_elect_2009,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Highest parental educational level") + ylab("Adult electoral participation") + ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, angle = 45, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.9,3.4) #+ ylim(400,550)
+plot_ed3
+
+#################
+### ICCS 2016 ###
+#################
+
+#1b
+mean_leg_2016 <- mean(data2016$S_LEGACT_rec)
+
+plotdata <- data2016 %>%
+  group_by(S_HISCED2) %>%
+  summarize(n = n(),
+         mean = mean(S_LEGACT_rec),
+         sd = sd(S_LEGACT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$S_HISCED2 <- factor(plotdata$S_HISCED2, levels = c(0,1), labels = c("ISCED level 3 or less","ISCED level 4, 5A, 5B or 6"))
+plotdata<-na.omit(plotdata)
+
+plot_ed1b <- ggplot(plotdata, 
+       aes(x = S_HISCED2, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_leg_2016,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Highest parental educational level") + ylab("Participation in future legal protest") +ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, angle = 45, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.9,3.4) 
+plot_ed1b
+
+#2b
+mean_illeg_2016 <- mean(data2016$S_ILLACT_rec)
+
+plotdata <- data2016 %>%
+  group_by(S_HISCED2) %>%
+  summarize(n = n(),
+         mean = mean(S_ILLACT_rec),
+         sd = sd(S_ILLACT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$S_HISCED2 <- factor(plotdata$S_HISCED2, levels = c(0,1), labels = c("ISCED level 3 or less","ISCED level 4, 5A, 5B or 6"))
+plotdata<-na.omit(plotdata)
+
+plot_ed2b <- ggplot(plotdata, 
+       aes(x = S_HISCED2, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_illeg_2016,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Highest parental educational level") + ylab("Participation in future illegal protest")  + ggtitle("2016") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, angle = 45, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.9,3.4)  #+ ylim(400,550)
+plot_ed2b
+
+#3b
+mean_elect_2016 <- mean(data2016$S_ELECPART_rec)
+
+plotdata <- data2016 %>%
+  group_by(S_HISCED2) %>%
+  summarize(n = n(),
+         mean = mean(S_ELECPART_rec),
+         sd = sd(S_ELECPART_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$S_HISCED2 <- factor(plotdata$S_HISCED2, levels = c(0,1), labels = c("ISCED level 3 or less","ISCED level 4, 5A, 5B or 6"))
+plotdata<-na.omit(plotdata)
+
+plot_ed3b <- ggplot(plotdata, 
+       aes(x = S_HISCED2, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_elect_2016,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Highest parental educational level") + ylab("Adult electoral participation") +ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, angle = 45, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))   + ylim(1.9,3.4) #+ ylim(400,550)
+plot_ed3b
+
+general <- cowplot::plot_grid(plot_ed1,plot_ed2,plot_ed3,plot_ed1b,plot_ed2b,plot_ed3b, ncol=3)
+ggsave(general, file = "../output/graphs/educacion.png",device = "png",width = 30,height = 20,dpi ="retina",units = "cm") 
+
+#general2 <- cowplot::plot_grid(plot_ed1,plot_ed2,plot_ed3,plot_ed1b,plot_ed2b,plot_ed3b, ncol=2)
+#ggsave(general2, file = "../output/graphs/educacion2.png",device = "png",width = 20,height = 30,dpi ="retina",units = "cm") 
+```
+
+# Attitudes towards disobeying the law
+```{r}
+#################
+### ICCS 2009 ###
+#################
+
+#LEGPROT_rec #Students' expected participation in future legal protest
+#ILLPROT_rec #Students' expected participation in future illegal protest
+#ELECPART_rec #Students' expected adult electoral participation
+
+#1
+mean_leg_2009 <- mean(data2009$LEGPROT_rec)
+
+plotdata <- data2009 %>%
+  group_by(DISLAW_rec) %>%
+  summarize(n = n(),
+         mean = mean(LEGPROT_rec),
+         sd = sd(LEGPROT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$DISLAW_rec <- factor(plotdata$DISLAW_rec, levels = c(1,2,3,4), labels = c("1","2","3","4"))
+plotdata<-na.omit(plotdata)
+
+plot_ed1 <- ggplot(plotdata, 
+       aes(x = DISLAW_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_leg_2009,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards disobeying the law") + ylab("Participation in future legal protest") + ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.8,3.4)  #+ ylim(400,550)
+plot_ed1
+
+
+#2
+mean_illeg_2009 <- mean(data2009$ILLPROT_rec)
+
+plotdata <- data2009 %>%
+  group_by(DISLAW_rec) %>%
+  summarize(n = n(),
+         mean = mean(ILLPROT_rec),
+         sd = sd(ILLPROT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$DISLAW_rec <- factor(plotdata$DISLAW_rec, levels = c(1,2,3,4), labels = c("1","2","3","4"))
+plotdata<-na.omit(plotdata)
+
+plot_ed2 <- ggplot(plotdata, 
+       aes(x = DISLAW_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_illeg_2009,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards disobeying the law") + ylab("Participation in future illegal protest")  + ggtitle("2009") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.8,3.4) #+ ylim(400,550)
+plot_ed2
+
+#3
+mean_elect_2009 <- mean(data2009$ELECPART_rec)
+
+plotdata <- data2009 %>%
+  group_by(DISLAW_rec) %>%
+  summarize(n = n(),
+         mean = mean(ELECPART_rec),
+         sd = sd(ELECPART_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$DISLAW_rec <- factor(plotdata$DISLAW_rec, levels = c(1,2,3,4), labels = c("1","2","3","4"))
+
+plotdata<-na.omit(plotdata)
+
+plot_ed3 <- ggplot(plotdata, 
+       aes(x = DISLAW_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_elect_2009,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards disobeying the law") + ylab("Adult electoral participation") + ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.8,3.4) #+ ylim(400,550)
+plot_ed3
+
+#################
+### ICCS 2016 ###
+#################
+
+#1b
+mean_leg_2016 <- mean(data2016$S_LEGACT_rec)
+
+plotdata <- data2016 %>%
+  group_by(L_DISLAW_rec) %>%
+  summarize(n = n(),
+         mean = mean(S_LEGACT_rec),
+         sd = sd(S_LEGACT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$L_DISLAW_rec <- factor(plotdata$L_DISLAW_rec, levels = c(1,2,3,4), labels = c("1","2","3","4"))
+plotdata<-na.omit(plotdata)
+
+plot_ed1b <- ggplot(plotdata, 
+       aes(x = L_DISLAW_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_leg_2016,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards disobeying the law") + ylab("Participation in future legal protest") +ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.8,3.4) 
+plot_ed1b
+
+#2b
+mean_illeg_2016 <- mean(data2016$S_ILLACT_rec)
+
+plotdata <- data2016 %>%
+  group_by(L_DISLAW_rec) %>%
+  summarize(n = n(),
+         mean = mean(S_ILLACT_rec),
+         sd = sd(S_ILLACT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$L_DISLAW_rec <- factor(plotdata$L_DISLAW_rec, levels = c(1,2,3,4), labels = c("1","2","3","4"))
+plotdata<-na.omit(plotdata)
+
+plot_ed2b <- ggplot(plotdata, 
+       aes(x = L_DISLAW_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_illeg_2016,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards disobeying the law") + ylab("Participation in future illegal protest")  + ggtitle("2016") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.8,3.4)  #+ ylim(400,550)
+plot_ed2b
+
+#3b
+mean_elect_2016 <- mean(data2016$S_ELECPART_rec)
+
+plotdata <- data2016 %>%
+  group_by(L_DISLAW_rec) %>%
+  summarize(n = n(),
+         mean = mean(S_ELECPART_rec),
+         sd = sd(S_ELECPART_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$L_DISLAW_rec <- factor(plotdata$L_DISLAW_rec, levels = c(1,2,3,4), labels = c("1","2","3","4"))
+plotdata<-na.omit(plotdata)
+
+plot_ed3b <- ggplot(plotdata, 
+       aes(x = L_DISLAW_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_elect_2016,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards disobeying the law") + ylab("Adult electoral participation") +ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))   + ylim(1.8,3.4) #+ ylim(400,550)
+plot_ed3b
+
+general <- cowplot::plot_grid(plot_ed1,plot_ed2,plot_ed3,plot_ed1b,plot_ed2b,plot_ed3b, ncol=3)
+ggsave(general, file = "../output/graphs/desobediencia_ley.png",device = "png",width = 30,height = 20,dpi ="retina",units = "cm") 
+```
+
+
+# Attitudes towards the use of violence
+```{r}
+#################
+### ICCS 2009 ###
+#################
+
+#LEGPROT_rec #Students' expected participation in future legal protest
+#ILLPROT_rec #Students' expected participation in future illegal protest
+#ELECPART_rec #Students' expected adult electoral participation
+
+#1
+mean_leg_2009 <- mean(data2009$LEGPROT_rec)
+
+plotdata <- data2009 %>%
+  group_by(ATTVIOL_rec) %>%
+  summarize(n = n(),
+         mean = mean(LEGPROT_rec),
+         sd = sd(LEGPROT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$ATTVIOL_rec <- factor(plotdata$ATTVIOL_rec, levels = c(1,2,3,4), labels = c("1","2","3","4"))
+plotdata<-na.omit(plotdata)
+
+plot_ed1 <- ggplot(plotdata, 
+       aes(x = ATTVIOL_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_leg_2009,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards the use of violence") + ylab("Participation in future legal protest") + ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.5,3.4)  #+ ylim(400,550)
+plot_ed1
+
+
+#2
+mean_illeg_2009 <- mean(data2009$ILLPROT_rec)
+
+plotdata <- data2009 %>%
+  group_by(ATTVIOL_rec) %>%
+  summarize(n = n(),
+         mean = mean(ILLPROT_rec),
+         sd = sd(ILLPROT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$ATTVIOL_rec <- factor(plotdata$ATTVIOL_rec, levels = c(1,2,3,4), labels = c("1","2","3","4"))
+plotdata<-na.omit(plotdata)
+
+plot_ed2 <- ggplot(plotdata, 
+       aes(x = ATTVIOL_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_illeg_2009,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards the use of violence") + ylab("Participation in future illegal protest")  + ggtitle("2009") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.5,3.4) #+ ylim(400,550)
+plot_ed2
+
+#3
+mean_elect_2009 <- mean(data2009$ELECPART_rec)
+
+plotdata <- data2009 %>%
+  group_by(ATTVIOL_rec) %>%
+  summarize(n = n(),
+         mean = mean(ELECPART_rec),
+         sd = sd(ELECPART_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$ATTVIOL_rec <- factor(plotdata$ATTVIOL_rec, levels = c(1,2,3,4), labels = c("1","2","3","4"))
+
+plotdata<-na.omit(plotdata)
+
+plot_ed3 <- ggplot(plotdata, 
+       aes(x = ATTVIOL_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_elect_2009,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards the use of violence") + ylab("Adult electoral participation") + ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.5,3.4) #+ ylim(400,550)
+plot_ed3
+
+#################
+### ICCS 2016 ###
+#################
+
+#1b
+mean_leg_2016 <- mean(data2016$L_ATTVIOL_rec)
+
+plotdata <- data2016 %>%
+  group_by(L_DISLAW_rec) %>%
+  summarize(n = n(),
+         mean = mean(L_ATTVIOL_rec),
+         sd = sd(L_ATTVIOL_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$L_ATTVIOL_rec <- factor(plotdata$L_ATTVIOL_rec, levels = c(1,2,3,4), labels = c("1","2","3","4"))
+plotdata<-na.omit(plotdata)
+
+plot_ed1b <- ggplot(plotdata, 
+       aes(x = L_ATTVIOL_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_leg_2016,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards the use of violence") + ylab("Participation in future legal protest") +ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.5,3.4) 
+plot_ed1b
+
+#2b
+mean_illeg_2016 <- mean(data2016$S_ILLACT_rec)
+
+plotdata <- data2016 %>%
+  group_by(L_ATTVIOL_rec) %>%
+  summarize(n = n(),
+         mean = mean(S_ILLACT_rec),
+         sd = sd(S_ILLACT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$L_ATTVIOL_rec <- factor(plotdata$L_ATTVIOL_rec, levels = c(1,2,3,4), labels = c("1","2","3","4"))
+plotdata<-na.omit(plotdata)
+
+plot_ed2b <- ggplot(plotdata, 
+       aes(x = L_ATTVIOL_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_illeg_2016,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards the use of violence") + ylab("Participation in future illegal protest")  + ggtitle("2016") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.5,3.4)  #+ ylim(400,550)
+plot_ed2b
+
+#3b
+mean_elect_2016 <- mean(data2016$S_ELECPART_rec)
+
+plotdata <- data2016 %>%
+  group_by(L_ATTVIOL_rec) %>%
+  summarize(n = n(),
+         mean = mean(S_ELECPART_rec),
+         sd = sd(S_ELECPART_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$L_ATTVIOL_rec <- factor(plotdata$L_ATTVIOL_rec, levels = c(1,2,3,4), labels = c("1","2","3","4"))
+plotdata<-na.omit(plotdata)
+
+plot_ed3b <- ggplot(plotdata, 
+       aes(x = L_ATTVIOL_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_elect_2016,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards the use of violence") + ylab("Adult electoral participation") +ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))   + ylim(1.5,3.4) #+ ylim(400,550)
+plot_ed3b
+
+general <- cowplot::plot_grid(plot_ed1,plot_ed2,plot_ed3,plot_ed1b,plot_ed2b,plot_ed3b, ncol=3)
+ggsave(general, file = "../output/graphs/uso_violencia.png",device = "png",width = 30,height = 20,dpi ="retina",units = "cm") 
+```
+
+# Civic participation at school (student)
+```{r}
+#################
+### ICCS 2009 ###
+#################
+
+#LEGPROT_rec #Students' expected participation in future legal protest
+#ILLPROT_rec #Students' expected participation in future illegal protest
+#ELECPART_rec #Students' expected adult electoral participation
+
+#1
+mean_leg_2009 <- mean(data2009$LEGPROT_rec)
+
+plotdata <- data2009 %>%
+  group_by(PARTSCHL_rec) %>%
+  summarize(n = n(),
+         mean = mean(LEGPROT_rec),
+         sd = sd(LEGPROT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$PARTSCHL_rec <- factor(plotdata$PARTSCHL_rec, levels = c(1,2,3), labels = c("1","2","3"))
+plotdata<-na.omit(plotdata)
+
+plot_ed1 <- ggplot(plotdata, 
+       aes(x = PARTSCHL_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_leg_2009,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards the use of violence") + ylab("Participation in future legal protest") + ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.5,3.4)  #+ ylim(400,550)
+plot_ed1
+
+
+#2
+mean_illeg_2009 <- mean(data2009$ILLPROT_rec)
+
+plotdata <- data2009 %>%
+  group_by(PARTSCHL_rec) %>%
+  summarize(n = n(),
+         mean = mean(ILLPROT_rec),
+         sd = sd(ILLPROT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$PARTSCHL_rec <- factor(plotdata$PARTSCHL_rec, levels = c(1,2,3), labels = c("1","2","3"))
+plotdata<-na.omit(plotdata)
+
+plot_ed2 <- ggplot(plotdata, 
+       aes(x = PARTSCHL_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_illeg_2009,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards the use of violence") + ylab("Participation in future illegal protest")  + ggtitle("2009") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.5,3.4) #+ ylim(400,550)
+plot_ed2
+
+#3
+mean_elect_2009 <- mean(data2009$ELECPART_rec)
+
+plotdata <- data2009 %>%
+  group_by(PARTSCHL_rec) %>%
+  summarize(n = n(),
+         mean = mean(ELECPART_rec),
+         sd = sd(ELECPART_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$PARTSCHL_rec <- factor(plotdata$PARTSCHL_rec, levels = c(1,2,3), labels = c("1","2","3"))
+
+plotdata<-na.omit(plotdata)
+
+plot_ed3 <- ggplot(plotdata, 
+       aes(x = PARTSCHL_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_elect_2009,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards the use of violence") + ylab("Adult electoral participation") + ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.5,3.4) #+ ylim(400,550)
+plot_ed3
+
+#################
+### ICCS 2016 ###
+#################
+
+#1b
+mean_leg_2016 <- mean(data2016$S_SCHPART_rec)
+
+plotdata <- data2016 %>%
+  group_by(S_SCHPART_rec) %>%
+  summarize(n = n(),
+         mean = mean(S_SCHPART_rec),
+         sd = sd(S_SCHPART_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$S_SCHPART_rec <- factor(plotdata$S_SCHPART_rec, levels = c(1,2,3), labels = c("1","2","3"))
+plotdata<-na.omit(plotdata)
+
+plot_ed1b <- ggplot(plotdata, 
+       aes(x = S_SCHPART_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_leg_2016,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards the use of violence") + ylab("Participation in future legal protest") +ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.5,3.4) 
+plot_ed1b
+
+#2b
+mean_illeg_2016 <- mean(data2016$S_ILLACT_rec)
+
+plotdata <- data2016 %>%
+  group_by(S_SCHPART_rec) %>%
+  summarize(n = n(),
+         mean = mean(S_ILLACT_rec),
+         sd = sd(S_ILLACT_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$S_SCHPART_rec <- factor(plotdata$S_SCHPART_rec, levels = c(1,2,3), labels = c("1","2","3"))
+plotdata<-na.omit(plotdata)
+
+plot_ed2b <- ggplot(plotdata, 
+       aes(x = S_SCHPART_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_illeg_2016,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards the use of violence") + ylab("Participation in future illegal protest")  + ggtitle("2016") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))  + ylim(1.5,3.4)  #+ ylim(400,550)
+plot_ed2b
+
+#3b
+mean_elect_2016 <- mean(data2016$S_ELECPART_rec)
+
+plotdata <- data2016 %>%
+  group_by(S_SCHPART_rec) %>%
+  summarize(n = n(),
+         mean = mean(S_ELECPART_rec),
+         sd = sd(S_ELECPART_rec),
+         se = sd / sqrt(n),
+         ci = qt(0.99, df = n - 1) * sd / sqrt(n))
+
+plotdata$S_SCHPART_rec <- factor(plotdata$S_SCHPART_rec, levels = c(1,2,3), labels = c("1","2","3"))
+plotdata<-na.omit(plotdata)
+
+plot_ed3b <- ggplot(plotdata, 
+       aes(x = S_SCHPART_rec, 
+           y = mean, 
+           group = 1)) +
+  geom_errorbar(aes(ymin = mean - se, 
+                    ymax = mean + se), 
+                width = .05, colour="grey50") +
+  geom_point(shape = 21, colour = "#5A5858", fill = "white", size = 1.8) +
+  geom_hline(yintercept = mean_elect_2016,
+             color = "grey50",
+             linetype = "solid") + 
+  xlab("Attitudes towards the use of violence") + ylab("Adult electoral participation") +ggtitle(" ") + 
+  theme_bw() +
+    theme(axis.title.x = element_text(hjust = 0.48),
+          axis.text.x = element_text(colour = "black", size = 10, hjust = 1),
+          plot.title = element_text(family="Times New Roman",hjust=0.5))   + ylim(1.5,3.4) #+ ylim(400,550)
+plot_ed3b
+
+general <- cowplot::plot_grid(plot_ed1,plot_ed2,plot_ed3,plot_ed1b,plot_ed2b,plot_ed3b, ncol=3)
+ggsave(general, file = "../output/graphs/participacion_en_escuela_n_est.png",device = "png",width = 30,height = 20,dpi ="retina",units = "cm") 
+```
+
+
+# ICCS 2016
+
+```{r, echo=FALSE, results='asis'}
+
+reg_legal <- lmer(S_LEGACT_rec ~ 1 + factor(IDCNTRY2) + factor(S_HISCED2) + factor(S_HOMLIT2) + L_DISLAW_rec + L_ATTVIOL_rec + S_CITEFF_rec + S_SCHPART_rec + mean_op_esc + PV1CIV+ (1 | IDSCHOOL2), data=data2016)
+reg_illegal <- lmer(S_ILLACT_rec ~ 1 + factor(IDCNTRY2) + factor(S_HISCED2) + factor(S_HOMLIT2) + L_DISLAW_rec + L_ATTVIOL_rec + S_CITEFF_rec + S_SCHPART_rec + mean_op_esc + PV1CIV + (1 | IDSCHOOL2), data=data2016)
+reg_elect <- lmer(S_ELECPART_rec ~ 1 + factor(IDCNTRY2) + factor(S_HISCED2) + factor(S_HOMLIT2) + L_DISLAW_rec + L_ATTVIOL_rec + S_CITEFF_rec + S_SCHPART_rec + mean_op_esc + PV1CIV + (1 | IDSCHOOL2), data=data2016)
+
+caption <- "Students' expected... (ICCS 2016)"
+knitreg(list(reg_legal,reg_illegal,reg_elect), 
+        custom.model.names = c(
+          "participation in future legal protest",
+          "participation in future illegal protest",
+          "adult electoral participation"
+        ), 
+        #custom.note = footnote,
+        threeparttable = TRUE,
+        #omit.coef = omit_coef, 
+        custom.coef.names = c("Colombia (Ref. Chile)",
+                              "Dominican Republic",
+                              "Mexico",
+                              "Intercepto",
+                              "More than 100 books (Ref. 0-100 books)",
+                              "Citizenship self-efficacy",
+                              "Civic participation at school (student)",
+                              "Civic participation at school (school)",
+                              "Civic knowledge"),
+       scalebox = 0.75,
+       caption.above = T,
+       caption=caption,
+       float.pos="h!"
+       )
+
+```

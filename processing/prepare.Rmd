@@ -97,10 +97,10 @@ data2009_chl <- data2009_chl %>%
 data2009_chl$CITEFF_rec <- as.numeric(data2009_chl$CITEFF_rec)
 
 # Participación cívica en la escuela
-data2009_chl$IS2G15B <-sjmisc::rec(data2009_chl$IS2G15B,rec="1=4;2=3;3=2;4=1;else=copy")
-data2009_chl$IS2G15C <-sjmisc::rec(data2009_chl$IS2G15C,rec="1=4;2=3;3=2;4=1;else=copy")
-data2009_chl$IS2G15D <-sjmisc::rec(data2009_chl$IS2G15D,rec="1=4;2=3;3=2;4=1;else=copy")
-data2009_chl$IS2G15E <-sjmisc::rec(data2009_chl$IS2G15E,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_chl$IS2G15B <-sjmisc::rec(data2009_chl$IS2G15B,rec="1=3;3=1;else=copy")
+data2009_chl$IS2G15C <-sjmisc::rec(data2009_chl$IS2G15C,rec="1=3;3=1;else=copy")
+data2009_chl$IS2G15D <-sjmisc::rec(data2009_chl$IS2G15D,rec="1=3;3=1;else=copy")
+data2009_chl$IS2G15E <-sjmisc::rec(data2009_chl$IS2G15E,rec="1=3;3=1;else=copy")
 data2009_chl <- data2009_chl %>%
   rowwise() %>%
   mutate(PARTSCHL_rec =
@@ -237,10 +237,10 @@ data2009_col <- data2009_col %>%
 data2009_col$CITEFF_rec <- as.numeric(data2009_col$CITEFF_rec)
 
 # Participación cívica en la escuela
-data2009_col$IS2G15B <-sjmisc::rec(data2009_col$IS2G15B,rec="1=4;2=3;3=2;4=1;else=copy")
-data2009_col$IS2G15C <-sjmisc::rec(data2009_col$IS2G15C,rec="1=4;2=3;3=2;4=1;else=copy")
-data2009_col$IS2G15D <-sjmisc::rec(data2009_col$IS2G15D,rec="1=4;2=3;3=2;4=1;else=copy")
-data2009_col$IS2G15E <-sjmisc::rec(data2009_col$IS2G15E,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_col$IS2G15B <-sjmisc::rec(data2009_col$IS2G15B,rec="1=3;3=1;else=copy")
+data2009_col$IS2G15C <-sjmisc::rec(data2009_col$IS2G15C,rec="1=3;3=1;else=copy")
+data2009_col$IS2G15D <-sjmisc::rec(data2009_col$IS2G15D,rec="1=3;3=1;else=copy")
+data2009_col$IS2G15E <-sjmisc::rec(data2009_col$IS2G15E,rec="1=3;3=1;else=copy")
 data2009_col <- data2009_col %>%
   rowwise() %>%
   mutate(PARTSCHL_rec =
@@ -377,10 +377,10 @@ data2009_dom <- data2009_dom %>%
 data2009_dom$CITEFF_rec <- as.numeric(data2009_dom$CITEFF_rec)
 
 # Participación cívica en la escuela
-data2009_dom$IS2G15B <-sjmisc::rec(data2009_dom$IS2G15B,rec="1=4;2=3;3=2;4=1;else=copy")
-data2009_dom$IS2G15C <-sjmisc::rec(data2009_dom$IS2G15C,rec="1=4;2=3;3=2;4=1;else=copy")
-data2009_dom$IS2G15D <-sjmisc::rec(data2009_dom$IS2G15D,rec="1=4;2=3;3=2;4=1;else=copy")
-data2009_dom$IS2G15E <-sjmisc::rec(data2009_dom$IS2G15E,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_dom$IS2G15B <-sjmisc::rec(data2009_dom$IS2G15B,rec="1=3;3=1;else=copy")
+data2009_dom$IS2G15C <-sjmisc::rec(data2009_dom$IS2G15C,rec="1=3;3=1;else=copy")
+data2009_dom$IS2G15D <-sjmisc::rec(data2009_dom$IS2G15D,rec="1=3;3=1;else=copy")
+data2009_dom$IS2G15E <-sjmisc::rec(data2009_dom$IS2G15E,rec="1=3;3=1;else=copy")
 data2009_dom <- data2009_dom %>%
   rowwise() %>%
   mutate(PARTSCHL_rec =
@@ -518,10 +518,10 @@ data2009_mex <- data2009_mex %>%
 data2009_mex$CITEFF_rec <- as.numeric(data2009_mex$CITEFF_rec)
 
 # Participación cívica en la escuela
-data2009_mex$IS2G15B <-sjmisc::rec(data2009_mex$IS2G15B,rec="1=4;2=3;3=2;4=1;else=copy")
-data2009_mex$IS2G15C <-sjmisc::rec(data2009_mex$IS2G15C,rec="1=4;2=3;3=2;4=1;else=copy")
-data2009_mex$IS2G15D <-sjmisc::rec(data2009_mex$IS2G15D,rec="1=4;2=3;3=2;4=1;else=copy")
-data2009_mex$IS2G15E <-sjmisc::rec(data2009_mex$IS2G15E,rec="1=4;2=3;3=2;4=1;else=copy")
+data2009_mex$IS2G15B <-sjmisc::rec(data2009_mex$IS2G15B,rec="1=3;3=1;else=copy")
+data2009_mex$IS2G15C <-sjmisc::rec(data2009_mex$IS2G15C,rec="1=3;3=1;else=copy")
+data2009_mex$IS2G15D <-sjmisc::rec(data2009_mex$IS2G15D,rec="1=3;3=1;else=copy")
+data2009_mex$IS2G15E <-sjmisc::rec(data2009_mex$IS2G15E,rec="1=3;3=1;else=copy")
 data2009_mex <- data2009_mex %>%
   rowwise() %>%
   mutate(PARTSCHL_rec =
@@ -746,10 +746,10 @@ data2016_chl <- data2016_chl %>%
 data2016_chl$S_CITEFF_rec <- as.numeric(data2016_chl$S_CITEFF_rec)
 
 # Participación cívica en la escuela
-data2016_chl$IS3G16A <-sjmisc::rec(data2016_chl$IS3G16A,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016_chl$IS3G16B <-sjmisc::rec(data2016_chl$IS3G16B,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016_chl$IS3G16C <-sjmisc::rec(data2016_chl$IS3G16C,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016_chl$IS3G16D <-sjmisc::rec(data2016_chl$IS3G16D,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_chl$IS3G16A <-sjmisc::rec(data2016_chl$IS3G16A,rec="1=3;3=1;else=copy")
+data2016_chl$IS3G16B <-sjmisc::rec(data2016_chl$IS3G16B,rec="1=3;3=1;else=copy")
+data2016_chl$IS3G16C <-sjmisc::rec(data2016_chl$IS3G16C,rec="1=3;3=1;else=copy")
+data2016_chl$IS3G16D <-sjmisc::rec(data2016_chl$IS3G16D,rec="1=3;3=1;else=copy")
 data2016_chl <- data2016_chl %>%
   rowwise() %>%
   mutate(S_SCHPART_rec =
@@ -870,10 +870,10 @@ data2016_col <- data2016_col %>%
 data2016_col$S_CITEFF_rec <- as.numeric(data2016_col$S_CITEFF_rec)
 
 # Participación cívica en la escuela
-data2016_col$IS3G16A <-sjmisc::rec(data2016_col$IS3G16A,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016_col$IS3G16B <-sjmisc::rec(data2016_col$IS3G16B,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016_col$IS3G16C <-sjmisc::rec(data2016_col$IS3G16C,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016_col$IS3G16D <-sjmisc::rec(data2016_col$IS3G16D,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_col$IS3G16A <-sjmisc::rec(data2016_col$IS3G16A,rec="1=3;3=1;else=copy")
+data2016_col$IS3G16B <-sjmisc::rec(data2016_col$IS3G16B,rec="1=3;3=1;else=copy")
+data2016_col$IS3G16C <-sjmisc::rec(data2016_col$IS3G16C,rec="1=3;3=1;else=copy")
+data2016_col$IS3G16D <-sjmisc::rec(data2016_col$IS3G16D,rec="1=3;3=1;else=copy")
 data2016_col <- data2016_col %>%
   rowwise() %>%
   mutate(S_SCHPART_rec =
@@ -993,10 +993,10 @@ data2016_dom <- data2016_dom %>%
 data2016_dom$S_CITEFF_rec <- as.numeric(data2016_dom$S_CITEFF_rec)
 
 # Participación cívica en la escuela
-data2016_dom$IS3G16A <-sjmisc::rec(data2016_dom$IS3G16A,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016_dom$IS3G16B <-sjmisc::rec(data2016_dom$IS3G16B,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016_dom$IS3G16C <-sjmisc::rec(data2016_dom$IS3G16C,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016_dom$IS3G16D <-sjmisc::rec(data2016_dom$IS3G16D,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_dom$IS3G16A <-sjmisc::rec(data2016_dom$IS3G16A,rec="1=3;3=1;else=copy")
+data2016_dom$IS3G16B <-sjmisc::rec(data2016_dom$IS3G16B,rec="1=3;3=1;else=copy")
+data2016_dom$IS3G16C <-sjmisc::rec(data2016_dom$IS3G16C,rec="1=3;3=1;else=copy")
+data2016_dom$IS3G16D <-sjmisc::rec(data2016_dom$IS3G16D,rec="1=3;3=1;else=copy")
 data2016_dom <- data2016_dom %>%
   rowwise() %>%
   mutate(S_SCHPART_rec =
@@ -1117,10 +1117,10 @@ data2016_mex <- data2016_mex %>%
 data2016_mex$S_CITEFF_rec <- as.numeric(data2016_mex$S_CITEFF_rec)
 
 # Participación cívica en la escuela
-data2016_mex$IS3G16A <-sjmisc::rec(data2016_mex$IS3G16A,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016_mex$IS3G16B <-sjmisc::rec(data2016_mex$IS3G16B,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016_mex$IS3G16C <-sjmisc::rec(data2016_mex$IS3G16C,rec="1=4;2=3;3=2;4=1;else=copy")
-data2016_mex$IS3G16D <-sjmisc::rec(data2016_mex$IS3G16D,rec="1=4;2=3;3=2;4=1;else=copy")
+data2016_mex$IS3G16A <-sjmisc::rec(data2016_mex$IS3G16A,rec="1=3;3=1;else=copy")
+data2016_mex$IS3G16B <-sjmisc::rec(data2016_mex$IS3G16B,rec="1=3;3=1;else=copy")
+data2016_mex$IS3G16C <-sjmisc::rec(data2016_mex$IS3G16C,rec="1=3;3=1;else=copy")
+data2016_mex$IS3G16D <-sjmisc::rec(data2016_mex$IS3G16D,rec="1=3;3=1;else=copy")
 data2016_mex <- data2016_mex %>%
   rowwise() %>%
   mutate(S_SCHPART_rec =
