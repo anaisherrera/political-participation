@@ -12,127 +12,100 @@ pacman::p_load(dplyr, ggplot2, haven, survey, srvyr)
 # Datos 2009
 ```{r, include=FALSE}
 load(file= "../input/data/proc/2009/data_chl.Rdata")
-data2009_chl=data2009_chl0 %>% dplyr::select(LEGPROT_rec, ILLPROT_rec, ELECPART_rec, HISCED2, HOMELIT2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame() %>%  na.omit()
+data2009_chl=data2009_chl0 %>% dplyr::select(LEGPROT_rec, ILLPROT_rec, ELECPART_rec, CITEFF_rec, PARTSCHL_rec, DISLAW_rec, ATTVIOL_rec, HISCED2, HOMELIT2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame()
 
 load(file= "../input/data/proc/2009/data_col.Rdata")
-data2009_col=data2009_col0 %>% dplyr::select(LEGPROT_rec, ILLPROT_rec, ELECPART_rec, HISCED2, HOMELIT2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame() %>%  na.omit()
+data2009_col=data2009_col0 %>% dplyr::select(LEGPROT_rec, ILLPROT_rec, ELECPART_rec, CITEFF_rec, PARTSCHL_rec, DISLAW_rec, ATTVIOL_rec, HISCED2, HOMELIT2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame()
 
 load(file= "../input/data/proc/2009/data_dom.Rdata")
-data2009_dom=data2009_dom0 %>% dplyr::select(LEGPROT_rec, ILLPROT_rec, ELECPART_rec, HISCED2, HOMELIT2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame() %>%  na.omit()
+data2009_dom=data2009_dom0 %>% dplyr::select(LEGPROT_rec, ILLPROT_rec, ELECPART_rec, CITEFF_rec, PARTSCHL_rec, DISLAW_rec, ATTVIOL_rec, HISCED2, HOMELIT2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame()
 
 load(file= "../input/data/proc/2009/data_mex.Rdata")
-data2009_mex=data2009_mex0 %>% dplyr::select(LEGPROT_rec, ILLPROT_rec, ELECPART_rec, HISCED2, HOMELIT2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame() %>%  na.omit()
+data2009_mex=data2009_mex0 %>% dplyr::select(LEGPROT_rec, ILLPROT_rec, ELECPART_rec, CITEFF_rec, PARTSCHL_rec, DISLAW_rec, ATTVIOL_rec, HISCED2, HOMELIT2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame()
 ```
 
 # Datos 2016
 ```{r, include=FALSE}
 load(file= "../input/data/proc/2016/data_chl.Rdata")
-data2016_chl=data2016_chl0 %>% dplyr::select(S_LEGACT_rec, S_ILLACT_rec, S_ELECPART_rec, S_HOMLIT2, S_HISCED2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame() %>%  na.omit()
+data2016_chl=data2016_chl0 %>% dplyr::select(S_LEGACT_rec, S_ILLACT_rec, S_ELECPART_rec, S_CITEFF_rec, S_SCHPART_rec, L_DISLAW_rec, L_ATTVIOL_rec, S_HOMLIT2, S_HISCED2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame() 
 
 load(file= "../input/data/proc/2016/data_col.Rdata")
-data2016_col=data2016_col0 %>% dplyr::select(S_LEGACT_rec, S_ILLACT_rec, S_ELECPART_rec, S_HOMLIT2, S_HISCED2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame() %>%  na.omit()
+data2016_col=data2016_col0 %>% dplyr::select(S_LEGACT_rec, S_ILLACT_rec, S_ELECPART_rec, S_CITEFF_rec, S_SCHPART_rec, L_DISLAW_rec, L_ATTVIOL_rec, S_HOMLIT2, S_HISCED2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame() 
 
 load(file= "../input/data/proc/2016/data_dom.Rdata")
-data2016_dom=data2016_dom0 %>% dplyr::select(S_LEGACT_rec, S_ILLACT_rec, S_ELECPART_rec, S_HOMLIT2, S_HISCED2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame() %>%  na.omit()
+data2016_dom=data2016_dom0 %>% dplyr::select(S_LEGACT_rec, S_ILLACT_rec, S_ELECPART_rec, S_CITEFF_rec, S_SCHPART_rec, L_DISLAW_rec, L_ATTVIOL_rec, S_HOMLIT2, S_HISCED2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame() 
 
 load(file= "../input/data/proc/2016/data_mex.Rdata")
-data2016_mex=data2016_mex0 %>% dplyr::select(S_LEGACT_rec, S_ILLACT_rec, S_ELECPART_rec, S_HOMLIT2, S_HISCED2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame() %>%  na.omit()
+data2016_mex=data2016_mex0 %>% dplyr::select(S_LEGACT_rec, S_ILLACT_rec, S_ELECPART_rec, S_CITEFF_rec, S_SCHPART_rec, L_DISLAW_rec, L_ATTVIOL_rec, S_HOMLIT2, S_HISCED2, IDCNTRY, TOTWGTS=TOTWGTS.x) %>% as.data.frame() 
 
 remove(data2009_chl0, data2009_col0, data2009_dom0, data2009_mex0, data2016_chl0, data2016_col0, data2016_dom0, data2016_mex0)
 ```
 
-
 ```{r}
-data2016_chl0$S_HISCED2 <- ifelse((data2016_chl0$S_HISCED==0), 0, # did not complete <ISCED level 2>
-                   ifelse((data2016_chl0$S_HISCED==1), 0,  # did not complete <ISCED level 2>
-                          ifelse((data2016_chl0$S_HISCED==2), 0,  # <ISCED level 2>
-                                 ifelse((data2016_chl0$S_HISCED==3), 0, # <ISCED level 3>
-                                        ifelse((data2016_chl0$S_HISCED==4), 1, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
-                                               ifelse((data2016_chl0$S_HISCED==5), 1, NA))))))
-
-data2016_col0$S_HISCED2 <- ifelse((data2016_col0$S_HISCED==0), 0, # did not complete <ISCED level 2>
-                   ifelse((data2016_col0$S_HISCED==1), 0,  # did not complete <ISCED level 2>
-                          ifelse((data2016_col0$S_HISCED==2), 0,  # <ISCED level 2>
-                                 ifelse((data2016_col0$S_HISCED==3), 0, # <ISCED level 3>
-                                        ifelse((data2016_col0$S_HISCED==4), 1, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
-                                               ifelse((data2016_col0$S_HISCED==5), 1, NA))))))
-
-data2016_dom0$S_HISCED2 <- ifelse((data2016_dom0$S_HISCED==0), 0, # did not complete <ISCED level 2>
-                   ifelse((data2016_dom0$S_HISCED==1), 0,  # did not complete <ISCED level 2>
-                          ifelse((data2016_dom0$S_HISCED==2), 0,  # <ISCED level 2>
-                                 ifelse((data2016_dom0$S_HISCED==3), 0, # <ISCED level 3>
-                                        ifelse((data2016_dom0$S_HISCED==4), 1, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
-                                               ifelse((data2016_dom0$S_HISCED==5), 1, NA))))))
-
-data2016_mex0$S_HISCED2 <- ifelse((data2016_mex0$S_HISCED==0), 0, # did not complete <ISCED level 2>
-                   ifelse((data2016_mex0$S_HISCED==1), 0,  # did not complete <ISCED level 2>
-                          ifelse((data2016_mex0$S_HISCED==2), 0,  # <ISCED level 2>
-                                 ifelse((data2016_mex0$S_HISCED==3), 0, # <ISCED level 3>
-                                        ifelse((data2016_mex0$S_HISCED==4), 1, # <ISCED level 4 or 5B> o <ISCED level 5A or 6>
-                                               ifelse((data2016_mex0$S_HISCED==5), 1, NA))))))
-```
-
-
-
-
-```{r}
-legprot2009_chl = data2009_chl %>% group_by(HISCED2) %>% 
+legprot2009_chl = data2009_chl %>% filter(HISCED2==c(0,1)) %>%
+  group_by(HISCED2) %>%
   summarise(n = n(),
-            mean = mean(LEGPROT_rec),
-            sd = sd(LEGPROT_rec),
+            mean = mean(LEGPROT_rec, na.rm = T),
+            sd = sd(LEGPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2009_col = data2009_col %>% group_by(HISCED2) %>%
+legprot2009_col = data2009_col %>% filter(HISCED2==c(0,1)) %>%
+  group_by(HISCED2) %>%
   summarise(n = n(),
-            mean = mean(LEGPROT_rec),
-            sd = sd(LEGPROT_rec),
+            mean = mean(LEGPROT_rec, na.rm = T),
+            sd = sd(LEGPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2009_dom = data2009_dom %>% group_by(HISCED2) %>% 
+legprot2009_dom = data2009_dom %>% filter(HISCED2==c(0,1)) %>%
+  group_by(HISCED2) %>%
   summarise(n = n(),
-            mean = mean(LEGPROT_rec),
-            sd = sd(LEGPROT_rec),
+            mean = mean(LEGPROT_rec, na.rm = T),
+            sd = sd(LEGPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2009_mex = data2009_mex %>% group_by(HISCED2) %>% 
+legprot2009_mex = data2009_mex %>% filter(HISCED2==c(0,1)) %>%
+  group_by(HISCED2) %>%
   summarise(n = n(),
-            mean = mean(LEGPROT_rec),
-            sd = sd(LEGPROT_rec),
+            mean = mean(LEGPROT_rec, na.rm = T),
+            sd = sd(LEGPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2016_chl = data2016_chl %>% group_by(S_HISCED2) %>% 
+legprot2016_chl = data2016_chl %>% filter(S_HISCED2==c(0,1)) %>%
+  group_by(S_HISCED2) %>% 
   summarise(n = n(),
-            mean = mean(S_LEGACT_rec),
-            sd = sd(S_LEGACT_rec),
+            mean = mean(S_LEGACT_rec, na.rm = T),
+            sd = sd(S_LEGACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2016_col = data2016_col %>% group_by(S_HISCED2) %>% 
+legprot2016_col = data2016_col %>% filter(S_HISCED2==c(0,1)) %>%
+  group_by(S_HISCED2) %>% 
   summarise(n = n(),
-            mean = mean(S_LEGACT_rec),
-            sd = sd(S_LEGACT_rec),
+            mean = mean(S_LEGACT_rec, na.rm = T),
+            sd = sd(S_LEGACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2016_dom = data2016_dom %>% group_by(S_HISCED2) %>% 
+legprot2016_dom = data2016_dom %>% filter(S_HISCED2==c(0,1)) %>%
+  group_by(S_HISCED2) %>% 
   summarise(n = n(),
-            mean = mean(S_LEGACT_rec),
-            sd = sd(S_LEGACT_rec),
+            mean = mean(S_LEGACT_rec, na.rm = T),
+            sd = sd(S_LEGACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2016_mex = data2016_mex %>% group_by(S_HISCED2) %>% 
+legprot2016_mex = data2016_mex %>% filter(S_HISCED2==c(0,1)) %>%
+  group_by(S_HISCED2) %>% 
   summarise(n = n(),
-            mean = mean(S_LEGACT_rec),
-            sd = sd(S_LEGACT_rec),
+            mean = mean(S_LEGACT_rec, na.rm = T),
+            sd = sd(S_LEGACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 ```
-
 
 ```{r}
 legprot2009_chl$HISCED2 <- factor(legprot2009_chl$HISCED2, levels = c(0,1), labels = c("secondary or less","university or more"))
@@ -177,7 +150,6 @@ collapse_rows_leg <-
                collapse_rows_leg)
 ```
 
-
 ```{r}
 legprot <- ggplot(collapse_rows_leg, aes(x = HISCED2, y = mean, color=ctr)) +
   geom_point(size=4, aes(shape=ctr)) +
@@ -185,7 +157,7 @@ legprot <- ggplot(collapse_rows_leg, aes(x = HISCED2, y = mean, color=ctr)) +
   labs(x = NULL) +
   xlab(NULL) + ylab("Legal participation") +
   scale_x_discrete(labels=NULL) +
-  scale_y_continuous(limits = c(2.25, 3.25)) +
+  scale_y_continuous(limits = c(1.7, 3.6)) +
   theme_classic() +
   facet_grid(~year)
 
@@ -193,63 +165,70 @@ legprot
 ```
 
 ```{r}
-illprot2009_chl = data2009_chl %>% group_by(HISCED2) %>% 
+illprot2009_chl = data2009_chl %>% filter(HISCED2==c(0,1)) %>%
+  group_by(HISCED2) %>%
   summarise(n = n(),
-            mean = mean(ILLPROT_rec),
-            sd = sd(ILLPROT_rec),
+            mean = mean(ILLPROT_rec, na.rm = T),
+            sd = sd(ILLPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2009_col = data2009_col %>% group_by(HISCED2) %>%
+illprot2009_col = data2009_col %>% filter(HISCED2==c(0,1)) %>%
+  group_by(HISCED2) %>%
   summarise(n = n(),
-            mean = mean(ILLPROT_rec),
-            sd = sd(ILLPROT_rec),
+            mean = mean(ILLPROT_rec, na.rm = T),
+            sd = sd(ILLPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2009_dom = data2009_dom %>% group_by(HISCED2) %>% 
+illprot2009_dom = data2009_dom%>% filter(HISCED2==c(0,1)) %>%
+  group_by(HISCED2) %>%
   summarise(n = n(),
-            mean = mean(ILLPROT_rec),
-            sd = sd(ILLPROT_rec),
+            mean = mean(ILLPROT_rec, na.rm = T),
+            sd = sd(ILLPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2009_mex = data2009_mex %>% group_by(HISCED2) %>% 
+illprot2009_mex = data2009_mex %>% filter(HISCED2==c(0,1)) %>%
+  group_by(HISCED2) %>%
   summarise(n = n(),
-            mean = mean(ILLPROT_rec),
-            sd = sd(ILLPROT_rec),
+            mean = mean(ILLPROT_rec, na.rm = T),
+            sd = sd(ILLPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2016_chl = data2016_chl %>% group_by(S_HISCED2) %>% 
+illprot2016_chl = data2016_chl %>% filter(S_HISCED2==c(0,1)) %>%
+  group_by(S_HISCED2) %>% 
   summarise(n = n(),
-            mean = mean(S_ILLACT_rec),
-            sd = sd(S_ILLACT_rec),
+            mean = mean(S_ILLACT_rec, na.rm = T),
+            sd = sd(S_ILLACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2016_col = data2016_col %>% group_by(S_HISCED2) %>% 
+illprot2016_col = data2016_col %>% filter(S_HISCED2==c(0,1)) %>%
+  group_by(S_HISCED2) %>% 
   summarise(n = n(),
-            mean = mean(S_ILLACT_rec),
-            sd = sd(S_ILLACT_rec),
+            mean = mean(S_ILLACT_rec, na.rm = T),
+            sd = sd(S_ILLACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2016_dom = data2016_dom %>% group_by(S_HISCED2) %>% 
+illprot2016_dom = data2016_dom %>% filter(S_HISCED2==c(0,1)) %>%
+  group_by(S_HISCED2) %>% 
   summarise(n = n(),
-            mean = mean(S_ILLACT_rec),
-            sd = sd(S_ILLACT_rec),
+            mean = mean(S_ILLACT_rec, na.rm = T),
+            sd = sd(S_ILLACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2016_mex = data2016_mex %>% group_by(S_HISCED2) %>% 
+illprot2016_mex = data2016_mex %>% filter(S_HISCED2==c(0,1)) %>%
+  group_by(S_HISCED2) %>% 
   summarise(n = n(),
-            mean = mean(S_ILLACT_rec),
-            sd = sd(S_ILLACT_rec),
+            mean = mean(S_ILLACT_rec, na.rm = T),
+            sd = sd(S_ILLACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 ```
-
 
 ```{r}
 illprot2009_chl$HISCED2 <- factor(illprot2009_chl$HISCED2, levels = c(0,1), labels = c("secondary or less","university or more"))
@@ -294,14 +273,13 @@ collapse_rows_ill <-
                collapse_rows_ill)
 ```
 
-
 ```{r}
 illprot <- ggplot(collapse_rows_ill, aes(x = HISCED2, y = mean, color=ctr)) +
   geom_point(size=4, aes(shape=ctr)) +
   labs(color = "Country", shape="Country") +
   xlab(NULL) + ylab("illegal participation")  +
   scale_x_discrete(labels=NULL) +
-  scale_y_continuous(limits = c(1.8, 3.2)) +
+  scale_y_continuous(limits = c(1.7, 3.6)) +
   theme_classic() +
   facet_grid(~year) +
   theme( strip.text.x = element_blank())
@@ -310,63 +288,70 @@ illprot
 ```
 
 ```{r}
-elecpart2009_chl = data2009_chl %>% group_by(HISCED2) %>% 
+elecpart2009_chl = data2009_chl %>% filter(HISCED2==c(0,1)) %>%
+  group_by(HISCED2) %>%
   summarise(n = n(),
-            mean = mean(ELECPART_rec),
-            sd = sd(ELECPART_rec),
+            mean = mean(ELECPART_rec, na.rm = T),
+            sd = sd(ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2009_col = data2009_col %>% group_by(HISCED2) %>%
+elecpart2009_col = data2009_col %>% filter(HISCED2==c(0,1)) %>%
+  group_by(HISCED2) %>%
   summarise(n = n(),
-            mean = mean(ELECPART_rec),
-            sd = sd(ELECPART_rec),
+            mean = mean(ELECPART_rec, na.rm = T),
+            sd = sd(ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2009_dom = data2009_dom %>% group_by(HISCED2) %>% 
+elecpart2009_dom = data2009_dom %>% filter(HISCED2==c(0,1)) %>%
+  group_by(HISCED2) %>%
   summarise(n = n(),
-            mean = mean(ELECPART_rec),
-            sd = sd(ELECPART_rec),
+            mean = mean(ELECPART_rec, na.rm = T),
+            sd = sd(ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2009_mex = data2009_mex %>% group_by(HISCED2) %>% 
+elecpart2009_mex = data2009_mex %>% filter(HISCED2==c(0,1)) %>%
+  group_by(HISCED2) %>%
   summarise(n = n(),
-            mean = mean(ELECPART_rec),
-            sd = sd(ELECPART_rec),
+            mean = mean(ELECPART_rec, na.rm = T),
+            sd = sd(ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2016_chl = data2016_chl %>% group_by(S_HISCED2) %>% 
+elecpart2016_chl = data2016_chl %>% filter(S_HISCED2==c(0,1)) %>%
+  group_by(S_HISCED2) %>% 
   summarise(n = n(),
-            mean = mean(S_ELECPART_rec),
-            sd = sd(S_ELECPART_rec),
+            mean = mean(S_ELECPART_rec, na.rm = T),
+            sd = sd(S_ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2016_col = data2016_col %>% group_by(S_HISCED2) %>% 
+elecpart2016_col = data2016_col %>% filter(S_HISCED2==c(0,1)) %>%
+  group_by(S_HISCED2) %>% 
   summarise(n = n(),
-            mean = mean(S_ELECPART_rec),
-            sd = sd(S_ELECPART_rec),
+            mean = mean(S_ELECPART_rec, na.rm = T),
+            sd = sd(S_ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2016_dom = data2016_dom %>% group_by(S_HISCED2) %>% 
+elecpart2016_dom = data2016_dom %>% filter(S_HISCED2==c(0,1)) %>%
+  group_by(S_HISCED2) %>% 
   summarise(n = n(),
-            mean = mean(S_ELECPART_rec),
-            sd = sd(S_ELECPART_rec),
+            mean = mean(S_ELECPART_rec, na.rm = T),
+            sd = sd(S_ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2016_mex = data2016_mex %>% group_by(S_HISCED2) %>% 
+elecpart2016_mex = data2016_mex %>% filter(S_HISCED2==c(0,1)) %>%
+  group_by(S_HISCED2) %>% 
   summarise(n = n(),
-            mean = mean(S_ELECPART_rec),
-            sd = sd(S_ELECPART_rec),
+            mean = mean(S_ELECPART_rec, na.rm = T),
+            sd = sd(S_ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 ```
-
 
 ```{r}
 elecpart2009_chl$HISCED2 <- factor(elecpart2009_chl$HISCED2, levels = c(0,1), labels = c("secondary or less","university or more"))
@@ -411,13 +396,12 @@ collapse_rows_elec <-
                collapse_rows_elec)
 ```
 
-
 ```{r}
 elecpart <- ggplot(collapse_rows_elec, aes(x = HISCED2, y = mean, color=ctr)) +
   geom_point(size=4, aes(shape=ctr)) +
   labs(color = "Country", shape="Country") +
   xlab(NULL) + ylab("Electoral participation")  +
-  scale_y_continuous(limits = c(3, 3.5)) +
+  scale_y_continuous(limits = c(1.7, 3.6)) +
   theme_classic() +
   facet_grid(~ year) +
   theme( strip.text.x = element_blank())
@@ -429,7 +413,7 @@ elecpart
 part_education <- ggpubr::ggarrange(legprot,illprot,elecpart, ncol=1, common.legend = TRUE, legend= "right")
 part_education
 
-ggsave("../output/graphs/part_education.png", width = 20, height = 20, units = "cm")
+ggsave(part_education, file="../output/graphs/part_education.png", width = 20, height = 20, units = "cm")
 ```
 
 
@@ -438,63 +422,70 @@ ggsave("../output/graphs/part_education.png", width = 20, height = 20, units = "
 
 
 ```{r}
-legprot2009_chl = data2009_chl %>% group_by(HOMELIT2) %>% 
+legprot2009_chl = data2009_chl %>% filter(HOMELIT2==c(0,1)) %>%
+  group_by(HOMELIT2) %>%
   summarise(n = n(),
-            mean = mean(LEGPROT_rec),
-            sd = sd(LEGPROT_rec),
+            mean = mean(LEGPROT_rec, na.rm = T),
+            sd = sd(LEGPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2009_col = data2009_col %>% group_by(HOMELIT2) %>%
+legprot2009_col = data2009_col %>% filter(HOMELIT2==c(0,1)) %>%
+  group_by(HOMELIT2) %>%
   summarise(n = n(),
-            mean = mean(LEGPROT_rec),
-            sd = sd(LEGPROT_rec),
+            mean = mean(LEGPROT_rec, na.rm = T),
+            sd = sd(LEGPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2009_dom = data2009_dom %>% group_by(HOMELIT2) %>% 
+legprot2009_dom = data2009_dom %>% filter(HOMELIT2==c(0,1)) %>%
+  group_by(HOMELIT2) %>%
   summarise(n = n(),
-            mean = mean(LEGPROT_rec),
-            sd = sd(LEGPROT_rec),
+            mean = mean(LEGPROT_rec, na.rm = T),
+            sd = sd(LEGPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2009_mex = data2009_mex %>% group_by(HOMELIT2) %>% 
+legprot2009_mex = data2009_mex %>% filter(HOMELIT2==c(0,1)) %>%
+  group_by(HOMELIT2) %>%
   summarise(n = n(),
-            mean = mean(LEGPROT_rec),
-            sd = sd(LEGPROT_rec),
+            mean = mean(LEGPROT_rec, na.rm = T),
+            sd = sd(LEGPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2016_chl = data2016_chl %>% group_by(S_HOMLIT2) %>% 
+legprot2016_chl = data2016_chl %>% filter(S_HOMLIT2==c(0,1)) %>%
+  group_by(S_HOMLIT2) %>%
   summarise(n = n(),
-            mean = mean(S_LEGACT_rec),
-            sd = sd(S_LEGACT_rec),
+            mean = mean(S_LEGACT_rec, na.rm = T),
+            sd = sd(S_LEGACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2016_col = data2016_col %>% group_by(S_HOMLIT2) %>% 
+legprot2016_col = data2016_col %>% filter(S_HOMLIT2==c(0,1)) %>%
+  group_by(S_HOMLIT2) %>%
   summarise(n = n(),
-            mean = mean(S_LEGACT_rec),
-            sd = sd(S_LEGACT_rec),
+            mean = mean(S_LEGACT_rec, na.rm = T),
+            sd = sd(S_LEGACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2016_dom = data2016_dom %>% group_by(S_HOMLIT2) %>% 
+legprot2016_dom = data2016_dom %>% filter(S_HOMLIT2==c(0,1)) %>%
+  group_by(S_HOMLIT2) %>%
   summarise(n = n(),
-            mean = mean(S_LEGACT_rec),
-            sd = sd(S_LEGACT_rec),
+            mean = mean(S_LEGACT_rec, na.rm = T),
+            sd = sd(S_LEGACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-legprot2016_mex = data2016_mex %>% group_by(S_HOMLIT2) %>% 
+legprot2016_mex = data2016_mex %>% filter(S_HOMLIT2==c(0,1)) %>%
+  group_by(S_HOMLIT2) %>%
   summarise(n = n(),
-            mean = mean(S_LEGACT_rec),
-            sd = sd(S_LEGACT_rec),
+            mean = mean(S_LEGACT_rec, na.rm = T),
+            sd = sd(S_LEGACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 ```
-
 
 ```{r}
 legprot2009_chl$HOMELIT2 <- factor(legprot2009_chl$HOMELIT2, levels = c(0,1), labels = c("less than 100 books", "more than 100 books"))
@@ -539,7 +530,6 @@ collapse_rows_leg <-
                collapse_rows_leg)
 ```
 
-
 ```{r}
 legprot <- ggplot(collapse_rows_leg, aes(x = HOMELIT2, y = mean, color=ctr)) +
   geom_point(size=4, aes(shape=ctr)) +
@@ -547,7 +537,7 @@ legprot <- ggplot(collapse_rows_leg, aes(x = HOMELIT2, y = mean, color=ctr)) +
   labs(x = NULL) +
   xlab(NULL) + ylab("Legal participation") +
   scale_x_discrete(labels=NULL) +
-  scale_y_continuous(limits = c(2.25, 3.25)) +
+  scale_y_continuous(limits = c(1.7, 3.6)) +
   theme_classic() +
   facet_grid(~year)
 
@@ -555,63 +545,70 @@ legprot
 ```
 
 ```{r}
-illprot2009_chl = data2009_chl %>% group_by(HOMELIT2) %>% 
+illprot2009_chl = data2009_chl %>% filter(HOMELIT2==c(0,1)) %>%
+  group_by(HOMELIT2) %>%
   summarise(n = n(),
-            mean = mean(ILLPROT_rec),
-            sd = sd(ILLPROT_rec),
+            mean = mean(ILLPROT_rec, na.rm = T),
+            sd = sd(ILLPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2009_col = data2009_col %>% group_by(HOMELIT2) %>%
+illprot2009_col = data2009_col %>% filter(HOMELIT2==c(0,1)) %>%
+  group_by(HOMELIT2) %>%
   summarise(n = n(),
-            mean = mean(ILLPROT_rec),
-            sd = sd(ILLPROT_rec),
+            mean = mean(ILLPROT_rec, na.rm = T),
+            sd = sd(ILLPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2009_dom = data2009_dom %>% group_by(HOMELIT2) %>% 
+illprot2009_dom = data2009_dom %>% filter(HOMELIT2==c(0,1)) %>%
+  group_by(HOMELIT2) %>%
   summarise(n = n(),
-            mean = mean(ILLPROT_rec),
-            sd = sd(ILLPROT_rec),
+            mean = mean(ILLPROT_rec, na.rm = T),
+            sd = sd(ILLPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2009_mex = data2009_mex %>% group_by(HOMELIT2) %>% 
+illprot2009_mex = data2009_mex %>% filter(HOMELIT2==c(0,1)) %>%
+  group_by(HOMELIT2) %>%
   summarise(n = n(),
-            mean = mean(ILLPROT_rec),
-            sd = sd(ILLPROT_rec),
+            mean = mean(ILLPROT_rec, na.rm = T),
+            sd = sd(ILLPROT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2016_chl = data2016_chl %>% group_by(S_HOMLIT2) %>% 
+illprot2016_chl = data2016_chl %>% filter(S_HOMLIT2==c(0,1)) %>%
+  group_by(S_HOMLIT2) %>%
   summarise(n = n(),
-            mean = mean(S_ILLACT_rec),
-            sd = sd(S_ILLACT_rec),
+            mean = mean(S_ILLACT_rec, na.rm = T),
+            sd = sd(S_ILLACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2016_col = data2016_col %>% group_by(S_HOMLIT2) %>% 
+illprot2016_col = data2016_col %>% filter(S_HOMLIT2==c(0,1)) %>%
+  group_by(S_HOMLIT2) %>%
   summarise(n = n(),
-            mean = mean(S_ILLACT_rec),
-            sd = sd(S_ILLACT_rec),
+            mean = mean(S_ILLACT_rec, na.rm = T),
+            sd = sd(S_ILLACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2016_dom = data2016_dom %>% group_by(S_HOMLIT2) %>% 
+illprot2016_dom = data2016_dom %>% filter(S_HOMLIT2==c(0,1)) %>%
+  group_by(S_HOMLIT2) %>%
   summarise(n = n(),
-            mean = mean(S_ILLACT_rec),
-            sd = sd(S_ILLACT_rec),
+            mean = mean(S_ILLACT_rec, na.rm = T),
+            sd = sd(S_ILLACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-illprot2016_mex = data2016_mex %>% group_by(S_HOMLIT2) %>% 
+illprot2016_mex = data2016_mex %>% filter(S_HOMLIT2==c(0,1)) %>%
+  group_by(S_HOMLIT2) %>%
   summarise(n = n(),
-            mean = mean(S_ILLACT_rec),
-            sd = sd(S_ILLACT_rec),
+            mean = mean(S_ILLACT_rec, na.rm = T),
+            sd = sd(S_ILLACT_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 ```
-
 
 ```{r}
 illprot2009_chl$HOMELIT2 <- factor(illprot2009_chl$HOMELIT2, levels = c(0,1), labels = c("less than 100 books", "more than 100 books"))
@@ -656,14 +653,13 @@ collapse_rows_ill <-
                collapse_rows_ill)
 ```
 
-
 ```{r}
 illprot <- ggplot(collapse_rows_ill, aes(x = HOMELIT2, y = mean, color=ctr)) +
   geom_point(size=4, aes(shape=ctr)) +
   labs(color = "Country", shape="Country") +
   xlab(NULL) + ylab("illegal participation")  +
   scale_x_discrete(labels=NULL) +
-  scale_y_continuous(limits = c(1.8, 3.2)) +
+  scale_y_continuous(limits = c(1.7, 3.6)) +
   theme_classic() +
   facet_grid(~year) +
   theme( strip.text.x = element_blank())
@@ -672,63 +668,70 @@ illprot
 ```
 
 ```{r}
-elecpart2009_chl = data2009_chl %>% group_by(HOMELIT2) %>% 
+elecpart2009_chl = data2009_chl %>% filter(HOMELIT2==c(0,1)) %>%
+  group_by(HOMELIT2) %>%
   summarise(n = n(),
-            mean = mean(ELECPART_rec),
-            sd = sd(ELECPART_rec),
+            mean = mean(ELECPART_rec, na.rm = T),
+            sd = sd(ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2009_col = data2009_col %>% group_by(HOMELIT2) %>%
+elecpart2009_col = data2009_col %>% filter(HOMELIT2==c(0,1)) %>%
+  group_by(HOMELIT2) %>%
   summarise(n = n(),
-            mean = mean(ELECPART_rec),
-            sd = sd(ELECPART_rec),
+            mean = mean(ELECPART_rec, na.rm = T),
+            sd = sd(ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2009_dom = data2009_dom %>% group_by(HOMELIT2) %>% 
+elecpart2009_dom = data2009_dom %>% filter(HOMELIT2==c(0,1)) %>%
+  group_by(HOMELIT2) %>%
   summarise(n = n(),
-            mean = mean(ELECPART_rec),
-            sd = sd(ELECPART_rec),
+            mean = mean(ELECPART_rec, na.rm = T),
+            sd = sd(ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2009_mex = data2009_mex %>% group_by(HOMELIT2) %>% 
+elecpart2009_mex = data2009_mex %>% filter(HOMELIT2==c(0,1)) %>%
+  group_by(HOMELIT2) %>%
   summarise(n = n(),
-            mean = mean(ELECPART_rec),
-            sd = sd(ELECPART_rec),
+            mean = mean(ELECPART_rec, na.rm = T),
+            sd = sd(ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2016_chl = data2016_chl %>% group_by(S_HOMLIT2) %>% 
+elecpart2016_chl = data2016_chl %>% filter(S_HOMLIT2==c(0,1)) %>%
+  group_by(S_HOMLIT2) %>%
   summarise(n = n(),
-            mean = mean(S_ELECPART_rec),
-            sd = sd(S_ELECPART_rec),
+            mean = mean(S_ELECPART_rec, na.rm = T),
+            sd = sd(S_ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2016_col = data2016_col %>% group_by(S_HOMLIT2) %>% 
+elecpart2016_col = data2016_col%>% filter(S_HOMLIT2==c(0,1)) %>%
+  group_by(S_HOMLIT2) %>%
   summarise(n = n(),
-            mean = mean(S_ELECPART_rec),
-            sd = sd(S_ELECPART_rec),
+            mean = mean(S_ELECPART_rec, na.rm = T),
+            sd = sd(S_ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2016_dom = data2016_dom %>% group_by(S_HOMLIT2) %>% 
+elecpart2016_dom = data2016_dom %>% filter(S_HOMLIT2==c(0,1)) %>%
+  group_by(S_HOMLIT2) %>%
   summarise(n = n(),
-            mean = mean(S_ELECPART_rec),
-            sd = sd(S_ELECPART_rec),
+            mean = mean(S_ELECPART_rec, na.rm = T),
+            sd = sd(S_ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 
-elecpart2016_mex = data2016_mex %>% group_by(S_HOMLIT2) %>% 
+elecpart2016_mex = data2016_mex %>% filter(S_HOMLIT2==c(0,1)) %>%
+  group_by(S_HOMLIT2) %>%
   summarise(n = n(),
-            mean = mean(S_ELECPART_rec),
-            sd = sd(S_ELECPART_rec),
+            mean = mean(S_ELECPART_rec, na.rm = T),
+            sd = sd(S_ELECPART_rec, na.rm = T),
             se = sd / sqrt(n),
             ci = qt(0.99, df = n - 1) * sd / sqrt(n))
 ```
-
 
 ```{r}
 elecpart2009_chl$HOMELIT2 <- factor(elecpart2009_chl$HOMELIT2, levels = c(0,1), labels = c("less than 100 books", "more than 100 books"))
@@ -773,13 +776,12 @@ collapse_rows_elec <-
                collapse_rows_elec)
 ```
 
-
 ```{r}
 elecpart <- ggplot(collapse_rows_elec, aes(x = HOMELIT2, y = mean, color=ctr)) +
   geom_point(size=4, aes(shape=ctr)) +
   labs(color = "Country", shape="Country") +
   xlab(NULL) + ylab("Electoral participation")  +
-  scale_y_continuous(limits = c(3, 3.6)) +
+  scale_y_continuous(limits = c(1.7, 3.6)) +
   theme_classic() +
   facet_grid(~ year) +
   theme( strip.text.x = element_blank())
@@ -791,6 +793,375 @@ elecpart
 part_books <- ggpubr::ggarrange(legprot,illprot,elecpart, ncol=1, common.legend = TRUE, legend= "right")
 part_books
 
-ggsave("../output/graphs/part_books.png", width = 20, height = 20, units = "cm")
+ggsave(part_books, file="../output/graphs/part_books.png", width = 20, height = 20, units = "cm")
+```
+# Independientes continuas
+
+```{r}
+data2009 <- rbind(data2009_chl, data2009_col, data2009_dom, data2009_mex)
+data2016 <- rbind(data2016_chl, data2016_col, data2016_dom, data2016_mex)
+
+data2009$IDCNTRY <- factor(data2009$IDCNTRY, labels = c("Chile","Colombia", "Dominican", "Mexico"))
+data2016$IDCNTRY <- factor(data2016$IDCNTRY, labels = c("Chile","Colombia", "Dominican", "Mexico"))
+```
+
+# Autoeficacia
+
+```{r}
+legprot2009 <-data2009 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=CITEFF_rec, y=LEGPROT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab(NULL) + 
+  ylab("2009")+
+  ggtitle("Legal participation") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+legprot2009
+```
+
+```{r}
+illprot2009 <- data2009 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=CITEFF_rec, y=ILLPROT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab(NULL) + 
+  ylab(NULL) +
+  ggtitle("Illegal participation") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+illprot2009
+```
+
+```{r}
+elecpart2009 <- data2009 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=CITEFF_rec, y=ELECPART_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab(NULL) + 
+  ylab(NULL) +
+  ggtitle("Electoral participation") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+elecpart2009
+```
+
+```{r}
+legprot2016 <-data2016 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=S_CITEFF_rec, y=S_LEGACT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab("citizenship self-efficacy") + 
+  ylab("2016") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+legprot2016
+```
+
+```{r}
+illprot2016 <- data2016 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=S_CITEFF_rec, y=S_ILLACT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab("citizenship self-efficacy") + 
+  ylab(NULL) +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+illprot2016
+```
+
+```{r}
+elecpart2016 <- data2016 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=S_CITEFF_rec, y=S_ELECPART_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab("citizenship self-efficacy") + 
+  ylab(NULL) +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+elecpart2016
+```
+
+```{r}
+part_eff <- ggpubr::ggarrange(legprot2009, illprot2009, elecpart2009, legprot2016, illprot2016, elecpart2016, ncol=3, nrow = 2, common.legend = TRUE, legend= "right")
+part_eff
+
+ggsave(part_eff, file="../output/graphs/part_eff.png", width = 20, height = 20, units = "cm")
+```
+
+# PARTSCHL_rec
+
+```{r}
+legprot2009 <-data2009 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=PARTSCHL_rec, y=LEGPROT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab(NULL) + 
+  ylab("2009")+
+  ggtitle("Legal participation") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+legprot2009
+```
+
+```{r}
+illprot2009 <- data2009 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=PARTSCHL_rec, y=ILLPROT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab(NULL) + 
+  ylab(NULL) +
+  ggtitle("Illegal participation") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+illprot2009
+```
+
+```{r}
+elecpart2009 <- data2009 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=PARTSCHL_rec, y=ELECPART_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab(NULL) + 
+  ylab(NULL) +
+  ggtitle("Electoral participation") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+elecpart2009
+```
+
+```{r}
+legprot2016 <-data2016 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=S_SCHPART_rec, y=S_LEGACT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab("civic participation at school") + 
+  ylab("2016") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+legprot2016
+```
+
+```{r}
+illprot2016 <- data2016 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=S_SCHPART_rec, y=S_ILLACT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab("civic participation at school") + 
+  ylab(NULL) +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+illprot2016
+```
+
+```{r}
+elecpart2016 <- data2016 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=S_SCHPART_rec, y=S_ELECPART_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab("civic participation at school") + 
+  ylab(NULL) +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+elecpart2016
+```
+
+```{r}
+part_schl <- ggpubr::ggarrange(legprot2009, illprot2009, elecpart2009, legprot2016, illprot2016, elecpart2016, ncol=3, nrow = 2, common.legend = TRUE, legend= "right")
+part_schl
+
+ggsave(part_schl, file="../output/graphs/part_schl.png", width = 20, height = 20, units = "cm")
+```
+
+# DISLAW_rec
+
+```{r}
+legprot2009 <-data2009 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=DISLAW_rec, y=LEGPROT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab(NULL) + 
+  ylab("2009")+
+  ggtitle("Legal participation") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+legprot2009
+```
+
+```{r}
+illprot2009 <- data2009 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=DISLAW_rec, y=ILLPROT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab(NULL) + 
+  ylab(NULL) +
+  ggtitle("Illegal participation") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+illprot2009
+```
+
+```{r}
+elecpart2009 <- data2009 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=DISLAW_rec, y=ELECPART_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab(NULL) + 
+  ylab(NULL) +
+  ggtitle("Electoral participation") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+elecpart2009
+```
+
+```{r}
+legprot2016 <-data2016 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=L_DISLAW_rec, y=S_LEGACT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab("Disobedience law") + 
+  ylab("2016") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+legprot2016
+```
+
+```{r}
+illprot2016 <- data2016 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=L_DISLAW_rec, y=S_ILLACT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab("Disobedience law") + 
+  ylab(NULL) +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+illprot2016
+```
+
+```{r}
+elecpart2016 <- data2016 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=L_DISLAW_rec, y=S_ELECPART_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab("Disobedience law") + 
+  ylab(NULL) +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+elecpart2016
+```
+
+```{r}
+part_dislaw <- ggpubr::ggarrange(legprot2009, illprot2009, elecpart2009, legprot2016, illprot2016, elecpart2016, ncol=3, nrow = 2, common.legend = TRUE, legend= "right")
+part_dislaw
+
+ggsave(part_dislaw, file="../output/graphs/part_dislaw.png", width = 20, height = 20, units = "cm")
+```
+
+# ATTVIOL_rec
+
+```{r}
+legprot2009 <-data2009 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=ATTVIOL_rec, y=LEGPROT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab(NULL) + 
+  ylab("2009")+
+  ggtitle("Legal participation") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+legprot2009
+```
+
+```{r}
+illprot2009 <- data2009 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=ATTVIOL_rec, y=ILLPROT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab(NULL) + 
+  ylab(NULL) +
+  ggtitle("Illegal participation") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+illprot2009
+```
+
+```{r}
+elecpart2009 <- data2009 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=ATTVIOL_rec, y=ELECPART_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab(NULL) + 
+  ylab(NULL) +
+  ggtitle("Electoral participation") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+elecpart2009
+```
+
+```{r}
+legprot2016 <-data2016 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=L_ATTVIOL_rec, y=S_LEGACT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab("Attitudes toward violence") + 
+  ylab("2016") +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+legprot2016
+```
+
+```{r}
+illprot2016 <- data2016 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=L_ATTVIOL_rec, y=S_ILLACT_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab("Attitudes toward violence") + 
+  ylab(NULL) +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+illprot2016
+```
+
+```{r}
+elecpart2016 <- data2016 %>% filter(IDCNTRY!=is.na(IDCNTRY)) %>% 
+  ggplot(aes(x=L_ATTVIOL_rec, y=S_ELECPART_rec, color=IDCNTRY)) +
+  geom_smooth(method = "nls", formula = y ~ a * x + b, se = F,
+              method.args = list(start = list(a = 0.1, b = 0.1))) + 
+  xlab("Attitudes toward violence") + 
+  ylab(NULL) +
+  labs(color = "Country") +
+  scale_y_continuous(limits = c(1, 4))
+
+elecpart2016
+```
+
+```{r}
+part_attviol <- ggpubr::ggarrange(legprot2009, illprot2009, elecpart2009, legprot2016, illprot2016, elecpart2016, ncol=3, nrow = 2, common.legend = TRUE, legend= "right")
+part_attviol
+
+ggsave(part_attviol, file="../output/graphs/part_attviol.png", width = 20, height = 20, units = "cm")
 ```
 

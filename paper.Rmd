@@ -1,8 +1,15 @@
 ---
-title: "The political participation of Latin American school-age students. resources, political attitudes and civic learning opportunities"
-author: ""
-date: ""
-output: html_document
+title: The political participation of Latin American school-age students. resources,
+  political attitudes and civic learning opportunities
+author: ''
+date: ''
+output:
+  bookdown::pdf_document2:
+    keep_tex: no
+    number_sections: no
+    toc: no
+  bookdown::html_document2: default
+linkcolor: blue
 ---
 
 # Introduction
@@ -13,18 +20,53 @@ output: html_document
 
 ## Data
 
-The data analysed in this chapter corresponds to nationally representative samples of eighth-grade students that participate in the International Civic and Citizenship Education Study (ICCS) applied in 2009 and 2016 from four Latin American countries (Chile, Colombia, Mexico, and Dominican Republic), offering a unique opportunity to address young people at school age in the region. ICCS investigates the ways in which young people are prepared to undertake their roles as citizens in a world where contexts of democracy and civic participation continue to change. The questionnaire allows using comparable measures of student’s disposition to participate in different repertoires (electoral, demonstrations, blocking the traffic, painting walls, and occupying buildings), socioeconomic background, political attitudes, and civic learning opportunities at school. Specifically, the data used correspond to … Chilean students from … schools, … Mexican students from … schools, … Dominican students from … schools, and … Colombian students from … schools.
+The data analysed in this chapter corresponds to nationally representative samples of eighth-grade students that participate in the International Civic and Citizenship Education Study (ICCS) applied in 2009 and 2016 from four Latin American countries (Chile, Colombia, Mexico, and Dominican Republic), offering a unique opportunity to address young people at school age in the region. ICCS investigates the ways in which young people are prepared to undertake their roles as citizens in a world where contexts of democracy and civic participation continue to change. The questionnaire allows using comparable measures of student’s disposition to participate in different repertoires (electoral, demonstrations, blocking the traffic, painting walls, and occupying buildings), socioeconomic background, political attitudes, and civic learning opportunities at school.
 
 ## Variables
 
-The focus of the study is on describing the levels of youth involvement types of participation, and to evaluate to what extent resources, political attitudes, and school opportunities to learn civic skills are linked to different types of participation. The dependent variables on political participation were measured using a scale that was subsequently subdivided into three dimensions. More precisely, the surveyed students were asked six questions about their intention to participate in politics in the future. Confirmatory Factor Analysis (CFA) were estimated ... The three dimensions used correspond to: ... 
+The focus of the study is on describing the levels of youth involvement types of participation, and to evaluate to what extent resources, political attitudes, and school opportunities to learn civic skills are linked to different types of participation. The dependent variables on political participation were measured according to three dimensions. More precisely, the surveyed students were asked about their intention to participate in politics in the future in three aspects; on their willingness to participate in legal activities, in illegal activities and on electoral participation.
 
-In relation with the independent variables, it should be noted that the study has two types of variables: individual-level variables and school-level variables (in which all students from the same school have the same value). On the one hand, at the individual level variables of socioeconomic resources of the student’s family are included, such as the educational level and the number of books in the home. On the other hand, at the school level variables on civic learning opportunities are included…
+In relation with the independent variables, it should be noted that the study has two types of variables: individual-level variables and school-level variables (in which all students from the same school have the same value).  On the one hand, at the individual level, variables of the student's family's socioeconomic resources (such as the educational level of the parents and the number of books in the home), and characteristics of the student such as the disposition to disobey the law and their attitudes towards violence are included. On the other hand, at the school level variables on civic learning opportunities are included, such as citizen self-efficacy and civic participation in school.
 
 ## Methods
 
-Because the sample has a hierarchical structure (students nested in schools), the main data analyses were performed by estimating multilevel regressions, evaluating the random slopes, interactions between variables and mediation effects.
+Because the sample has a hierarchical structure (students nested in schools), the main data analyses were performed by estimating multilevel regressions, evaluating the random slopes, and interactions between variables.
 
 # Results
+
+A first descriptive analysis is shown in graph \@ref(fig:part-country). For each type of participation, a representative indicator of the dimension is taken: voting in elections, participating in a pacific march, and blocking a street. The results show in the first place that future electoral participation is high in both years, taking into consideration that only in Mexico voting is an obligation. Secondly, it is highlighted that the willingness to participate in a pacific march is greater than 50% in the four countries, noting an increase in this willingness in the Dominican Republic and Mexico and a small decrease in Chile and Colombia. Lastly, participation in illegal activities (represented by the willingness to block a street) is lower compared to the other two dimensions but remains above 20% in the different years and countries. Furthermore, there is a similar trend in the four countries in which this type of participation has increased.
+
+```{r part-country, echo=FALSE, fig.cap="Willingness to participate politically in four countries in 2009 and 2016.", fig.topcaption = TRUE, fig.align = 'center', out.width = '100%',out.height='100%'}
+knitr::include_graphics(path = "output/graphs/participacion_paises.png")
+```
+
+Then, the bivariate analysis of the graph \@ref(fig:part-education) and \@ref(fig:part-books) shows the effect of the educational level of the parents and the number of books in the home on each of the three dimensions. On the one hand, regarding the educational level of parents, the trend shows that this has a positive effect on the willingness to participate in legal activities and on electoral participation but has a negative effect on the willingness to participate in illegal activities. On the other hand, a greater quantity of books in the home follows a similar pattern to the effect of the educational level of the parents. The case of the Dominican Republic stands out, in which in 2016 a greater number of books in the home positively affected the willingness to participate in illegal activities.
+
+```{r part-education, echo=FALSE, fig.cap="Effect of parents' educational level on willingness for future participation.", fig.topcaption = TRUE, fig.align = 'center', out.width = '100%',out.height='100%'}
+knitr::include_graphics(path = "output/graphs/part_education.png")
+```
+
+```{r part-books, echo=FALSE, fig.cap="Effect of the number of books in the home on the disposition of future participation.", fig.topcaption = TRUE, fig.align = 'center', out.width = '100%',out.height='100%'}
+knitr::include_graphics(path = "output/graphs/part_books.png")
+```
+
+Finally, graph N shows the effect of the rest of the independent variables on each of the three dimensions. The clear pattern of the perception of citizenship self-efficacy on the three dimensions is highlighted, for the four countries and in both years. Civic participation in school also has a positive effect trend, but it is more tenuous than citizenship self-efficacy. The willingness to disobey the law has a moderate negative effect in most countries and in all three dimensions, except in the case of Chile where the effect is markedly positive in the willingness to participate in illegal activities, a little more tenuous in activities legal and has a negative effect on the willingness to participate electorally. Finally, attitudes towards violence follow a pattern like the willingness to disobey the law, again highlighting the case of Chile.
+
+```{r part-eff, echo=FALSE, fig.cap="Effect of citizenship self-efficacy on the disposition of future participation.", fig.topcaption = TRUE, fig.align = 'center', out.width = '100%',out.height='100%'}
+knitr::include_graphics(path = "output/graphs/part_eff.png")
+```
+
+```{r part-schl, echo=FALSE, fig.cap="Effect of civic participation at school on the disposition of future participation.", fig.topcaption = TRUE, fig.align = 'center', out.width = '100%',out.height='100%'}
+knitr::include_graphics(path = "output/graphs/part_schl.png")
+```
+
+```{r part-dislaw, echo=FALSE, fig.cap="Effect of willingness to disobey the law on the disposition of future participation.", fig.topcaption = TRUE, fig.align = 'center', out.width = '100%',out.height='100%'}
+knitr::include_graphics(path = "output/graphs/part_dislaw.png")
+```
+
+```{r part-attviol, echo=FALSE, fig.cap="Effect of attitudes toward violence on the disposition of future participation.", fig.topcaption = TRUE, fig.align = 'center', out.width = '100%',out.height='100%'}
+knitr::include_graphics(path = "output/graphs/part_attviol.png")
+```
+
 
 # Conclusions
